@@ -1,7 +1,9 @@
 import { Meteor } from "meteor/meteor";
-import React, { useState} from "react";
+import React from "react";
+import { useNavigate} from "react-router-dom";
 
-export const LoginForm = ({username, setUsername, password, setPassword, setTelaAtual, reset}) => {
+export const LoginForm = ({username, setUsername, password, setPassword, reset}) => {
+    let navigate = useNavigate();
     const loginAsync = (username, password) =>
         new Promise((resolve, reject) => {
           Meteor.loginWithPassword(username, password, (err) => {
@@ -14,12 +16,17 @@ export const LoginForm = ({username, setUsername, password, setPassword, setTela
         e.preventDefault();
         try {
             await loginAsync(username, password);
+            navigate("/Logado");
         } catch (error) {
             alert("Erro no login: Por favor, cheque suas credenciais!");
             reset();
         }
     };
 
+    const irParaCriarUsuario = () => {
+        navigate("/CriarUsuario");
+        reset();
+    }
     const handleChange = (e, parametro) => {
         if (parametro == "username"){
             setUsername(e.target.value);
@@ -30,6 +37,7 @@ export const LoginForm = ({username, setUsername, password, setPassword, setTela
     };
     return (
         <>
+        <h1>Seja Bem-vindo!!</h1>
         <form onSubmit={submit}>
             <>
                 <label htmlFor="username">Username</label>
@@ -43,8 +51,7 @@ export const LoginForm = ({username, setUsername, password, setPassword, setTela
             </>
             <button type="submit">Log in</button>
         </form>
-        <button onClick={() => { setTelaAtual(false);
-            reset();}}>Criar Usuário</button>
+        <button onClick={irParaCriarUsuario}>Criar Usuário</button>
         </>
         
     );

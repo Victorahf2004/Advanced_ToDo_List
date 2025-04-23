@@ -1,15 +1,20 @@
 import { Meteor } from "meteor/meteor";
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate} from "react-router-dom";
 
+export const UserCreationForm = ({username, setUsername, password, setPassword, reset}) => {
+    let navigate = useNavigate();
 
-export const UserCreationForm = ({username, setUsername, password, setPassword, setTelaAtual, reset}) => {
-
+    const voltarPraTelaInicial = () => {
+        navigate("/");
+        reset();
+    }
     const submit = async (e) => {
         e.preventDefault();
         try{
         await Meteor.callAsync("users.create", username, password);
         alert("Seu usuário foi criado com Sucesso, pode logar")
-        setTelaAtual(true);
+        navigate("/");
         reset();
         }
         catch(error){
@@ -42,8 +47,7 @@ export const UserCreationForm = ({username, setUsername, password, setPassword, 
             <div>
             <button type="submit">Create User</button>
             </div>
-            <button onClick={() => { setTelaAtual(true);
-                reset();}}>Voltar à Tela de Login</button>
+            <button onClick={voltarPraTelaInicial}>Voltar à Tela de Login</button>
         </form>
         </>
     );
