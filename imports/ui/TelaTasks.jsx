@@ -25,6 +25,7 @@ export const TelaTasks = () => {
       }
     return (
         <>
+        <h1>Tela de Tarefas</h1>
         <div>Usuário Logado</div>
         <button onClick={logout}>Log Out</button>
         </>
