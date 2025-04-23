@@ -3,7 +3,7 @@ import { Accounts } from "meteor/accounts-base";
 import "../imports/api/UserMethods"
 
 const SEED_USERNAME = "meteorite";
-const SEED_PASSWORD = "password";
+const SEED_PASSWORD = "123";
 
 Meteor.startup(async () => {
   await Meteor.users.removeAsync({}); //remove os usuários a cada início de sessão para poupar memória
