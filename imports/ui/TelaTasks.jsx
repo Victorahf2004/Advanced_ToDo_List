@@ -1,5 +1,6 @@
-import { Meteor } from "meteor/meteor"
-import React from "react"
+import { Meteor } from "meteor/meteor";
+import { List } from "./List";
+import React from "react";
 import { useNavigate} from "react-router-dom";
 
 export const TelaTasks = () => {
@@ -27,6 +28,7 @@ export const TelaTasks = () => {
         <>
         <h1>Tela de Tarefas</h1>
         <div>Usuário Logado</div>
+        <List />
         <button onClick={logout}>Log Out</button>
         </>
     )
