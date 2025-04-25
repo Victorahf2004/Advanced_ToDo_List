@@ -5,7 +5,7 @@ export const Task = ({ icone, nomeDaTarefa, nomeDoUsuario}) => {
         <li>
             <span>
                 {icone} {" "}
-                <h4>{nomeDaTarefa}</h4> {" "}
+                <strong>{nomeDaTarefa}</strong> {" "}
                 <small>{nomeDoUsuario}</small>
             </span>
         </li>

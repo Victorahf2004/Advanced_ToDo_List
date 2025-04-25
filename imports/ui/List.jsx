@@ -12,13 +12,13 @@ export const List = () => {
     return (
         <>
         <ol>
-            {tasks.map((tasks) => {
+            {tasks.map((task) => (
                 <Task
-                key={tasks._id} 
-                icone={tasks.icone}
-                nomeDaTarefa={tasks.nomeTarefa}
-                nomeDoUsuario={tasks.nomeUsuario}/>
-            })}
+                key={task._id} 
+                icone={task.icone}
+                nomeDaTarefa={task.nomeTarefa}
+                nomeDoUsuario={task.nomeUsuario}/>
+            ))}
         </ol>
         </>
     )

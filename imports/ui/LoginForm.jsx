@@ -17,6 +17,7 @@ export const LoginForm = ({username, setUsername, password, setPassword, reset})
         try {
             await loginAsync(username, password);
             navigate("/Logado");
+            reset();
         } catch (error) {
             alert("Erro no login: Por favor, cheque suas credenciais!");
             reset();
