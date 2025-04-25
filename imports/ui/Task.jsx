@@ -1,10 +1,10 @@
 import React from "react";
 
-export const Task = ({ icone, nomeDaTarefa, nomeDoUsuario}) => {
+export const Task = ({ nomeDaTarefa, nomeDoUsuario}) => {
     return (
         <li>
             <span>
-                {icone} {" "}
+                <img src="/logoTarefa.png" alt="Logo de Tarefas" /> {" "}
                 <strong>{nomeDaTarefa}</strong> {" "}
                 <small>{nomeDoUsuario}</small>
             </span>
