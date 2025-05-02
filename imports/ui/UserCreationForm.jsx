@@ -10,7 +10,7 @@ export const UserCreationForm = ({username, setUsername, password, setPassword, 
 
     const voltarPraTelaInicial = () => {
         navigate("/");
-        reset();
+        reset(false);
     }
     const submit = async (e) => {
         e.preventDefault();
@@ -18,11 +18,10 @@ export const UserCreationForm = ({username, setUsername, password, setPassword, 
         await Meteor.callAsync("users.create", username, password);
         setEstado("sucesso");
         navigate("/");
-        reset();
+        reset(true);
         }
         catch(error){
             setEstado("erro");
-            reset();
         }
     };
 

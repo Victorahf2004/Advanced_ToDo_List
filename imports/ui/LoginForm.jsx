@@ -21,7 +21,7 @@ export const LoginForm = ({username, setUsername, password, setPassword, estado,
         try {
             await loginAsync(username, password);
             navigate("/Logado");
-            reset();
+            reset(false);
         } catch (error) {
             setEstado("erro");
         }
@@ -29,7 +29,7 @@ export const LoginForm = ({username, setUsername, password, setPassword, estado,
 
     const irParaCriarUsuario = () => {
         navigate("/CriarUsuario");
-        reset();
+        reset(false);
     }
     const handleChange = (e, parametro) => {
         if (parametro == "username"){

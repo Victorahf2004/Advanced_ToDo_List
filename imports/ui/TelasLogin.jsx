@@ -9,10 +9,11 @@ export const TelasLogin = () => {
     const [password, setPassword] = useState("");
     const [estado, setEstado] = useState("normal"); 
 
-    const reset = () => {
-        if ((username != "") || (password != "")){
+    const reset = (casoEspecial) => {
         setUsername("");
-        setPassword("")
+        setPassword("");
+        if (casoEspecial == false) {
+            setEstado("normal");
         }
     };
     return (
