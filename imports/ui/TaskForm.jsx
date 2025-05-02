@@ -10,7 +10,7 @@ export const TaskForm = () => {
         e.preventDefault();
 
         if (!taskText) return;
-        console.log(taskText);
+
         await Meteor.callAsync("tasks.insert", (taskText));
         setTaskText("");
     };

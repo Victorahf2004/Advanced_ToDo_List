@@ -5,8 +5,6 @@ Meteor.methods({
     async "tasks.insert"(nome) {
         const usuario = await Meteor.users.findOneAsync(this.userId);
         const login = usuario?.username || "desconhecido";
-
-        console.log("Inserindo task para usuário:", login);
         return TasksCollection.insertAsync({
             nomeTask: nome,
             userName: login,
