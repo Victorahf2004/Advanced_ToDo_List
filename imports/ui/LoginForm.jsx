@@ -1,8 +1,12 @@
 import { Meteor } from "meteor/meteor";
 import React from "react";
 import { useNavigate} from "react-router-dom";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Alert from "@mui/material/Alert";
 
-export const LoginForm = ({username, setUsername, password, setPassword, reset}) => {
+export const LoginForm = ({username, setUsername, password, setPassword, estado, setEstado, reset}) => {
+
     let navigate = useNavigate();
     const loginAsync = (username, password) =>
         new Promise((resolve, reject) => {
@@ -19,8 +23,7 @@ export const LoginForm = ({username, setUsername, password, setPassword, reset})
             navigate("/Logado");
             reset();
         } catch (error) {
-            alert("Erro no login: Por favor, cheque suas credenciais!");
-            reset();
+            setEstado("erro");
         }
     };
 
@@ -38,21 +41,25 @@ export const LoginForm = ({username, setUsername, password, setPassword, reset})
     };
     return (
         <>
-        <h1>Seja Bem-vindo!!</h1>
+        <h1>Por favor, faça seu login ou crie seu usuário</h1>
+        {estado == "erro" && (
+            <Alert severity="error" onClose={() => {setEstado("normal");}}>Erro no Login!</Alert>
+        )}
         <form onSubmit={submit}>
             <>
-                <label htmlFor="username">Username</label>
-                <input type="text" id="username" placeholder="Username" required
+                <TextField variant="filled" type="text" id="username" placeholder="Username" required
                  value={username} onChange={(e) => handleChange(e, "username")} />
             </>
             <>
-                <label htmlFor="password">Password</label>
-                <input type="password" id="password" placeholder="Password" required
+                <br></br>
+                <TextField variant="filled" type="password" id="password" placeholder="Password" required
                 value={password} onChange={(e) => handleChange(e, "password")} />
             </>
-            <button type="submit">Log in</button>
+            <br></br>
+            <Button variant="contained" type="submit">Log in</Button>
         </form>
-        <button onClick={irParaCriarUsuario}>Criar Usuário</button>
+        <br></br>
+        <Button variant="contained" onClick={irParaCriarUsuario}>Criar Usuário</Button>
         </>
         
     );

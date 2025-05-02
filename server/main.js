@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from "meteor/accounts-base";
 import { TasksCollection } from "/imports/api/TasksCollection"
 import "../imports/api/UserMethods";
+import "../imports/api/TasksMethods";
 import "../imports/api/TasksPublications";
 
 const insertTask = (taskName, user) => 
@@ -16,6 +17,7 @@ const SEED_PASSWORD = "123";
 
 Meteor.startup(async () => {
   await Meteor.users.removeAsync({}); //remove os usuários a cada início de sessão para poupar memória
+  await TasksCollection.removeAsync({}); //remove as tarefas a cada início de sessão para poupar memória
   if (!(await Accounts.findUserByUsername(SEED_USERNAME))){
     await Accounts.createUser({
       username: SEED_USERNAME,
