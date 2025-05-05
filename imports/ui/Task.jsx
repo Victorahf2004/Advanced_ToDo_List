@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -6,6 +7,25 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import Divider from "@mui/material/Divider";
 
 export const Task = ({ nomeDaTarefa, nomeDoUsuario}) => {
+=======
+import { Routes, Route, useNavigate} from "react-router-dom";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemButton from "@mui/material/ListItemButton"
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import Divider from "@mui/material/Divider";
+
+export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario}) => {
+    let navigate = useNavigate();
+    
+    const telaEditarTask = () => {
+        let link = "/Logado/ListaTasks/" + identificadorTask;
+        navigate(`${link}`);
+    }
+>>>>>>> Etapa2-Questao3
     return (
         <>
         <ListItem>
@@ -14,6 +34,19 @@ export const Task = ({ nomeDaTarefa, nomeDoUsuario}) => {
             </ListItemIcon>
             <ListItemText primary={nomeDaTarefa}
             secondary={nomeDoUsuario}/>
+<<<<<<< HEAD
+=======
+            <ListItemButton>
+                <ListItemIcon>
+                    <DeleteIcon />
+                </ListItemIcon>
+            </ListItemButton>
+            <ListItemButton onClick={telaEditarTask}>
+                <ListItemIcon>
+                    <EditIcon />
+                </ListItemIcon>
+            </ListItemButton>
+>>>>>>> Etapa2-Questao3
         </ListItem>
         <Divider />
         </>

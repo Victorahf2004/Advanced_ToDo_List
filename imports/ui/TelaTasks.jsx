@@ -1,11 +1,20 @@
 import { Meteor } from "meteor/meteor";
 import { useTracker, useSubscribe } from 'meteor/react-meteor-data'; 
 import { Task } from "./Task"
+<<<<<<< HEAD
+=======
+import { InformacoesTask } from "./InformacoesTask";
+import { ListaTasks } from "./ListaTasks";
+>>>>>>> Etapa2-Questao3
 import { TasksCollection } from '/imports/api/TasksCollection';
 import { TaskForm } from "./TaskForm";
 import List from "@mui/material/List";
 import React, { useState } from "react";
+<<<<<<< HEAD
 import { useNavigate} from "react-router-dom";
+=======
+import { Routes, Route, useNavigate} from "react-router-dom";
+>>>>>>> Etapa2-Questao3
 import Button from "@mui/material/Button"
 import Alert from "@mui/material/Alert"
 
@@ -51,6 +60,7 @@ export const TelaTasks = ({erroLogout, setErroLogout}) => {
 
     return (
         <>
+<<<<<<< HEAD
         {erroLogout && (
             <Alert severity="error" onClose={() => {setErrorLogout(false);}} > Erro no Logout</Alert>
         )}
@@ -67,6 +77,12 @@ export const TelaTasks = ({erroLogout, setErroLogout}) => {
         </List>
         <Button variant="contained" onClick={logout}>Log Out</Button>
         <Button variant="contained" onClick={goToStart}>Voltar para a página inicial</Button>
+=======
+        <Routes>
+            <Route index element={<ListaTasks tasks={tasks} erroLogout={erroLogout} logout={logout} goToStart={goToStart} />} />
+            <Route path=":taskId" element={<InformacoesTask />} />
+        </Routes>
+>>>>>>> Etapa2-Questao3
         </>
     )
 }
