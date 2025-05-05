@@ -13,11 +13,7 @@ export const TelasLogado = () => {
         <Routes>
             <Route path="/" element={<Navigate to="Start" />} />
             <Route path="Start" element={<TelaBoasVindas erroLogout={erroLogout} setErroLogout={setErroLogout} />} />
-<<<<<<< HEAD
-            <Route path="ListaTasks" element={<TelaTasks erroLogout={erroLogout} setErroLogout={setErroLogout}/>} />
-=======
             <Route path="ListaTasks/*" element={<TelaTasks erroLogout={erroLogout} setErroLogout={setErroLogout}/>} />
->>>>>>> Etapa2-Questao3
             {/* <Route path="/Logado/Perfil" element={<TelaPerfil />} />  Vou implementar depois*/}
         </Routes>
         </>

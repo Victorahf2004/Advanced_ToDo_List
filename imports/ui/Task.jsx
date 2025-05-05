@@ -1,13 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import Divider from "@mui/material/Divider";
-
-export const Task = ({ nomeDaTarefa, nomeDoUsuario}) => {
-=======
 import { Routes, Route, useNavigate} from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -25,7 +16,6 @@ export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario}) => {
         let link = "/Logado/ListaTasks/" + identificadorTask;
         navigate(`${link}`);
     }
->>>>>>> Etapa2-Questao3
     return (
         <>
         <ListItem>
@@ -34,8 +24,6 @@ export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario}) => {
             </ListItemIcon>
             <ListItemText primary={nomeDaTarefa}
             secondary={nomeDoUsuario}/>
-<<<<<<< HEAD
-=======
             <ListItemButton>
                 <ListItemIcon>
                     <DeleteIcon />
@@ -46,7 +34,6 @@ export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario}) => {
                     <EditIcon />
                 </ListItemIcon>
             </ListItemButton>
->>>>>>> Etapa2-Questao3
         </ListItem>
         <Divider />
         </>
