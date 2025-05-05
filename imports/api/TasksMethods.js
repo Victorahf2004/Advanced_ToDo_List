@@ -14,4 +14,9 @@ Meteor.methods({
             createdAt: new Date(),
         });
     },
+    "tasks.update"(id, novosAtributos) {
+        return TasksCollection.updateAsync(id, {
+            $set: novosAtributos,
+        });
+    },
 });
