@@ -7,6 +7,8 @@ Meteor.methods({
         const login = usuario?.username || "desconhecido";
         return TasksCollection.insertAsync({
             nomeTask: nome,
+            descricao: "Descrição",
+            situacao: "Cadastrada",
             userName: login,
             userId: this.userId,
             createdAt: new Date(),
