@@ -21,22 +21,31 @@ export const InformacoesTask = () => {
         userName: "Usuário Criador",
     };
 
-    const estadosAtributosTask = {
-        nomeTask: "",
-        descricao: "",
-        situacao: "",
-        createdAt: "",
-        userName: "",
-    };
-
-    const [dados, setDados] = useState(estadosAtributosTask);
-
     const user = useTracker(() => Meteor.user());
     const isLoading = useSubscribe("tasks");
     const { taskId } = useParams();
     const task = useTracker(() => {
         return TasksCollection.findOne(taskId)
     });
+    
+    const chavesVisiveis = Object.keys(camposVisiveis);
+    
+    const estadosAtributosTask = {};
+    
+    for (let i = 0; i < chavesVisiveis.length; i++) {
+        const chave = chavesVisiveis[i];
+        const elemento = task[chave];
+        if (elemento instanceof Date) {
+            estadosAtributosTask[chave] = elemento.toLocaleDateString();
+        }
+        else {
+            estadosAtributosTask[chave] = elemento;
+        }
+    }
+
+    console.log(estadosAtributosTask);
+
+    const [dados, setDados] = useState(estadosAtributosTask);
 
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
