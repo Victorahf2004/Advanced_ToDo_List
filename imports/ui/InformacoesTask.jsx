@@ -29,27 +29,18 @@ export const InformacoesTask = () => {
     });
     
     const chavesVisiveis = Object.keys(camposVisiveis);
-    
-    const estadosAtributosTask = {};
-    
-    for (let i = 0; i < chavesVisiveis.length; i++) {
-        const chave = chavesVisiveis[i];
-        const elemento = task[chave];
-        if (elemento instanceof Date) {
-            estadosAtributosTask[chave] = elemento.toLocaleDateString();
-        }
-        else {
-            estadosAtributosTask[chave] = elemento;
-        }
-    }
 
-    console.log(estadosAtributosTask);
-
-    const [dados, setDados] = useState(estadosAtributosTask);
+    const [inputs, setInputs] = useState({
+        nomeTask: "",
+        descricao: "",
+        situacao: "",
+        createdAt: "",
+        userName: "",
+    });
 
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
-        setDados((prev) => {
+        setInputs((prev) => {
             const atualizado = {
                 ...prev,
                 [chave]: novoValor,
@@ -62,7 +53,23 @@ export const InformacoesTask = () => {
     const submit = async (e) => {
         e.preventDefault();
         try {
-            await Meteor.callAsync("tasks.update", taskId, dados);
+            const atualizacoes = {};
+            for (let i = 0; i < chavesVisiveis.length; i++) {
+                const chave = chavesVisiveis[i];
+                const elemento = task[chave];
+                if (inputs[chave] == '') { 
+                    if (elemento instanceof Date) {
+                        atualizacoes[chave] = elemento.toLocaleDateString();
+                    }
+                    else {
+                        atualizacoes[chave] = elemento;
+                    }
+                }
+                else {
+                    atualizacoes[chave] = (inputs[chave]).trim();
+                }
+            }
+            await Meteor.callAsync("tasks.update", taskId, atualizacoes);
         }
         catch(error) {
             console.log("erro");
@@ -78,7 +85,7 @@ export const InformacoesTask = () => {
 
     return (
         <>
-        <form>
+        <form onSubmit={submit}>
         <List>
         {Object.entries(camposVisiveis).map(([key, label]) => (
             <React.Fragment key={key}>
@@ -86,14 +93,15 @@ export const InformacoesTask = () => {
                 <ListItemText primary={label} 
                 secondary={task[key] instanceof Date ? task[key].toLocaleDateString() : String(task[key])}
                 />
-                <TextField variant="filled" type="text" placeholder={"Novo " + label} value={dados[key]}
-                    onChange={(e) => handleChange(e, key)}/>
+                <TextField variant="filled" type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
+                onChange={(e) => handleChange(e, key)}/>
+                <ListItemButton variant="contained" onClick={submit}>Salvar essa alteração</ListItemButton>
             </ListItem>
             <Divider />
             </React.Fragment>
         ))}
         </List>
-        <Button variant="contained" onClick={submit}>Submit</Button>
+        <Button type="submit" variant="contained">Salvar Todas as Alterações</Button>
         </form>
         </>
     )
