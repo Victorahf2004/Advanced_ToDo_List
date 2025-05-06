@@ -40,6 +40,23 @@ export const InformacoesTask = () => {
 
     const [inputs, setInputs] = useState(valoresIniciais);
 
+    const reset = (tipo, chave) => {
+        if (tipo == "Parcial") {
+            setInputs((prev) => ({
+                ...prev,
+                [chave]: "",
+            }));
+        }
+        else {
+            const valoresResetados = {};
+            for (let j = 0; j < chavesVisiveis.length; j++) {
+                chave = chavesVisiveis[j];
+                valoresResetados[chave] = "";
+            }
+            setInputs(valoresResetados);
+        }
+    }
+
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
         setInputs((prev) => {
@@ -61,6 +78,7 @@ export const InformacoesTask = () => {
             novoValor = data;
         }
         const atualizacaoParcial = { [chave]: novoValor}
+        reset("Parcial", chave);
         try {
             await Meteor.callAsync("tasks.update", taskId, atualizacaoParcial);
         }
@@ -68,29 +86,31 @@ export const InformacoesTask = () => {
             console.log("erro");
         }
     }
+
     const submit = async (e) => {
         e.preventDefault();
-        try {
-            const atualizacoes = {};
-            for (let i = 0; i < chavesVisiveis.length; i++) {
-                const chave = chavesVisiveis[i];
-                const elemento = task[chave];
-                if (inputs[chave] == '') { 
-                    atualizacoes[chave] = elemento;
+        const atualizacoes = {};
+        for (let i = 0; i < chavesVisiveis.length; i++) {
+            const chave = chavesVisiveis[i];
+            const elemento = task[chave];
+            if (inputs[chave] == '') { 
+                atualizacoes[chave] = elemento;
+            }
+            else {
+                if (chave == "createdAt"){
+                    const [ano, mes, dia] = (inputs[chave]).split("-");
+                    const data = new Date(ano, mes-1, dia);
+                    atualizacoes[chave] = data;
                 }
                 else {
-                    if (chave == "createdAt"){
-                        const [ano, mes, dia] = elemento.split("-");
-                        const data = new Date(ano, mes-1, dia);
-                        atualizacoes[chave] = data;
-                    }
-                    else {
-                        atualizacoes[chave] = (inputs[chave]).trim();
-                    }
-                    }
+                    atualizacoes[chave] = (inputs[chave]).trim();
+                }
             }
+        }
+        reset("Total", false);
+        try {
             await Meteor.callAsync("tasks.update", taskId, atualizacoes);
-            }
+        }
         catch(error) {
             console.log("erro");
         }
