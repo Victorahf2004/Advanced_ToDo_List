@@ -54,7 +54,12 @@ export const InformacoesTask = () => {
     
     const submitParcial = async (e, chave) => {
         e.preventDefault();
-        const novoValor = inputs[chave];
+        let novoValor = inputs[chave];
+        if (chave == "createdAt"){
+            const [ano, mes, dia] = novoValor.split("-");
+            const data = new Date(ano, mes-1, dia);
+            novoValor = data;
+        }
         const atualizacaoParcial = { [chave]: novoValor}
         try {
             await Meteor.callAsync("tasks.update", taskId, atualizacaoParcial);
@@ -71,19 +76,21 @@ export const InformacoesTask = () => {
                 const chave = chavesVisiveis[i];
                 const elemento = task[chave];
                 if (inputs[chave] == '') { 
-                    if (elemento instanceof Date) {
-                        atualizacoes[chave] = elemento.toLocaleDateString();
-                    }
-                    else {
-                        atualizacoes[chave] = elemento;
-                    }
+                    atualizacoes[chave] = elemento;
                 }
                 else {
-                    atualizacoes[chave] = (inputs[chave]).trim();
-                }
+                    if (chave == "createdAt"){
+                        const [ano, mes, dia] = elemento.split("-");
+                        const data = new Date(ano, mes-1, dia);
+                        atualizacoes[chave] = data;
+                    }
+                    else {
+                        atualizacoes[chave] = (inputs[chave]).trim();
+                    }
+                    }
             }
             await Meteor.callAsync("tasks.update", taskId, atualizacoes);
-        }
+            }
         catch(error) {
             console.log("erro");
         }
@@ -107,7 +114,7 @@ export const InformacoesTask = () => {
                 secondary={task[key] instanceof Date ? task[key].toLocaleDateString() : String(task[key])}
                 />
                 <TextField variant="filled" type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
-                 onChange={(e) => handleChange(e, key)}/>
+                 value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
                 <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
             </ListItem>
             <Divider />
