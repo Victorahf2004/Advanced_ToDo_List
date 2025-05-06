@@ -30,13 +30,15 @@ export const InformacoesTask = () => {
     
     const chavesVisiveis = Object.keys(camposVisiveis);
 
-    const [inputs, setInputs] = useState({
+    const valoresIniciais = {
         nomeTask: "",
         descricao: "",
         situacao: "",
         createdAt: "",
         userName: "",
-    });
+    };
+
+    const [inputs, setInputs] = useState(valoresIniciais);
 
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
@@ -49,7 +51,18 @@ export const InformacoesTask = () => {
             return atualizado;
         });
     };
-
+    
+    const submitParcial = async (e, chave) => {
+        e.preventDefault();
+        const novoValor = inputs[chave];
+        const atualizacaoParcial = { [chave]: novoValor}
+        try {
+            await Meteor.callAsync("tasks.update", taskId, atualizacaoParcial);
+        }
+        catch(error) {
+            console.log("erro");
+        }
+    }
     const submit = async (e) => {
         e.preventDefault();
         try {
@@ -94,8 +107,8 @@ export const InformacoesTask = () => {
                 secondary={task[key] instanceof Date ? task[key].toLocaleDateString() : String(task[key])}
                 />
                 <TextField variant="filled" type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
-                onChange={(e) => handleChange(e, key)}/>
-                <ListItemButton variant="contained" onClick={submit}>Salvar essa alteração</ListItemButton>
+                 onChange={(e) => handleChange(e, key)}/>
+                <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
             </ListItem>
             <Divider />
             </React.Fragment>
