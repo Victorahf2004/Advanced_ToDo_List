@@ -13,6 +13,7 @@ import Alert from "@mui/material/Alert"
 
 export const TelaTasks = ({erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
+    const [alteracaoSucesso, setAlteracaoSucesso] = useState("");
     const isLoading = useSubscribe("tasks");
     let navigate = useNavigate();
     const tasks = useTracker(() => {
@@ -54,8 +55,8 @@ export const TelaTasks = ({erroLogout, setErroLogout}) => {
     return (
         <>
         <Routes>
-            <Route index element={<ListaTasks tasks={tasks} erroLogout={erroLogout} logout={logout} goToStart={goToStart} />} />
-            <Route path=":taskId" element={<InformacoesTask />} />
+            <Route path="/" element={<ListaTasks tasks={tasks} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} goToStart={goToStart} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
+            <Route path=":taskId" element={<InformacoesTask alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
         </Routes>
         </>
     )

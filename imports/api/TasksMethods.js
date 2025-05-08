@@ -19,4 +19,7 @@ Meteor.methods({
             $set: novosAtributos,
         });
     },
+    "tasks.delete"(_id) {
+        return TasksCollection.removeAsync(_id);
+    }
 });

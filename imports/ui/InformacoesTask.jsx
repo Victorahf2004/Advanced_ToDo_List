@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { useParams } from "react-router-dom";
 import { TasksCollection } from '/imports/api/TasksCollection';
 import React, { useState } from "react";
+import { Routes, Route, useNavigate} from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -11,8 +12,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
+import Alert from "@mui/material/Alert";
 
-export const InformacoesTask = () => {
+export const InformacoesTask = ({ alteracaoSucesso, setAlteracaoSucesso }) => {
     const camposVisiveis = {
         nomeTask: "nome",
         descricao: "Descrição",
@@ -21,6 +23,7 @@ export const InformacoesTask = () => {
         userName: "Usuário Criador",
     };
 
+    let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
     const isLoading = useSubscribe("tasks");
     const { taskId } = useParams();
@@ -39,7 +42,6 @@ export const InformacoesTask = () => {
     };
 
     const [inputs, setInputs] = useState(valoresIniciais);
-
     const reset = (tipo, chave) => {
         if (tipo == "Parcial") {
             setInputs((prev) => ({
@@ -55,8 +57,13 @@ export const InformacoesTask = () => {
             }
             setInputs(valoresResetados);
         }
+        setAlteracaoSucesso("");
     }
 
+    const voltarParaListaTasks = () => {
+        reset("Completo", false);
+        navigate("/Logado/ListaTasks");
+    }
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
         setInputs((prev) => {
@@ -81,6 +88,7 @@ export const InformacoesTask = () => {
         reset("Parcial", chave);
         try {
             await Meteor.callAsync("tasks.update", taskId, atualizacaoParcial);
+            setAlteracaoSucesso("sucessoEditandoTask");
         }
         catch(error) {
             console.log("erro");
@@ -110,6 +118,8 @@ export const InformacoesTask = () => {
         reset("Total", false);
         try {
             await Meteor.callAsync("tasks.update", taskId, atualizacoes);
+            setAlteracaoSucesso("sucessoListaTasks");
+            navigate("/Logado/ListaTasks");
         }
         catch(error) {
             console.log("erro");
@@ -125,6 +135,9 @@ export const InformacoesTask = () => {
 
     return (
         <>
+        {alteracaoSucesso == "sucessoEditandoTask" && (
+            <Alert severity="success" onClose={() => setAlteracaoSucesso("")} > Os dados da Tarefa foram alterados com Sucesso!</Alert>
+        )}
         <form onSubmit={submit}>
         <List>
         {Object.entries(camposVisiveis).map(([key, label]) => (
@@ -141,6 +154,7 @@ export const InformacoesTask = () => {
             </React.Fragment>
         ))}
         </List>
+        <Button variant="contained" onClick={voltarParaListaTasks}> Voltar para a Lista de Tasks</Button>
         <Button type="submit" variant="contained">Salvar Todas as Alterações</Button>
         </form>
         </>

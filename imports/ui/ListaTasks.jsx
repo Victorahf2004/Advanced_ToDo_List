@@ -11,11 +11,18 @@ import Button from "@mui/material/Button"
 import Alert from "@mui/material/Alert"
 
 
-export const ListaTasks = ({tasks, erroLogout, logout, goToStart}) => {
+export const ListaTasks = ({tasks, erroLogout, setErroLogout, logout, goToStart, alteracaoSucesso, setAlteracaoSucesso}) => {
+    
+    const handleDelete = async ( _id ) => {
+        await Meteor.callAsync("tasks.delete", _id);
+    }
     return (
         <>
+        {alteracaoSucesso == "sucessoListaTasks" && (
+                    <Alert severity="success" onClose={() => {setAlteracaoSucesso("");}} > Os dados da Tarefa foram alterados com Sucesso!</Alert>
+                )}
         {erroLogout && (
-                    <Alert severity="error" onClose={() => {setErrorLogout(false);}} > Erro no Logout</Alert>
+                    <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
                 <h1>Tela de Tarefas</h1>
                 <div>Usuário Logado</div>
@@ -26,7 +33,8 @@ export const ListaTasks = ({tasks, erroLogout, logout, goToStart}) => {
                         key={task._id}
                         identificadorTask={task._id} 
                         nomeDaTarefa={task.nomeTask}
-                        nomeDoUsuario={task.userName}/>
+                        nomeDoUsuario={task.userName}
+                        onDelete={handleDelete}/>
                     ))}
                 </List>
                 <Button variant="contained" onClick={logout}>Log Out</Button>

@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Divider from "@mui/material/Divider";
 
-export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario}) => {
+export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario, onDelete}) => {
     let navigate = useNavigate();
     
     const telaEditarTask = () => {
@@ -24,7 +24,7 @@ export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario}) => {
             </ListItemIcon>
             <ListItemText primary={nomeDaTarefa}
             secondary={nomeDoUsuario}/>
-            <ListItemButton>
+            <ListItemButton onClick={() => onDelete(identificadorTask)}>
                 <ListItemIcon>
                     <DeleteIcon />
                 </ListItemIcon>
