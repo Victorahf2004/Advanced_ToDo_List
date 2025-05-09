@@ -13,15 +13,23 @@ import { Routes, Route, useNavigate} from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso }) => {
+    const camposVisiveis = {
+            nomeTask: "nome",
+            descricao: "Descrição",
+            situacao: "Situação",
+            createdAt: "Data",
+            userName: "Usuário Criador",
+        };
+    
+    const chavesVisiveis = Object.keys(camposVisiveis);
+
     const [value, setValue] = useState(0);
     
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
-    const isLoading = useSubscribe("tasks");
     const { taskId } = useParams();
-    
     const task = useTracker(() => {
-        return TasksCollection.findOne(taskId)
+            return TasksCollection.findOne(taskId)
     });
 
     const handleChange = (e, newValue) => {
@@ -45,6 +53,44 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
     }
 
     const chipsVariants = getSituacaoTasks(task.situacao);
+    
+    const checagemTransicao = (velhaSituacao, novaSituacao) => {
+        if (velhaSituacao == "Cadastrada" && novaSituacao == "Concluída"){
+            throw new Error("Transição Inválida!");
+        }
+
+        else if (velhaSituacao == novaSituacao) {
+            throw new Error("Situação igual à de antes!");
+        }
+    };
+        
+    const novoArrayVariants = (arrayAtual, posicaoAlterada) => {
+        const tamanho = arrayAtual.length;
+        const novoArray = [];
+        for (let j = 0; j < tamanho; j++){
+            if (j == posicaoAlterada) {
+                novoArray.push("filled");
+            }
+            else {
+                let elemento = arrayAtual[j];
+                novoArray.push("outlined");
+            }
+        }
+        return novoArray;
+    }
+
+    const alterarSituacao = async (velhaSituacao, novaSituacao, indiceVariant) => {
+        const novoObjetoSituacao = {situacao: novaSituacao};
+        const novoArray = novoArrayVariants(chipsVariants, indiceVariant);
+        try {
+            checagemTransicao(velhaSituacao, novaSituacao);
+            await Meteor.callAsync("tasks.update", taskId, novoObjetoSituacao);
+            setAlteracaoSucesso("sucessoEditandoTask");
+        }
+        catch(error) {
+            setAlteracaoSucesso("Erro em alterar Situação");
+        }
+    }
     return (
         <>
             <Tabs value={value} onChange={handleChange}>
@@ -53,11 +99,11 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
             </Tabs> 
             
             <Box hidden={value !== 0} >
-                <VisualizacaoTask chipsVariants={chipsVariants} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
+                <VisualizacaoTask chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposVisiveis={camposVisiveis} chavesVisiveis={chavesVisiveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
             </Box>
 
             <Box hidden={value !== 1} >
-                <EdicaoTask chipsVariants={chipsVariants} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
+                <EdicaoTask chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposVisiveis={camposVisiveis} chavesVisiveis={chavesVisiveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
             </Box>
         </>
     )

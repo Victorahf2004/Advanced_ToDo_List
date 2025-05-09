@@ -15,64 +15,15 @@ import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
 
-export const VisualizacaoTask = ({ chipsVariants, alteracaoSucesso, setAlteracaoSucesso }) => {
-    const camposVisiveis = {
-            nomeTask: "nome",
-            descricao: "Descrição",
-            situacao: "Situação",
-            createdAt: "Data",
-            userName: "Usuário Criador",
-        };
+export const VisualizacaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposVisiveis, chavesVisiveis, alteracaoSucesso, setAlteracaoSucesso }) => {
     
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
     const isLoading = useSubscribe("tasks");
-    const { taskId } = useParams();
 
     const task = useTracker(() => {
         return TasksCollection.findOne(taskId)
     });
-    
-    const chavesVisiveis = Object.keys(camposVisiveis);
-    
-    const checagemTransicao = (novaSituacao) => {
-            const velhaSituacao = task.situacao;
-            if (velhaSituacao == "Cadastrada" && novaSituacao == "Concluída"){
-                throw new Error("Transição Inválida!");
-            }
-    
-            else if (velhaSituacao == novaSituacao) {
-                throw new Error("Situação igual à de antes!");
-            }
-        };
-    
-    const novoArrayVariants = (arrayAtual, posicaoAlterada) => {
-        const tamanho = arrayAtual.length;
-        const novoArray = [];
-        for (let j = 0; j < tamanho; j++){
-            if (j == posicaoAlterada) {
-                novoArray.push("filled");
-            }
-            else {
-                let elemento = arrayAtual[j];
-                novoArray.push("outlined");
-            }
-        }
-        return novoArray;
-    }
-
-    const alterarSituacao = async (novaSituacao, indiceVariant) => {
-        const novoObjetoSituacao = {situacao: novaSituacao};
-        const novoArray = novoArrayVariants(chipsVariants, indiceVariant);
-        try {
-            checagemTransicao(novaSituacao);
-            await Meteor.callAsync("tasks.update", taskId, novoObjetoSituacao);
-            setAlteracaoSucesso("sucessoEditandoTask");
-        }
-        catch(error) {
-            setAlteracaoSucesso("Erro em alterar Situação");
-        }
-    }
 
     if (isLoading()){
         return <div>Loading...</div>
@@ -98,9 +49,9 @@ export const VisualizacaoTask = ({ chipsVariants, alteracaoSucesso, setAlteracao
                     <ListItemText primary={label} />
                     {key == "situacao"? (
                         <>
-                        <Chip label="Cadastrada" variant={chipsVariants[0]} onClick={() => alterarSituacao("Cadastrada", 0)} />
-                        <Chip label="Em Andamento" variant={chipsVariants[1]} onClick={() => alterarSituacao("Em Andamento", 1)} />
-                        <Chip label="Concluída" variant={chipsVariants[2]} onClick={() => alterarSituacao("Concluída", 2)} />
+                        <Chip label="Cadastrada" variant={chipsVariants[0]} onClick={() => alterarSituacao(task.situacao, "Cadastrada", 0)} />
+                        <Chip label="Em Andamento" variant={chipsVariants[1]} onClick={() => alterarSituacao(task.situacao, "Em Andamento", 1)} />
+                        <Chip label="Concluída" variant={chipsVariants[2]} onClick={() => alterarSituacao(task.situacao, "Concluída", 2)} />
                         </>
                     ) :( 
                     <>
