@@ -15,7 +15,7 @@ import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
 
-export const EdicaoTask = ({ alteracaoSucesso, setAlteracaoSucesso }) => {
+export const EdicaoTask = ({ chipsVariants, alteracaoSucesso, setAlteracaoSucesso }) => {
     const camposVisiveis = {
         nomeTask: "nome",
         descricao: "Descrição",
@@ -42,18 +42,6 @@ export const EdicaoTask = ({ alteracaoSucesso, setAlteracaoSucesso }) => {
         createdAt: "",
         userName: "",
     };
-    const arrayInicialChips = ["outlined", "outlined", "outlined"];
-    const situacaoTask = task.situacao;
-    if (situacaoTask == "Cadastrada") {
-        arrayInicialChips[0] = "filled";
-    }
-    else if (situacaoTask == "Em Andamento") {
-        arrayInicialChips[1] = "filled";
-    }
-    else {
-        arrayInicialChips[2] = "filled";
-    }
-    const [chipsVariants, setChipsVariants] = useState(arrayInicialChips);
     const [inputs, setInputs] = useState(valoresIniciais);
     
     const reset = (tipo, chave) => {
@@ -123,7 +111,6 @@ export const EdicaoTask = ({ alteracaoSucesso, setAlteracaoSucesso }) => {
         try {
             checagemTransicao(novaSituacao);
             await Meteor.callAsync("tasks.update", taskId, novoObjetoSituacao);
-            setChipsVariants(novoArray);
             setAlteracaoSucesso("sucessoEditandoTask");
         }
         catch(error) {
