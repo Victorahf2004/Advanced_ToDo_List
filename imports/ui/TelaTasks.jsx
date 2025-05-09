@@ -1,7 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { useTracker, useSubscribe } from 'meteor/react-meteor-data'; 
 import { Task } from "./Task"
-import { InformacoesTask } from "./InformacoesTask";
+import { EdicaoTask } from "./EdicaoTask";
+import { VisualizacaoEdicaoTask } from "./VisualizacaoEdicaoTask";
 import { ListaTasks } from "./ListaTasks";
 import { TasksCollection } from '/imports/api/TasksCollection';
 import { TaskForm } from "./TaskForm";
@@ -56,7 +57,7 @@ export const TelaTasks = ({erroLogout, setErroLogout}) => {
         <>
         <Routes>
             <Route path="/" element={<ListaTasks tasks={tasks} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} goToStart={goToStart} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
-            <Route path=":taskId" element={<InformacoesTask alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
+            <Route path=":taskId" element={<VisualizacaoEdicaoTask alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
         </Routes>
         </>
     )

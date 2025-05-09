@@ -15,7 +15,7 @@ import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
 
-export const InformacoesTask = ({ alteracaoSucesso, setAlteracaoSucesso }) => {
+export const EdicaoTask = ({ alteracaoSucesso, setAlteracaoSucesso }) => {
     const camposVisiveis = {
         nomeTask: "nome",
         descricao: "Descrição",

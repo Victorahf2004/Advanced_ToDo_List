@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { useTracker, useSubscribe } from 'meteor/react-meteor-data'; 
 import { Task } from "./Task"
-import { InformacoesTask } from "./InformacoesTask";
+import { EdicaoTask } from "./EdicaoTask";
 import { TasksCollection } from '/imports/api/TasksCollection';
 import { TaskForm } from "./TaskForm";
 import List from "@mui/material/List";
