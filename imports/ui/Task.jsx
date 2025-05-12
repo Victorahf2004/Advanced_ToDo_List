@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Divider from "@mui/material/Divider";
+import Tooltip from "@mui/material/Tooltip"
 
 export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario, onDelete}) => {
     let navigate = useNavigate();
@@ -24,16 +25,20 @@ export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario, onDelete}
             </ListItemIcon>
             <ListItemText primary={nomeDaTarefa}
             secondary={nomeDoUsuario}/>
-            <ListItemButton onClick={() => onDelete(identificadorTask)}>
-                <ListItemIcon>
-                    <DeleteIcon />
-                </ListItemIcon>
-            </ListItemButton>
-            <ListItemButton onClick={telaEditarTask}>
-                <ListItemIcon>
-                    <EditIcon />
-                </ListItemIcon>
-            </ListItemButton>
+            <Tooltip title="Delete Task">
+                <ListItemButton onClick={() => onDelete(identificadorTask)}>
+                    <ListItemIcon>
+                        <DeleteIcon />
+                    </ListItemIcon>
+                </ListItemButton>
+            </Tooltip>
+            <Tooltip title="Editar Task">
+                <ListItemButton onClick={telaEditarTask}>
+                    <ListItemIcon>
+                        <EditIcon />
+                    </ListItemIcon>
+                </ListItemButton>
+            </Tooltip>
         </ListItem>
         <Divider />
         </>

@@ -11,6 +11,8 @@ import { VisualizacaoTask } from "./VisualizacaoTask";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 import { Routes, Route, useNavigate} from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { Task } from "./Task";
+import Typography from "@mui/material/Typography";
 
 export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso }) => {
     const camposVisiveis = {
@@ -93,6 +95,11 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
     }
     return (
         <>
+            <Box>
+                <Typography variant="h4">
+                    {task.nomeTask}
+                </Typography>
+            </Box>
             <Tabs value={value} onChange={handleChange}>
                 <Tab icon={<VisibilityIcon />} label="Visualização" iconPosition="end" />
                 <Tab icon={<EditNoteIcon />} label="Edição" iconPosition="end" />

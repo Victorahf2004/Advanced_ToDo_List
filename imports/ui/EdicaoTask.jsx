@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
 
 export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposVisiveis, chavesVisiveis, alteracaoSucesso, setAlteracaoSucesso }) => {
 
@@ -128,11 +129,15 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
     }
 
     if (isLoading()){
-        return <div>Loading...</div>
+        return <Typography variant="h4">
+            Loading...
+            </Typography>
     }
 
     if (!task) {
-        return <div>Task não encontrada</div>;
+        return <Typography variant="h4">
+            Task não encontrada
+            </Typography>;
     }
 
     return (
@@ -149,9 +154,7 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
         {Object.entries(camposVisiveis).map(([key, label]) => (
             <React.Fragment key={key}>
             <ListItem>
-                <ListItemText primary={label} 
-                secondary={task[key] instanceof Date ? task[key].toLocaleDateString() : String(task[key])}
-                />
+                <ListItemText primary={label} />
                 {key == "situacao"? (
                     <>
                     <Chip label="Cadastrada" variant={chipsVariants[0]} onClick={() => alterarSituacao(task.situacao, "Cadastrada", 0)} />

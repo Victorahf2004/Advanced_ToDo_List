@@ -4,6 +4,7 @@ import { useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
 
 export const LoginForm = ({username, setUsername, password, setPassword, estado, setEstado, reset}) => {
 
@@ -41,7 +42,9 @@ export const LoginForm = ({username, setUsername, password, setPassword, estado,
     };
     return (
         <>
-        <h1>Por favor, faça seu login ou crie seu usuário</h1>
+        <Typography variant="h4">
+            Por favor, faça seu login ou crie seu usuário
+        </Typography>
         {estado == "erro" && (
             <Alert severity="error" onClose={() => {setEstado("normal");}}>Erro no Login!</Alert>
         )}

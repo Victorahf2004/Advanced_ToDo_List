@@ -7,8 +7,9 @@ import { TaskForm } from "./TaskForm";
 import List from "@mui/material/List";
 import React, { useState } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
-import Button from "@mui/material/Button"
-import Alert from "@mui/material/Alert"
+import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
 
 
 export const ListaTasks = ({tasks, erroLogout, setErroLogout, logout, goToStart, alteracaoSucesso, setAlteracaoSucesso}) => {
@@ -24,8 +25,9 @@ export const ListaTasks = ({tasks, erroLogout, setErroLogout, logout, goToStart,
         {erroLogout && (
                     <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
-                <h1>Tela de Tarefas</h1>
-                <div>Usuário Logado</div>
+                <Typography variant="h4" gutterBottom>
+                    Tarefas Cadastradas
+                </Typography>
                 <TaskForm />
                 <List>
                     {tasks.map((task) => (

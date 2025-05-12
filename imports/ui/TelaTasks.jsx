@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { useTracker, useSubscribe } from 'meteor/react-meteor-data'; 
-import { Task } from "./Task"
+import { Task } from "./Task";
 import { EdicaoTask } from "./EdicaoTask";
 import { VisualizacaoEdicaoTask } from "./VisualizacaoEdicaoTask";
 import { ListaTasks } from "./ListaTasks";
@@ -9,8 +9,9 @@ import { TaskForm } from "./TaskForm";
 import List from "@mui/material/List";
 import React, { useState } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
-import Button from "@mui/material/Button"
-import Alert from "@mui/material/Alert"
+import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
 
 export const TelaTasks = ({erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
@@ -27,7 +28,9 @@ export const TelaTasks = ({erroLogout, setErroLogout}) => {
       });
     
     if (isLoading()){
-        return <div>Loading...</div>
+        return <Typography variant="h4">
+            Loading...
+            </Typography>
     }
     const logoutAsync = () => {
         new Promise((resolve, reject) => {

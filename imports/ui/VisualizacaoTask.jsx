@@ -14,6 +14,8 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 export const VisualizacaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposVisiveis, chavesVisiveis, alteracaoSucesso, setAlteracaoSucesso }) => {
     
@@ -26,11 +28,15 @@ export const VisualizacaoTask = ({ chipsVariants, checagemTransicao, novoArrayVa
     });
 
     if (isLoading()){
-        return <div>Loading...</div>
+        return <Typography variant="h3">
+            Loading...
+            </Typography>
     }
 
     if (!task) {
-        return <div>Task não encontrada</div>;
+        return <Typography variant="h3">
+            Task não encontrada
+            </Typography>;
     }
 
     return (
