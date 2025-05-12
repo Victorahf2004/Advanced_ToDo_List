@@ -65,7 +65,6 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
                 ...prev,
                 [chave]: novoValor,
             };
-            console.log("Estado atualizado:", atualizado);
             return atualizado;
         });
     };
