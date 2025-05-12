@@ -39,7 +39,7 @@ export const UserCreationForm = ({username, setUsername, password, setPassword, 
             <Box>
             Digite o username que deseja: <br></br>
 
-            <TextField variant="filled" multiline type="text" placeholder="Username"
+            <TextField variant="filled" type="text" placeholder="Username"
             name="username" value={username} required onChange={(e) => setUsername(e.target.value)} />
 
             </Box>
@@ -47,7 +47,7 @@ export const UserCreationForm = ({username, setUsername, password, setPassword, 
             <Box>
             Digite a senha que deseja: <br></br>
         
-            <TextField variant="filled" multiline type="password" placeholder="Password" value={password} required
+            <TextField variant="filled" type="password" placeholder="Password" value={password} required
             onChange={(e) => setPassword(e.target.value)} />
             </Box>
 

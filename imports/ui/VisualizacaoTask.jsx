@@ -22,7 +22,6 @@ export const VisualizacaoTask = ({ chipsVariants, checagemTransicao, novoArrayVa
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
     const isLoading = useSubscribe("tasks");
-
     const task = useTracker(() => {
         return TasksCollection.findOne(taskId)
     });
@@ -33,10 +32,8 @@ export const VisualizacaoTask = ({ chipsVariants, checagemTransicao, novoArrayVa
             </Typography>
     }
 
-    if (!task) {
-        return <Typography variant="h3">
-            Task não encontrada
-            </Typography>;
+    const voltarParaListaTasks = () => {
+        navigate("/Logado/ListaTasks");
     }
 
     return (
@@ -69,6 +66,7 @@ export const VisualizacaoTask = ({ chipsVariants, checagemTransicao, novoArrayVa
                 </React.Fragment>
             ))}
             </List>
+            <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para a Lista de Tasks</Button>
             </>
         )
 }

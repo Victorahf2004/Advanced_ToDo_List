@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Meteor } from "meteor/meteor";
 import { TasksCollection } from '/imports/api/TasksCollection';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -13,6 +13,8 @@ import { Routes, Route, useNavigate} from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Task } from "./Task";
 import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
+import Button from "@mui/material/Button";
 
 export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso }) => {
     const camposVisiveis = {
@@ -33,7 +35,25 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
     const task = useTracker(() => {
             return TasksCollection.findOne(taskId)
     });
-
+    const [taskNaoEncontrada, setTaskNaoEncontrada] = useState(false);
+    const voltarParaListaTasks = () => {
+        navigate("/Logado/ListaTasks");
+        setTaskNaoEncontrada(false);
+    }
+    useEffect(() => {
+        if (!task){
+            setTaskNaoEncontrada(true);
+        }
+    }, [task])
+    
+    if (!task) {
+        return (
+            <>
+                <Alert severity="error" onClose={() => setTaskNaoEncontrada(false)}>Task não encontrada!</Alert>
+                <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para a Lista de Tasks</Button>
+            </>
+            )
+        }
     const handleChange = (e, newValue) => {
         setValue(newValue);
         setAlteracaoSucesso("");

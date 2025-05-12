@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 
 export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
-    const isLoggedIn = !!user;
     let navigate = useNavigate();
 
     const logoutAsync = () => {
@@ -47,19 +46,12 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
         {erroLogout && (
                     <Alert severity="error" onClose={() => {setErrorLogout(false);}} > Erro no Logout</Alert>
                 )}
-        {isLoggedIn && (
-            <>
-            <Typography variant="h3">
-                Seja Bem-Vindo, {ajustarDisplay(user.username)}!!!
-            </Typography>
-            <Button variant="contained" onClick={openTasks}>Abrir Tasks</Button>
-            <Button variant="contained" onClick={logout}>Log Out</Button>
-            <Button variant="contained">Abrir Perfil</Button>
-            </> ) }
-        {isLoggedIn == false && (
-            <Typography variant="h3">
-                Erro, por favor, faça seu login, antes de acessar o site
-            </Typography> ) }
+        <Typography variant="h3" gutterBottom>
+            Seja Bem-Vindo, {ajustarDisplay(user.username)}!!!
+        </Typography>
+        <Button variant="contained" onClick={openTasks}>Abrir Tasks</Button>
+        <Button variant="contained" onClick={logout}>Log Out</Button>
+        <Button variant="contained">Abrir Perfil</Button>
         </>
     )
 }
