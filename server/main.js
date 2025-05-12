@@ -8,6 +8,8 @@ import "../imports/api/TasksPublications";
 const insertTask = (taskName, user) => 
   TasksCollection.insertAsync({
     nomeTask: taskName,
+    descricao: "Descrição",
+    situacao: "Cadastrada",
     userName: user.username,
     userId: user._id,
     createdAt: new Date(), 
