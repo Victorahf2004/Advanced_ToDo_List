@@ -33,13 +33,13 @@ export const UserCreationForm = ({username, setUsername, password, setPassword, 
             <Alert severity="error" onClose={() => {setEstado("normal");}} > Erro ao criar usuário!</Alert>
         )}
         <form onSubmit={submit} className="login-form">
-            <Typography variant="h3">
+            <Typography variant="h3" gutterBottom>
                 Criando Novo Usuário
             </Typography>
             <Box>
             Digite o username que deseja: <br></br>
 
-            <TextField variant="filled" type="text" placeholder="Username"
+            <TextField variant="filled" multiline type="text" placeholder="Username"
             name="username" value={username} required onChange={(e) => setUsername(e.target.value)} />
 
             </Box>
@@ -47,11 +47,12 @@ export const UserCreationForm = ({username, setUsername, password, setPassword, 
             <Box>
             Digite a senha que deseja: <br></br>
         
-            <TextField variant="filled" type="password" placeholder="Password" value={password} required
+            <TextField variant="filled" multiline type="password" placeholder="Password" value={password} required
             onChange={(e) => setPassword(e.target.value)} />
             </Box>
 
             <Button variant="contained" type="submit">Create User</Button>
+            <br></br>
             <Button variant="contained" onClick={voltarPraTelaInicial}>Voltar à Tela de Login</Button>
         </form>
         </>

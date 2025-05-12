@@ -42,7 +42,7 @@ export const LoginForm = ({username, setUsername, password, setPassword, estado,
     };
     return (
         <>
-        <Typography variant="h4">
+        <Typography variant="h4" gutterBottom>
             Por favor, faça seu login ou crie seu usuário
         </Typography>
         {estado == "erro" && (
@@ -50,12 +50,12 @@ export const LoginForm = ({username, setUsername, password, setPassword, estado,
         )}
         <form onSubmit={submit}>
             <>
-                <TextField variant="filled" type="text" id="username" placeholder="Username" required
+                <TextField variant="filled" multiline type="text" id="username" placeholder="Username" required
                  value={username} onChange={(e) => handleChange(e, "username")} />
             </>
             <>
                 <br></br>
-                <TextField variant="filled" type="password" id="password" placeholder="Password" required
+                <TextField variant="filled" multiline type="password" id="password" placeholder="Password" required
                 value={password} onChange={(e) => handleChange(e, "password")} />
             </>
             <br></br>

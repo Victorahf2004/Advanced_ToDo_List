@@ -61,7 +61,7 @@ export const VisualizacaoTask = ({ chipsVariants, checagemTransicao, novoArrayVa
                         </>
                     ) :( 
                     <>
-                        <ListItemText primary={task[key] instanceof Date ? task[key].toLocaleDateString() : String(task[key])} />
+                        <TextField variant="filled" multiline maxRows={6} value={task[key] instanceof Date ? task[key].toLocaleDateString() : String(task[key])} />
                     </>
                     )}
                 </ListItem>

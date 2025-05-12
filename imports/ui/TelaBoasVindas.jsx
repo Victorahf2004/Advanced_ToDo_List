@@ -33,7 +33,15 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
     const openTasks = () => {
         navigate("/Logado/ListaTasks");
     };
-    console.log(isLoggedIn);
+    const ajustarDisplay = (parametro) => {
+        let tamanho = parametro.length;
+        if (tamanho >= 14) {
+            return ((parametro.slice(0, 15)) + "... ");
+        }
+        else {
+            return parametro;
+        }
+    }
     return (
         <>
         {erroLogout && (
@@ -42,7 +50,7 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
         {isLoggedIn && (
             <>
             <Typography variant="h3">
-                Seja Bem-Vindo, {user.username}!!!
+                Seja Bem-Vindo, {ajustarDisplay(user.username)}!!!
             </Typography>
             <Button variant="contained" onClick={openTasks}>Abrir Tasks</Button>
             <Button variant="contained" onClick={logout}>Log Out</Button>

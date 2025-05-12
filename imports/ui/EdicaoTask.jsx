@@ -163,7 +163,7 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
                     </>
                 ) :( 
                 <>
-                <TextField variant="filled" type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
+                <TextField variant="filled" multiline maxRows={6} type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
                  value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
                 <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
                 </>

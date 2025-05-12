@@ -17,14 +17,24 @@ export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario, onDelete}
         let link = "/Logado/ListaTasks/" + identificadorTask;
         navigate(`${link}`);
     }
+
+    const ajustarDisplay = (parametro) => {
+        let tamanho = parametro.length;
+        if (tamanho >= 14) {
+            return ((parametro.slice(0, 15)) + "... ");
+        }
+        else {
+            return parametro;
+        }
+    }
     return (
         <>
         <ListItem>
             <ListItemIcon>
                 <AssignmentIcon />
             </ListItemIcon>
-            <ListItemText primary={nomeDaTarefa}
-            secondary={nomeDoUsuario}/>
+            <ListItemText primary={ajustarDisplay(nomeDaTarefa)}
+            secondary={ajustarDisplay(nomeDoUsuario)}/>
             <Tooltip title="Delete Task">
                 <ListItemButton onClick={() => onDelete(identificadorTask)}>
                     <ListItemIcon>
