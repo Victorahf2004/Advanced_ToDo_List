@@ -46,6 +46,8 @@ export const TelaTasks = ({erroLogout, setErroLogout}) => {
         try{
             await logoutAsync();
             navigate("/");
+            setErroLogout(false);
+            setAlteracaoSucesso("");
         }
         catch (error) {
             setErroLogout(true);
@@ -54,6 +56,8 @@ export const TelaTasks = ({erroLogout, setErroLogout}) => {
 
     const goToStart = () => {
         navigate("/Logado/Start");
+        setErroLogout(false);
+        setAlteracaoSucesso("");
     } 
 
     return (

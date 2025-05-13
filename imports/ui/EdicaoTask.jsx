@@ -25,7 +25,8 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
     const task = useTracker(() => {
         return TasksCollection.findOne(taskId)
     });
-
+    const taskCreatorId = task.userId;
+    const userId = user._id;
     const valoresIniciais = {
         nomeTask: "",
         descricao: "",
@@ -83,11 +84,11 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
         reset("Parcial", chave);
 
         try {
-            await Meteor.callAsync("tasks.update", taskId, atualizacaoParcial);
+            await Meteor.callAsync("tasks.update", taskCreatorId, taskId, atualizacaoParcial);
             setAlteracaoSucesso("sucessoEditandoTask");
         }
         catch(error) {
-            console.log("erro");
+            setAlteracaoSucesso("Erro de permissão edit");
         }
     }
 
@@ -115,15 +116,15 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
             }
         }
 
-        reset("Total", false);
+        reset("Completo", false);
 
         try {
-            await Meteor.callAsync("tasks.update", taskId, atualizacoes);
+            await Meteor.callAsync("tasks.update", taskCreatorId, taskId, atualizacoes);
             setAlteracaoSucesso("sucessoListaTasks");
             navigate("/Logado/ListaTasks");
         }
         catch(error) {
-            console.log("erro");
+            setAlteracaoSucesso("Erro de permissão edit");
         }
     }
 
@@ -133,17 +134,15 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
             </Typography>
     }
 
-    if (!task) {
-        return <Typography variant="h4">
-            Task não encontrada
-            </Typography>;
-    }
 
     return (
         <>
+        {alteracaoSucesso == "Erro de permissão edit" && (
+            <Alert severity="error" onClose={() => setAlteracaoSucesso("")} > Só o criador da tarefa pode editá-la!</Alert>
+        )}
         {alteracaoSucesso == "Erro em alterar Situação" && (
-            <Alert severity="error" onClose={() => setAlteracaoSucesso("")} > Transição Inválida! Só é possível colocar uma situação como Concluída, se ela estiver Em Andamento antes!
-                                                                              E não é possível salvar uma situação igual à de antes!</Alert>
+            <Alert severity="error" onClose={() => setAlteracaoSucesso("")} > Transição Inválida! Só é possível colocar uma situação como Concluída, se ela estiver Em Andamento antes! 
+            E não é possível salvar uma situação igual à de antes!</Alert>
         )}
         {alteracaoSucesso == "sucessoEditandoTask" && (
             <Alert severity="success" onClose={() => setAlteracaoSucesso("")} > Os dados da Tarefa foram alterados com Sucesso!</Alert>
@@ -156,11 +155,17 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
                 <ListItemText primary={label} />
                 {key == "situacao"? (
                     <>
-                    <Chip label="Cadastrada" variant={chipsVariants[0]} onClick={() => alterarSituacao(task.situacao, "Cadastrada", 0)} />
-                    <Chip label="Em Andamento" variant={chipsVariants[1]} onClick={() => alterarSituacao(task.situacao, "Em Andamento", 1)} />
-                    <Chip label="Concluída" variant={chipsVariants[2]} onClick={() => alterarSituacao(task.situacao, "Concluída", 2)} />
+                    <Chip label="Cadastrada" variant={chipsVariants[0]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Cadastrada", 0)} />
+                    <Chip label="Em Andamento" variant={chipsVariants[1]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Em Andamento", 1)} />
+                    <Chip label="Concluída" variant={chipsVariants[2]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Concluída", 2)} />
                     </>
-                ) :( 
+                ) : key == "createdAt"? (
+                    <>
+                    <TextField variant="filled" type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
+                    value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                    <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
+                    </> )
+                : (
                 <>
                 <TextField variant="filled" multiline maxRows={6} type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
                  value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
