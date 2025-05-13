@@ -35,21 +35,15 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
     const task = useTracker(() => {
             return TasksCollection.findOne(taskId)
     });
-    const [taskNaoEncontrada, setTaskNaoEncontrada] = useState(false);
+
     const voltarParaListaTasks = () => {
         navigate("/Logado/ListaTasks");
-        setTaskNaoEncontrada(false);
     }
-    useEffect(() => {
-        if (!task){
-            setTaskNaoEncontrada(true);
-        }
-    }, [task])
     
     if (!task) {
         return (
             <>
-                <Alert severity="error" onClose={() => setTaskNaoEncontrada(false)}>Task não encontrada!</Alert>
+                <Alert severity="error" onClose={voltarParaListaTasks}>Task não encontrada!</Alert>
                 <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para a Lista de Tasks</Button>
             </>
             )

@@ -30,7 +30,7 @@ export const App = () => {
     <>
     {alertOpen && (
       <>
-      <Alert severity="error" onClose={() => setAlertOpen(false)} >
+      <Alert severity="error" onClose={voltarPraTelaDeLogin} >
         Faça Login para poder acessar o app!
       </Alert>
       <Button variant="contained" onClick={voltarPraTelaDeLogin}>Fazer Login</Button>
