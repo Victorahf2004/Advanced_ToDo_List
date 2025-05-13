@@ -54,16 +54,14 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
         }
 
     const handleChange = (e, newValue) => {
-        // if (taskUserId !== userIdAtual){
-        //     setAlteracaoSucesso("");
-        //     setPodeEditar(false);
-        // }
-        // else {
-        //     setValue(newValue);
-        //     setAlteracaoSucesso("");
-        // }
-        setValue(newValue);
-        setAlteracaoSucesso("");
+        if (taskUserId !== userIdAtual){
+            setAlteracaoSucesso("");
+            setPodeEditar(false);
+        }
+        else {
+            setValue(newValue);
+            setAlteracaoSucesso("");
+        }
     }
 
     const getSituacaoTasks = (situacaoTask) => {
