@@ -12,7 +12,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip"
 
-export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario, onDelete}) => {
+export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario, onDelete, erroLogout, setErroLogout, alteracaoSucesso, setAlteracaoSucesso}) => {
     let navigate = useNavigate();
     
     const task = useTracker(() => {
@@ -24,6 +24,8 @@ export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario, onDelete}
     const telaEditarTask = () => {
         let link = "/Logado/ListaTasks/" + identificadorTask;
         navigate(`${link}`);
+        setErroLogout(false);
+        setAlteracaoSucesso("");
     }
 
     const ajustarDisplay = (parametro) => {

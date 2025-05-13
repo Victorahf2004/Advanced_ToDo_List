@@ -24,6 +24,7 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
         try{
             await logoutAsync();
             navigate("/");
+            setErroLogout(false);
         }
         catch (error) {
             setErroLogout(true);
@@ -31,6 +32,7 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
     }
     const openTasks = () => {
         navigate("/Logado/ListaTasks");
+        setErroLogout(false);
     };
     const ajustarDisplay = (parametro) => {
         let tamanho = parametro.length;

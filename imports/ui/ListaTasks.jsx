@@ -45,7 +45,11 @@ export const ListaTasks = ({tasks, erroLogout, setErroLogout, logout, goToStart,
                     identificadorTask={task._id} 
                     nomeDaTarefa={task.nomeTask}
                     nomeDoUsuario={task.userName}
-                    onDelete={handleDelete}/>
+                    onDelete={handleDelete}
+                    erroLogout={erroLogout}
+                    setErroLogout={setErroLogout}
+                    alteracaoSucesso={alteracaoSucesso}
+                    setAlteracaoSucesso={setAlteracaoSucesso}/>
                 ))}
             </List>
             <Button variant="contained" onClick={logout}>Log Out</Button>

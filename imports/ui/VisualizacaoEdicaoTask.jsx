@@ -42,6 +42,8 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
 
     const voltarParaListaTasks = () => {
         navigate("/Logado/ListaTasks");
+        setValue(0);
+        setPodeEditar(true);
     }
     
     if (!task) {
@@ -115,10 +117,11 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
         console.log(velhaSituacao, novaSituacao);
         try {
             checagemTransicao(taskCreatorId, userId, velhaSituacao, novaSituacao);
-            await Meteor.callAsync("tasks.update", taskId, novoObjetoSituacao);
+            await Meteor.callAsync("tasks.update", taskCreatorId, taskId, novoObjetoSituacao);
             setAlteracaoSucesso("sucessoEditandoTask");
         }
         catch(error) {
+            console.log("Erro capturado:", error);
             if (error.message == "not-authorized") {
                 console.log("Erro de permissão");
                 setAlteracaoSucesso("Erro de permissão edit");

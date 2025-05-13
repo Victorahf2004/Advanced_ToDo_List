@@ -116,7 +116,7 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
             }
         }
 
-        reset("Total", false);
+        reset("Completo", false);
 
         try {
             await Meteor.callAsync("tasks.update", taskCreatorId, taskId, atualizacoes);
@@ -134,12 +134,7 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
             </Typography>
     }
 
-    if (!task) {
-        return <Typography variant="h4">
-            Task não encontrada
-            </Typography>;
-    }
-    console.log(alteracaoSucesso);
+
     return (
         <>
         {alteracaoSucesso == "Erro de permissão edit" && (

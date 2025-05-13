@@ -37,7 +37,7 @@ export const LoginForm = ({username, setUsername, password, setPassword, estado,
             setUsername(e.target.value);
         }
         else if (parametro == "password"){
-        setPassword(e.target.value);
+            setPassword(e.target.value);
         }
     };
     return (
