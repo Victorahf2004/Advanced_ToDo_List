@@ -164,7 +164,13 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
                     <Chip label="Em Andamento" variant={chipsVariants[1]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Em Andamento", 1)} />
                     <Chip label="Concluída" variant={chipsVariants[2]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Concluída", 2)} />
                     </>
-                ) :( 
+                ) : key == "createdAt"? (
+                    <>
+                    <TextField variant="filled" type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
+                    value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                    <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
+                    </> )
+                : (
                 <>
                 <TextField variant="filled" multiline maxRows={6} type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
                  value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
