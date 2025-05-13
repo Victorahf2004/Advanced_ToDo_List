@@ -121,7 +121,7 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
         catch(error) {
             if (error.message == "not-authorized") {
                 console.log("Erro de permissão");
-                setAlteracaoSucesso("Erro de permissão");
+                setAlteracaoSucesso("Erro de permissão edit");
             }
             else if ((error.message == "Transição Inválida!") || (error.message == "Situação igual à de antes!")){
                 console.log("Erro próprio da função");

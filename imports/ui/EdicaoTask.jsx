@@ -88,7 +88,7 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
             setAlteracaoSucesso("sucessoEditandoTask");
         }
         catch(error) {
-            setAlteracaoSucesso("Erro de permissão");
+            setAlteracaoSucesso("Erro de permissão edit");
         }
     }
 
@@ -124,7 +124,7 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
             navigate("/Logado/ListaTasks");
         }
         catch(error) {
-            setAlteracaoSucesso("Erro de permissão");
+            setAlteracaoSucesso("Erro de permissão edit");
         }
     }
 
@@ -142,7 +142,7 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
     console.log(alteracaoSucesso);
     return (
         <>
-        {alteracaoSucesso == "Erro de permissão" && (
+        {alteracaoSucesso == "Erro de permissão edit" && (
             <Alert severity="error" onClose={() => setAlteracaoSucesso("")} > Só o criador da tarefa pode editá-la!</Alert>
         )}
         {alteracaoSucesso == "Erro em alterar Situação" && (

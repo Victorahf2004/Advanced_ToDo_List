@@ -22,7 +22,10 @@ Meteor.methods({
             $set: novosAtributos,
         });
     },
-    "tasks.delete"(_id) {
-        return TasksCollection.removeAsync(_id);
+    "tasks.delete"(taskId, taskCreatorId) {
+        if (taskCreatorId != (this.userId)){
+            throw new Meteor.Error("not-authorized", "Só o criador da tarefa pode deletá-la");
+        }
+        return TasksCollection.removeAsync(taskId);
     }
 });

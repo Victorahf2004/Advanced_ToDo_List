@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
+import { useTracker } from "meteor/react-meteor-data";
+import { TasksCollection } from "/imports/api/TasksCollection";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -13,6 +15,12 @@ import Tooltip from "@mui/material/Tooltip"
 export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario, onDelete}) => {
     let navigate = useNavigate();
     
+    const task = useTracker(() => {
+        return TasksCollection.findOne(identificadorTask);
+    })
+
+    const taskCreatorId = task.userId;
+
     const telaEditarTask = () => {
         let link = "/Logado/ListaTasks/" + identificadorTask;
         navigate(`${link}`);
@@ -36,7 +44,7 @@ export const Task = ({ identificadorTask, nomeDaTarefa, nomeDoUsuario, onDelete}
             <ListItemText primary={ajustarDisplay(nomeDaTarefa)}
             secondary={ajustarDisplay(nomeDoUsuario)}/>
             <Tooltip title="Delete Task">
-                <ListItemButton onClick={() => onDelete(identificadorTask)}>
+                <ListItemButton onClick={() => onDelete(identificadorTask, taskCreatorId)}>
                     <ListItemIcon>
                         <DeleteIcon />
                     </ListItemIcon>
