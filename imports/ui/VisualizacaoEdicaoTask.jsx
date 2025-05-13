@@ -28,13 +28,17 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
     const chavesVisiveis = Object.keys(camposVisiveis);
 
     const [value, setValue] = useState(0);
-    
+    const [podeEditar, setPodeEditar] = useState(true);
+
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
     const { taskId } = useParams();
     const task = useTracker(() => {
             return TasksCollection.findOne(taskId)
     });
+
+    const taskUserId = task.userId;
+    const userIdAtual = user._id;
 
     const voltarParaListaTasks = () => {
         navigate("/Logado/ListaTasks");
@@ -48,7 +52,16 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
             </>
             )
         }
+
     const handleChange = (e, newValue) => {
+        // if (taskUserId !== userIdAtual){
+        //     setAlteracaoSucesso("");
+        //     setPodeEditar(false);
+        // }
+        // else {
+        //     setValue(newValue);
+        //     setAlteracaoSucesso("");
+        // }
         setValue(newValue);
         setAlteracaoSucesso("");
     }
@@ -70,7 +83,10 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
 
     const chipsVariants = getSituacaoTasks(task.situacao);
     
-    const checagemTransicao = (velhaSituacao, novaSituacao) => {
+    const checagemTransicao = (taskCreatorId, userId, velhaSituacao, novaSituacao) => {
+        if (taskCreatorId != userId) {
+            throw new Error("not-authorized");
+        }
         if (velhaSituacao == "Cadastrada" && novaSituacao == "Concluída"){
             throw new Error("Transição Inválida!");
         }
@@ -95,20 +111,34 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
         return novoArray;
     }
 
-    const alterarSituacao = async (velhaSituacao, novaSituacao, indiceVariant) => {
+    const alterarSituacao = async (taskCreatorId, userId, velhaSituacao, novaSituacao, indiceVariant) => {
         const novoObjetoSituacao = {situacao: novaSituacao};
         const novoArray = novoArrayVariants(chipsVariants, indiceVariant);
+        console.log(velhaSituacao, novaSituacao);
         try {
-            checagemTransicao(velhaSituacao, novaSituacao);
+            checagemTransicao(taskCreatorId, userId, velhaSituacao, novaSituacao);
             await Meteor.callAsync("tasks.update", taskId, novoObjetoSituacao);
             setAlteracaoSucesso("sucessoEditandoTask");
         }
         catch(error) {
-            setAlteracaoSucesso("Erro em alterar Situação");
+            if (error.message == "not-authorized") {
+                console.log("Erro de permissão");
+                setAlteracaoSucesso("Erro de permissão");
+            }
+            else if ((error.message == "Transição Inválida!") || (error.message == "Situação igual à de antes!")){
+                console.log("Erro próprio da função");
+                setAlteracaoSucesso("Erro em alterar Situação");
+            }
+            else {
+                console.log("Erro");
+            }
         }
     }
     return (
         <>
+            {!podeEditar && (
+                <Alert severity="error" onClose={() => setPodeEditar(true)}>Você não pode editar essa task, por que não é o criador dela!</Alert>
+            )}
             <Box>
                 <Typography variant="h4">
                     Informações tarefa: {task.nomeTask}
@@ -120,7 +150,7 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
             </Tabs> 
             
             <Box hidden={value !== 0} >
-                <VisualizacaoTask chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposVisiveis={camposVisiveis} chavesVisiveis={chavesVisiveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
+                <VisualizacaoTask taskId={taskId} camposVisiveis={camposVisiveis} />
             </Box>
 
             <Box hidden={value !== 1} >

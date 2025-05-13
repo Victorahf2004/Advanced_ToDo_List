@@ -14,8 +14,11 @@ Meteor.methods({
             createdAt: new Date(),
         });
     },
-    "tasks.update"(id, novosAtributos) {
-        return TasksCollection.updateAsync(id, {
+    "tasks.update"(taskCreatorId, taskId, novosAtributos) {
+        if (taskCreatorId != (this.userId)){
+            throw new Meteor.Error("not-authorized", "Só o criador da tarefa pode editá-la!");
+        }
+        return TasksCollection.updateAsync(taskId, {
             $set: novosAtributos,
         });
     },
