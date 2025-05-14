@@ -2,13 +2,15 @@ import { Meteor } from "meteor/meteor";
 import { TasksCollection } from "./TasksCollection";
 
 Meteor.methods({
-    async "tasks.insert"(nome) {
+    async "tasks.insert"({nomeTask, descricao, tipo}) {
         const usuario = await Meteor.users.findOneAsync(this.userId);
         const login = usuario?.username || "desconhecido";
+        console.log(login)
         return TasksCollection.insertAsync({
-            nomeTask: nome,
-            descricao: "Descrição",
+            nomeTask: nomeTask,
+            descricao: descricao,
             situacao: "Cadastrada",
+            tipo: tipo,
             userName: login,
             userId: this.userId,
             createdAt: new Date(),

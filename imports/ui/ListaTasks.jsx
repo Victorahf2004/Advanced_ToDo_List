@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import { CallToActionSharp } from "@mui/icons-material";
 
 
-export const ListaTasks = ({tasks, erroLogout, setErroLogout, logout, goToStart, alteracaoSucesso, setAlteracaoSucesso}) => {
+export const ListaTasks = ({tasks, erroLogout, setErroLogout, logout, goToStart, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
     
     const handleDelete = async ( taskId, taskCreatorId ) => {
         try{
@@ -37,7 +37,6 @@ export const ListaTasks = ({tasks, erroLogout, setErroLogout, logout, goToStart,
             <Typography variant="h4" gutterBottom>
                 Tarefas Cadastradas
             </Typography>
-            <TaskForm />
             <List>
                 {tasks.map((task) => (
                     <Task
@@ -52,6 +51,7 @@ export const ListaTasks = ({tasks, erroLogout, setErroLogout, logout, goToStart,
                     setAlteracaoSucesso={setAlteracaoSucesso}/>
                 ))}
             </List>
+            <Button variant="contained" onClick={goToAddTask}>Adicionar Task</Button>
             <Button variant="contained" onClick={logout}>Log Out</Button>
             <Button variant="contained" onClick={goToStart}>Voltar para a página inicial</Button>
         </>

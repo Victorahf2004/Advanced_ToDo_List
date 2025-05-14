@@ -2,25 +2,118 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
 import { Meteor } from "meteor/meteor";
+import List from "@mui/material/List";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemButton from "@mui/material/ListItemButton";
+import Chip from "@mui/material/Chip";
+import Divider from "@mui/material/Divider";
 
 export const TaskForm = () => {
-    const [taskText, setTaskText] = useState("");
+    const camposInserir = {
+            nomeTask: "nome",
+            descricao: "Descrição",
+            tipo: "Tipo",
+        };
+    
+    const valoresIniciais = {
+        nomeTask: "",
+        descricao: "",
+        tipo: "Pública",
+    };
+    let navigate = useNavigate();
+    const arrayVariants = ["outlined", "outlined"];
+    const [chipsVariants, setChipsVariants] = useState(arrayVariants);
+    const [inputs, setInputs] = useState(valoresIniciais);
+
+    const reset = () => {
+        const valoresResetados = {};
+        for (const chave of Object.keys(valoresIniciais)) {
+            valoresResetados[chave] = "";
+        }
+        setInputs(valoresResetados);
+    }
+
+    const handleChange = (e, chave) => {
+        const novoValor = e.target.value;
+        setInputs((prev) => ({
+            ...prev,
+            [chave]: novoValor,
+        }))
+    }
+
+    const setandoTipoTask = (tipoTask) => {
+        let template = [...arrayVariants];
+
+        if (tipoTask == "Pública") {
+            template[0] = "filled";
+        }
+        else if (tipoTask == "Pessoal") {
+            template[1] = "filled";
+        }
+        setInputs((prev) => ({
+            ...prev,
+            "tipo": tipoTask,
+        }))
+        setChipsVariants(template);
+    }
+    
+    const checandoSeHouveAlteracoes = ({nomeTask, descricao, tipo}) => {
+        if (!nomeTask && !descricao && !tipo){
+            return false;
+        }
+        return true;
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!taskText) return;
+        if (!checandoSeHouveAlteracoes(inputs)) return;
 
-        await Meteor.callAsync("tasks.insert", (taskText));
-        setTaskText("");
+        await Meteor.callAsync("tasks.insert", inputs);
+        navigate("/Logado/ListaTasks");
+        reset();
+        setChipsVariants(valoresIniciais);
     };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <TextField type="text" placeholder="Type to add new tasks"
-            value={taskText} onChange={(e) => setTaskText(e.target.value)} />
+    const voltarParaListaTasks = () => {
+        navigate("/Logado/ListaTasks");
+        reset();
+        setChipsVariants(valoresIniciais);
+    }
 
+    return (
+        <>
+        <form onSubmit={handleSubmit}>
+            <List>
+                {Object.entries(camposInserir).map(([key, label]) => (
+                    <React.Fragment key={key}>
+                    <ListItem>
+                        <ListItemText primary={label} />
+                        {key == "tipo"? (
+                            <>
+                                <Chip label="Pública" variant={chipsVariants[0]} onClick={() => setandoTipoTask("Pública")} />
+                                <Chip label="Pessoal" variant={chipsVariants[1]} onClick={() => setandoTipoTask("Pessoal")} />
+                            </>
+                        ) : (
+                            <>
+                                <TextField variant="filled" multiline maxRows={6} type="text" placeholder={"Novo(a) " + label}
+                                value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                            </>
+                        )}
+                    </ListItem>
+                    <Divider />
+                    </React.Fragment>
+                ))}
+                {/* <TextField type="text" placeholder="Type to add new tasks"
+                value={taskText} onChange={(e) => setTaskText(e.target.value)} /> */}
+
+            </List>
             <Button type="submit" variant="contained">Add Task</Button>
         </form>
+        <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para Lista de Tasks</Button>
+        </>
     );
 };
