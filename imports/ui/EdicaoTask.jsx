@@ -16,7 +16,7 @@ import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 
-export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposVisiveis, chavesVisiveis, alteracaoSucesso, setAlteracaoSucesso }) => {
+export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposVisiveis, chavesVisiveis, alteracaoSucesso, setAlteracaoSucesso }) => {
 
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
@@ -159,7 +159,13 @@ export const EdicaoTask = ({ chipsVariants, checagemTransicao, novoArrayVariants
                     <Chip label="Em Andamento" variant={chipsVariants[1]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Em Andamento", 1)} />
                     <Chip label="Concluída" variant={chipsVariants[2]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Concluída", 2)} />
                     </>
-                ) : key == "createdAt"? (
+                ) : key == "tipo"? (
+                    <>
+                    <Chip label="Pública" variant={chipsVariantsTipoTask[0]} onClick={() => alterarTipo(taskCreatorId, userId, task.tipo, "Pública")} />
+                    <Chip label="Pessoal" variant={chipsVariantsTipoTask[1]} onClick={() => alterarTipo(taskCreatorId, userId, task.tipo, "Pessoal")} />
+                    </>
+                )
+                : key == "createdAt"? (
                     <>
                     <TextField variant="filled" type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
                     value={inputs[key]} onChange={(e) => handleChange(e, key)}/>

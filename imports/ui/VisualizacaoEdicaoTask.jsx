@@ -21,6 +21,7 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
             nomeTask: "nome",
             descricao: "Descrição",
             situacao: "Situação",
+            tipo: "Tipo",
             createdAt: "Data",
             userName: "Usuário Criador",
         };
@@ -81,8 +82,21 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
         return arrayChips;
     }
 
+    const getTipoTask = (tipoTask) => {
+        let arrayChipsTipo = ["outlined", "outlined"];
+
+        if (tipoTask == "Pública") {
+            arrayChipsTipo[0] = "filled";
+        }
+
+        else if (tipoTask == "Pessoal") {
+            arrayChipsTipo[1] = "filled";
+        }
+        return arrayChipsTipo;
+    }
+
     const chipsVariants = getSituacaoTasks(task.situacao);
-    
+
     const checagemTransicao = (taskCreatorId, userId, velhaSituacao, novaSituacao) => {
         if (taskCreatorId != userId) {
             throw new Error("not-authorized");
@@ -135,6 +149,41 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
             }
         }
     }
+
+    const chipsVariantsTipoTask = getTipoTask(task.tipo);
+    
+    const checagemPermissao = (taskCreatorId, userId, velhoTipo, novoTipo) => {
+        if (taskCreatorId != userId) {
+            throw new Error("not-authorized");
+        }
+        
+        else if (velhoTipo == novoTipo) {
+            throw new Error("Situação igual à de antes!");
+        }
+    };
+
+    const alterarTipo = async (taskCreatorId, userId, velhoTipo, novoTipo) => {
+        const novoObjetoTipo = {tipo: novoTipo};
+        try {
+            checagemPermissao(taskCreatorId, userId, velhoTipo, novoTipo);
+            await Meteor.callAsync("tasks.update", taskCreatorId, taskId, novoObjetoTipo);
+            setAlteracaoSucesso("sucessoEditandoTask");
+        }
+        catch(error) {
+            console.log("Erro capturado:", error);
+            if (error.message == "not-authorized") {
+                console.log("Erro de permissão");
+                setAlteracaoSucesso("Erro de permissão edit");
+            }
+            else if ((error.message == "Transição Inválida!") || (error.message == "Situação igual à de antes!")){
+                console.log("Erro próprio da função");
+                setAlteracaoSucesso("Erro em alterar Situação");
+            }
+            else {
+                console.log("Erro");
+            }
+        }
+    }
     return (
         <>
             {!podeEditar && (
@@ -155,7 +204,7 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
             </Box>
 
             <Box hidden={value !== 1} >
-                <EdicaoTask chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposVisiveis={camposVisiveis} chavesVisiveis={chavesVisiveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
+                <EdicaoTask chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposVisiveis={camposVisiveis} chavesVisiveis={chavesVisiveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
             </Box>
         </>
     )
