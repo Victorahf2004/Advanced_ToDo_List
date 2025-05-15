@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemButton from "@mui/material/ListItemButton";
 import Chip from "@mui/material/Chip";
+import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
 
 export const TaskForm = () => {
@@ -26,6 +27,7 @@ export const TaskForm = () => {
     let navigate = useNavigate();
     const arrayVariants = ["outlined", "outlined"];
     const [chipsVariants, setChipsVariants] = useState(arrayVariants);
+    const [alerta, setAlerta] = useState(0);
     const [inputs, setInputs] = useState(valoresIniciais);
 
     const reset = () => {
@@ -61,7 +63,7 @@ export const TaskForm = () => {
     }
     
     const checandoSeHouveAlteracoes = ({nomeTask, descricao, tipo}) => {
-        if (!nomeTask && !descricao && !tipo){
+        if (!nomeTask){
             return false;
         }
         return true;
@@ -70,22 +72,31 @@ export const TaskForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!checandoSeHouveAlteracoes(inputs)) return;
+        if (!checandoSeHouveAlteracoes(inputs)) {
+            setAlerta(1);
+        }
 
-        await Meteor.callAsync("tasks.insert", inputs);
-        navigate("/Logado/ListaTasks");
-        reset();
-        setChipsVariants(valoresIniciais);
+        else {
+            await Meteor.callAsync("tasks.insert", inputs);
+            navigate("/Logado/ListaTasks");
+            reset();
+            setChipsVariants(valoresIniciais);
+            setAlerta(0);
+        }
     };
 
     const voltarParaListaTasks = () => {
         navigate("/Logado/ListaTasks");
         reset();
         setChipsVariants(valoresIniciais);
+        setAlerta(0);
     }
 
     return (
         <>
+        {alerta == 1 && (
+            <Alert severity="error" onClose={() => setAlerta(0)}>Para criar uma task, é obrigatório preencher, pelo menos, o nome dela</Alert>
+        )}
         <form onSubmit={handleSubmit}>
             <List>
                 {Object.entries(camposInserir).map(([key, label]) => (
