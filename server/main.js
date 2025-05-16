@@ -26,12 +26,12 @@ Meteor.startup(async () => {
       username: SEED_USERNAME,
       password: SEED_PASSWORD,
       profile: {
-                nome: "nome",
-                email: "email",
-                data_nasc: "data",
-                sexo: "sexo",
-                empresa_trab: "empresa",
-                foto: "foto",
+                nome: "",
+                email: "",
+                data_nasc: "",
+                sexo: "",
+                empresa_trab: "",
+                foto: "",
             },
     });
   }

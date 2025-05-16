@@ -5,7 +5,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from '@mui/material/Box';
-import { EdicaoTask } from "./EdicaoTask";
+import { EdicaoInfoPerfil } from "./EdicaoInfoPerfil";
 import { VisualizacaoInfoPerfil } from "./VisualizacaoInfoPerfil";
 import { useTracker } from "meteor/react-meteor-data";
 import { useNavigate} from "react-router-dom";
@@ -22,7 +22,9 @@ export const TelasPerfil = () => {
             empresa_trab: "Empresa em que trabalha",
             foto: "Foto",
         };
-
+    
+    const chavesVisiveis = Object.keys(camposVisiveis);
+    const [alteracaoPerfil, setAlteracaoPerfil] = useState("");
     const [value, setValue] = useState(0);
 
     let navigate = useNavigate();
@@ -40,15 +42,23 @@ export const TelasPerfil = () => {
     const voltarParaTelaBoasVindas = () => {
         navigate("/Logado/Start");
         setValue(0);
+        setAlteracaoPerfil("");
     }
 
 
     const handleChange = (e, newValue) => {
         setValue(newValue);
+        setAlteracaoPerfil("");
     }
 
     return (
         <>
+            {alteracaoPerfil == "Erro em salvar alterações" && (
+            <Alert severity="error" onClose={() => setAlteracaoPerfil("")} > Não foi possível salvar as alterações do perfil!</Alert>
+            )}
+            {alteracaoPerfil == "sucessoEditandoPerfil" && (
+                <Alert severity="success" onClose={() => setAlteracaoPerfil("")} > As informações do seu perfil foram alteradas com sucesso!</Alert>
+            )}
             <Box>
                 <Typography variant="h4">
                     Informações Usuário: {user.username}
@@ -65,7 +75,7 @@ export const TelasPerfil = () => {
 
             <Box hidden={value !== 1} >
                 <>
-                Edição das Info Perfil
+                <EdicaoInfoPerfil alteracaoPerfil={alteracaoPerfil} setAlteracaoPerfil={setAlteracaoPerfil} chavesVisiveis={chavesVisiveis} camposVisiveis={camposVisiveis} />
                 </>
             </Box>
             <Button variant="contained" onClick={voltarParaTelaBoasVindas}>Voltar para Home</Button>

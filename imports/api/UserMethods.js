@@ -16,4 +16,9 @@ Meteor.methods({
             },
         });
     },
+    "users.updateProfile"(novosDados) {
+        Meteor.users.updateAsync(this.userId, {
+            $set: novosDados,
+        })
+    },
 });
