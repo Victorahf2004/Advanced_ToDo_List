@@ -60,10 +60,17 @@ export const TelaTasks = ({erroLogout, setErroLogout}) => {
         setAlteracaoSucesso("");
     } 
 
+    const goToAddTask = () => {
+        navigate("/Logado/ListaTasks/AddTask");
+        setErroLogout(false);
+        setAlteracaoSucesso("");
+    }
+
     return (
         <>
         <Routes>
-            <Route path="/" element={<ListaTasks tasks={tasks} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} goToStart={goToStart} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
+            <Route path="/" element={<ListaTasks tasks={tasks} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} goToStart={goToStart} goToAddTask={goToAddTask} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
+            <Route path="/AddTask" element={<TaskForm />} />
             <Route path=":taskId" element={<VisualizacaoEdicaoTask alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
         </Routes>
         </>
