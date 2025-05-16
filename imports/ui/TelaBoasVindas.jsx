@@ -34,6 +34,12 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
         navigate("/Logado/ListaTasks");
         setErroLogout(false);
     };
+
+    const openPerfil = () => {
+        navigate("/Logado/Perfil");
+        setErroLogout(true);
+    }
+
     const ajustarDisplay = (parametro) => {
         let tamanho = parametro.length;
         if (tamanho >= 14) {
@@ -53,7 +59,7 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
         </Typography>
         <Button variant="contained" onClick={openTasks}>Abrir Tasks</Button>
         <Button variant="contained" onClick={logout}>Log Out</Button>
-        <Button variant="contained">Abrir Perfil</Button>
+        <Button variant="contained" onClick={openPerfil}>Abrir Perfil</Button>
         </>
     )
 }

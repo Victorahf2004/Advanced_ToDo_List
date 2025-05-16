@@ -6,6 +6,14 @@ Meteor.methods({
         return Accounts.createUser({
             username: login,
             password: senha,
+            profile: {
+                nome: "",
+                email: "",
+                data_nasc: "",
+                sexo: "",
+                empresa_trab: "",
+                foto: "",
+            },
         });
     },
 });
