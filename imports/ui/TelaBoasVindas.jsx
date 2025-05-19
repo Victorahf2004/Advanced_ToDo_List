@@ -37,7 +37,7 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
 
     const openPerfil = () => {
         navigate("/Logado/Perfil");
-        setErroLogout(true);
+        setErroLogout(false);
     }
 
     const ajustarDisplay = (parametro) => {
@@ -52,7 +52,7 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
     return (
         <>
         {erroLogout && (
-                    <Alert severity="error" onClose={() => {setErrorLogout(false);}} > Erro no Logout</Alert>
+                    <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
         <Typography variant="h3" gutterBottom>
             Seja Bem-Vindo, {ajustarDisplay(user.username)}!!!
