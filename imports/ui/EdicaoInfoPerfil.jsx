@@ -4,6 +4,7 @@ import { TasksCollection } from '/imports/api/TasksCollection';
 import React, { useState } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
+import { SelectSexo } from "./SelectSexo";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -144,6 +145,12 @@ export const EdicaoInfoPerfil = ({ alteracaoPerfil, setAlteracaoPerfil, chavesVi
                     <>
                     <TextField variant="filled" multiline maxRows={6} type={"email"} placeholder={"Novo(a) " + label}
                     value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                    <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
+                    </>
+                )
+                : key == "sexo"? (
+                    <>
+                    <SelectSexo chave={key} inputs={inputs} handleChange={handleChange} submitParcial={submitParcial} />
                     <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
                     </>
                 )
