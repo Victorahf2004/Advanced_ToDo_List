@@ -16,6 +16,8 @@ import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Avatar from '@mui/material/Avatar';
+import ButtonBase from '@mui/material/ButtonBase';
 
 export const VisualizacaoInfoPerfil = ({camposVisiveis}) => {
     
@@ -33,8 +35,19 @@ export const VisualizacaoInfoPerfil = ({camposVisiveis}) => {
             {Object.entries(camposVisiveis).map(([key, label]) => (
                 <React.Fragment key={key}>
                 <ListItem>
-                    <ListItemText primary={label} />
-                    <TextField variant="filled" multiline maxRows={6} value={user.profile[key] instanceof Date ? user.profile[key].toLocaleDateString() : String(user.profile[key])} />
+                    {key == "foto"? (
+                        <>
+                           <ListItemText primary={label} />
+                           <Avatar alt="Foto de Perfil" src={user.profile[key]} /> 
+                        </>
+                    )
+                    :(
+                        <>
+                            <ListItemText primary={label} />
+                            <TextField variant="filled" multiline maxRows={6} value={user.profile[key] instanceof Date ? user.profile[key].toLocaleDateString() : String(user.profile[key])} />
+                        </>
+                    )
+                }
                 </ListItem>
                 <Divider />
                 </React.Fragment>

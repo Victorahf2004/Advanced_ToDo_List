@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 import { SelectSexo } from "./SelectSexo";
+import { FotoPerfil } from "./FotoPerfil";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -67,6 +68,13 @@ export const EdicaoInfoPerfil = ({ alteracaoPerfil, setAlteracaoPerfil, chavesVi
             };
             return atualizado;
         });
+    };
+
+    const handleChangeFoto = (newFoto) => {
+        setInputs((prev) => ({
+            ...prev,
+            ["foto"]: newFoto,
+        }))
     };
     
     const submitParcial = async (e, chave) => {
@@ -151,6 +159,12 @@ export const EdicaoInfoPerfil = ({ alteracaoPerfil, setAlteracaoPerfil, chavesVi
                 : key == "sexo"? (
                     <>
                     <SelectSexo chave={key} inputs={inputs} handleChange={handleChange} submitParcial={submitParcial} />
+                    <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
+                    </>
+                )
+                : key == "foto"? (
+                    <>
+                    <FotoPerfil chave={key} inputs={inputs} handleChange={handleChangeFoto} submitParcial={submitParcial} />
                     <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
                     </>
                 )
