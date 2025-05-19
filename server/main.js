@@ -25,6 +25,14 @@ Meteor.startup(async () => {
     await Accounts.createUser({
       username: SEED_USERNAME,
       password: SEED_PASSWORD,
+      profile: {
+                nome: "",
+                email: "",
+                data_nasc: "",
+                sexo: "",
+                empresa_trab: "",
+                foto: "",
+            },
     });
   }
 
