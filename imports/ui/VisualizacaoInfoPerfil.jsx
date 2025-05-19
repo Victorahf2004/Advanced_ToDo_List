@@ -45,7 +45,7 @@ export const VisualizacaoInfoPerfil = ({camposVisiveis}) => {
                     :(
                         <>
                             <ListItemText primary={label} />
-                            <TextField variant="filled" multiline maxRows={6} value={user.profile[key] instanceof Date ? user.profile[key].toLocaleDateString() : String(user.profile[key])} />
+                            <TextField variant="filled" multiline maxRows={6} value={user.profile[key] instanceof Date ? user.profile[key].toLocaleDateString() : String(user.profile[key])} placeholder={"Esse dado ainda não foi fornecido"} />
                         </>
                     )
                 }
