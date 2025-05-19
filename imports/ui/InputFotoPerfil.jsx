@@ -19,7 +19,7 @@ import Typography from "@mui/material/Typography";
 import Avatar from '@mui/material/Avatar';
 import ButtonBase from '@mui/material/ButtonBase';
 
-export const FotoPerfil = ({ chave, inputs, handleChange }) => {
+export const InputFotoPerfil = ({ chave, inputs, handleChange }) => {
 
     const handleAvatarChange = (event) => {
     const file = event.target.files?.[0];

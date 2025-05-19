@@ -4,6 +4,7 @@ import { TasksCollection } from '/imports/api/TasksCollection';
 import React, { useState } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
+import { VisualizandoFotoPerfil } from "./VisualizandoFotoPerfil";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -38,7 +39,7 @@ export const VisualizacaoInfoPerfil = ({camposVisiveis}) => {
                     {key == "foto"? (
                         <>
                            <ListItemText primary={label} />
-                           <Avatar alt="Foto de Perfil" src={user.profile[key]} /> 
+                           <VisualizandoFotoPerfil caminhoFoto={user.profile[key]} />
                         </>
                     )
                     :(
