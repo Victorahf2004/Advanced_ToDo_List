@@ -1,0 +1,159 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTracker } from "meteor/react-meteor-data";
+import { Meteor } from "meteor/meteor";
+import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from "@mui/material/Avatar";
+import ButtonBase from "@mui/material/ButtonBase";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from '@mui/icons-material/Menu';
+import Tooltip from "@mui/material/Tooltip";
+import HomeIcon from '@mui/icons-material/Home';
+import PersonIcon from '@mui/icons-material/Person';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import LogoutIcon from '@mui/icons-material/Logout';
+
+export const MenuDrawer = ({erroLogout, setErroLogout}) => {
+    const user = useTracker(() => Meteor.user());
+    let navigate = useNavigate();
+    const [openDrawer, setOpenDrawer] = useState(false);
+
+    if (!user) {
+        return (
+            <div>
+            </div>
+        )
+    }
+    
+    const atributosUsuario = [user.profile["nome"], user.profile["email"]];
+    
+    const openPerfil = () => {
+        navigate("/Logado/Perfil");
+        setErroLogout(false);
+        setOpenDrawer(false);
+    }
+
+    const openTasks = () => {
+        navigate("/Logado/ListaTasks");
+        setErroLogout(false);
+        setOpenDrawer(false)
+    }
+    
+    const openHome = () => {
+        navigate("/Logado/Start");
+        setErroLogout(false);
+        setOpenDrawer(false);
+    }
+
+    const logoutAsync = () => {
+        new Promise((resolve, reject) => {
+            Meteor.logout((err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    };
+    
+    const logout = async () => {
+        try{
+            await logoutAsync();
+            navigate("/");
+            setErroLogout(false);
+            setOpenDrawer(false);
+        }
+        catch (error) {
+            setErroLogout(true);
+            setOpenDrawer(false);
+        }
+    }
+
+    const toggleDrawer = (newState) => {
+        setOpenDrawer(newState);
+    }
+
+
+    const listaDrawer = (
+            <Box onClick={() => toggleDrawer(false)}>
+            <List>
+                <Stack direction="column" spacing={1}>
+                    <ListItem>
+                            <Avatar alt="Foto de perfil" src={user.profile["foto"]} />
+                    </ListItem>
+                    {atributosUsuario.map((atributo, i) => (
+                        <React.Fragment key={i}>
+                            {atributo? (
+                                <ListItem>
+                                        <ListItemText primary={atributo} />
+                                </ListItem>
+                            ): (
+                                <>
+                                </>
+                            )
+                            }
+                        </React.Fragment>
+                    ))}
+                </Stack>
+                <Divider />
+                <ListItem>
+                    <ListItemButton onClick={openHome}>
+                        <ListItemIcon>
+                            <HomeIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Home" />
+                    </ListItemButton>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemButton onClick={openPerfil}>
+                        <ListItemIcon>
+                            <PersonIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Perfil" />
+                    </ListItemButton>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemButton onClick={openTasks}>
+                        <ListItemIcon>
+                            <AssignmentIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Tasks" />
+                    </ListItemButton>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemButton onClick={logout}>
+                        <ListItemIcon>
+                            <LogoutIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Log Out" />
+                    </ListItemButton>
+                </ListItem>
+            </List>
+            </Box>
+        )
+
+    return (
+        <>
+        <Tooltip title="Menu">
+            <IconButton onClick={() => toggleDrawer(true)}>
+                <MenuIcon />
+            </IconButton>
+        </Tooltip>
+        <Drawer open={openDrawer} onClose={() => toggleDrawer(false)}>
+            {listaDrawer}
+        </Drawer>
+        </>
+    )
+}
