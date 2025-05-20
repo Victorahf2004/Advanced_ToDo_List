@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { useParams } from "react-router-dom";
 import { TasksCollection } from '/imports/api/TasksCollection';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 import List from "@mui/material/List";
@@ -16,7 +16,7 @@ import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 
-export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposVisiveis, chavesVisiveis, alteracaoSucesso, setAlteracaoSucesso }) => {
+export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTipo, chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposVisiveis, chavesVisiveis, alteracaoSucesso, setAlteracaoSucesso }) => {
 
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
@@ -54,10 +54,13 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
         setAlteracaoSucesso("");
     }
 
-    const voltarParaListaTasks = () => {
-        reset("Completo", false);
-        navigate("/Logado/ListaTasks");
-    }
+    useEffect(() => {
+        if (saindo) {
+            reset("Completo", false)
+            setAlteracaoSucesso("");
+            setSaindo(false)
+        }
+    }, [saindo])
 
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
@@ -183,7 +186,6 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
             </React.Fragment>
         ))}
         </List>
-        <Button variant="contained" onClick={voltarParaListaTasks}> Voltar para a Lista de Tasks</Button>
         <Button type="submit" variant="contained">Salvar Todas as Alterações</Button>
         </form>
         </>

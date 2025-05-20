@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import Button from "@mui/material/Button";
+import { MenuDrawer } from "./MenuDrawer";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -21,8 +22,6 @@ import Tooltip from "@mui/material/Tooltip";
 
 export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
-    let navigate = useNavigate();
-    const [openDrawer, setOpenDrawer] = useState(false);
 
     if (!user) {
         return (
@@ -30,46 +29,6 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
                 Loading...
             </div>
         )
-    }
-    
-    const atributosUsuario = [user.profile["nome"], user.profile["email"]];
-    
-    const openPerfil = () => {
-        navigate("/Logado/Perfil");
-        setErroLogout(false);
-        setOpenDrawer(false);
-    }
-
-    const openTasks = () => {
-        navigate("/Logado/ListaTasks");
-        setErroLogout(false);
-        setOpenDrawer(false)
-    }
-    
-    const logoutAsync = () => {
-        new Promise((resolve, reject) => {
-            Meteor.logout((err) => {
-                if (err) reject(err);
-                else resolve();
-            });
-        });
-    };
-    
-    const logout = async () => {
-        try{
-            await logoutAsync();
-            navigate("/");
-            setErroLogout(false);
-            setOpenDrawer(false);
-        }
-        catch (error) {
-            setErroLogout(true);
-            setOpenDrawer(false);
-        }
-    }
-
-    const toggleDrawer = (newState) => {
-        setOpenDrawer(newState);
     }
 
     const listaDrawer = (
@@ -140,9 +99,6 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
         <Typography variant="h3" gutterBottom>
             Seja Bem-Vindo, {ajustarDisplay(user.username)}!!!
         </Typography>
-        <Drawer open={openDrawer} onClose={() => toggleDrawer(false)}>
-            {listaDrawer}
-        </Drawer>
         </>
     )
 }
