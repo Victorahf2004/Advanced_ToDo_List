@@ -32,10 +32,6 @@ export const VisualizacaoTask = ({taskId, camposVisiveis}) => {
             </Typography>
     }
 
-    const voltarParaListaTasks = () => {
-        navigate("/Logado/ListaTasks");
-    }
-
     return (
             <>
             <List>
@@ -49,7 +45,6 @@ export const VisualizacaoTask = ({taskId, camposVisiveis}) => {
                 </React.Fragment>
             ))}
             </List>
-            <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para a Lista de Tasks</Button>
             </>
         )
 }

@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import { CallToActionSharp } from "@mui/icons-material";
 
 
-export const ListaTasks = ({tasks, erroLogout, setErroLogout, logout, goToStart, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
+export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
     
     const handleDelete = async ( taskId, taskCreatorId ) => {
         try{
@@ -41,19 +41,15 @@ export const ListaTasks = ({tasks, erroLogout, setErroLogout, logout, goToStart,
                 {tasks.map((task) => (
                     <Task
                     key={task._id}
+                    setSaindo={setSaindo}
                     identificadorTask={task._id} 
                     nomeDaTarefa={task.nomeTask}
                     nomeDoUsuario={task.userName}
                     onDelete={handleDelete}
-                    erroLogout={erroLogout}
-                    setErroLogout={setErroLogout}
-                    alteracaoSucesso={alteracaoSucesso}
-                    setAlteracaoSucesso={setAlteracaoSucesso}/>
+                    />
                 ))}
             </List>
             <Button variant="contained" onClick={goToAddTask}>Adicionar Task</Button>
-            <Button variant="contained" onClick={logout}>Log Out</Button>
-            <Button variant="contained" onClick={goToStart}>Voltar para a página inicial</Button>
         </>
     )
 }

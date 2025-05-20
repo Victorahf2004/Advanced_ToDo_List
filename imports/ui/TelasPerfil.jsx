@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 
-export const TelasPerfil = () => {
+export const TelasPerfil = ({saindo, setSaindo}) => {
     const camposVisiveis = {
             nome: "Nome",
             email: "E-mail",
@@ -30,6 +30,14 @@ export const TelasPerfil = () => {
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
 
+    useEffect(() => {
+        if (saindo){
+            setValue(0);
+            setAlteracaoPerfil("");
+            setSaindo(false);
+        }
+    }, [saindo])
+
     if (!user) {
         return (
         <Typography variant="h4">
@@ -39,12 +47,6 @@ export const TelasPerfil = () => {
     }
 
     console.log(user.username);
-    const voltarParaTelaBoasVindas = () => {
-        navigate("/Logado/Start");
-        setValue(0);
-        setAlteracaoPerfil("");
-    }
-
 
     const handleChange = (e, newValue) => {
         setValue(newValue);
@@ -75,10 +77,9 @@ export const TelasPerfil = () => {
 
             <Box hidden={value !== 1} >
                 <>
-                <EdicaoInfoPerfil alteracaoPerfil={alteracaoPerfil} setAlteracaoPerfil={setAlteracaoPerfil} chavesVisiveis={chavesVisiveis} camposVisiveis={camposVisiveis} />
+                <EdicaoInfoPerfil saindo={saindo} setSaindo={setSaindo} alteracaoPerfil={alteracaoPerfil} setAlteracaoPerfil={setAlteracaoPerfil} chavesVisiveis={chavesVisiveis} camposVisiveis={camposVisiveis} />
                 </>
             </Box>
-            <Button variant="contained" onClick={voltarParaTelaBoasVindas}>Voltar para Home</Button>
         </>
     )
 }

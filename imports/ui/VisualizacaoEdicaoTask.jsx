@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 
-export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso }) => {
+export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, setAlteracaoSucesso }) => {
     const camposVisiveis = {
             nomeTask: "nome",
             descricao: "Descrição",
@@ -46,6 +46,14 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
         setValue(0);
         setPodeEditar(true);
     }
+    
+    useEffect(() => {
+        if(saindo) {
+            setValue(0);
+            setPodeEditar(true);
+            setSaindo(false);
+        }
+    }, [saindo])
     
     if (!task) {
         return (
@@ -204,7 +212,7 @@ export const VisualizacaoEdicaoTask = ( { alteracaoSucesso, setAlteracaoSucesso 
             </Box>
 
             <Box hidden={value !== 1} >
-                <EdicaoTask chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposVisiveis={camposVisiveis} chavesVisiveis={chavesVisiveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
+                <EdicaoTask saindo={saindo} setSaindo={setSaindo} chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposVisiveis={camposVisiveis} chavesVisiveis={chavesVisiveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
             </Box>
         </>
     )

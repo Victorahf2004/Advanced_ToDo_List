@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
 import { Meteor } from "meteor/meteor";
@@ -12,7 +12,7 @@ import Chip from "@mui/material/Chip";
 import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
 
-export const TaskForm = () => {
+export const TaskForm = ({ saindo, setSaindo }) => {
     const camposInserir = {
             nomeTask: "nome",
             descricao: "Descrição",
@@ -26,6 +26,7 @@ export const TaskForm = () => {
     };
     let navigate = useNavigate();
     const arrayVariants = ["outlined", "outlined"];
+
     const [chipsVariants, setChipsVariants] = useState(arrayVariants);
     const [alerta, setAlerta] = useState(0);
     const [inputs, setInputs] = useState(valoresIniciais);
@@ -38,6 +39,15 @@ export const TaskForm = () => {
         setInputs(valoresResetados);
     }
 
+    useEffect(() => {
+        if(saindo) {
+            reset();
+            setChipsVariants(arrayVariants);
+            setAlerta(0);
+            setSaindo(false);
+        }
+    }, [saindo])
+    
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
         setInputs((prev) => ({
@@ -80,17 +90,10 @@ export const TaskForm = () => {
             await Meteor.callAsync("tasks.insert", inputs);
             navigate("/Logado/ListaTasks");
             reset();
-            setChipsVariants(valoresIniciais);
+            setChipsVariants(arrayVariants);
             setAlerta(0);
         }
     };
-
-    const voltarParaListaTasks = () => {
-        navigate("/Logado/ListaTasks");
-        reset();
-        setChipsVariants(valoresIniciais);
-        setAlerta(0);
-    }
 
     return (
         <>
@@ -121,7 +124,6 @@ export const TaskForm = () => {
             </List>
             <Button type="submit" variant="contained">Add Task</Button>
         </form>
-        <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para Lista de Tasks</Button>
         </>
     );
 };
