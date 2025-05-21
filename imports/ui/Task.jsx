@@ -12,7 +12,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip"
 
-export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario, onDelete}) => {
+export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario, onDelete, dataEntrega}) => {
     let navigate = useNavigate();
     
     const task = useTracker(() => {
@@ -27,13 +27,39 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
         setSaindo(true);
     }
 
-    const ajustarDisplay = (parametro) => {
-        let tamanho = parametro.length;
-        if (tamanho >= 14) {
-            return ((parametro.slice(0, 15)) + "... ");
+    const vendoSeDataEhHoje = (data) => {
+      const hoje = new Date();
+      const dataHoje = hoje.toLocaleDateString();
+      const [anoHoje, mesHoje, diaHoje] = dataHoje.split("-");
+      let [anoData, mesData, diaData] = data.split("-");
+      
+      condicao = (anoData == anoHoje && mesData == mesHoje && diaData == diaHoje);
+      if (condicao) {
+        return true;
+      }
+
+      else {
+        return false;
+      }
+    }
+
+    const ajustarDisplay = () => {
+        let dataFormatada = dataEntrega.toLocaleString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                    });
+        
+        let [dataString, horaString] = dataFormatada.split(", ");
+
+        if (vendoSeDataEhHoje(dataString)) {
+            return (("Hoje - ") + horaString + " - " + nomeDaTarefa);
         }
+
         else {
-            return parametro;
+            return ((dataString) + " - " + horaString + " - " + nomeDaTarefa)
         }
     }
     return (
@@ -42,8 +68,8 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
             <ListItemIcon>
                 <AssignmentIcon />
             </ListItemIcon>
-            <ListItemText primary={ajustarDisplay(nomeDaTarefa)}
-            secondary={ajustarDisplay(nomeDoUsuario)}/>
+            <ListItemText primary={ajustarDisplay()}
+            secondary={nomeDoUsuario}/>
             <Tooltip title="Delete Task">
                 <ListItemButton onClick={() => onDelete(identificadorTask, taskCreatorId)}>
                     <ListItemIcon>

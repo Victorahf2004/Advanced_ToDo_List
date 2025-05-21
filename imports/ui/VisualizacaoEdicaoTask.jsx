@@ -22,11 +22,22 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
             descricao: "Descrição",
             situacao: "Situação",
             tipo: "Tipo",
-            createdAt: "Data",
+            dataEntrega: "Data de Entrega",
+            createdAt: "Data de Criação",
             userName: "Usuário Criador",
         };
     
     const chavesVisiveis = Object.keys(camposVisiveis);
+    
+    const camposAlteraveis = {
+        nomeTask: "nome",
+        descricao: "Descrição",
+        situacao: "Situação",
+        tipo: "Tipo",
+        dataEntrega: "Data de Entrega",
+    };
+
+    const chavesAlteraveis = Object.keys(camposAlteraveis);
 
     const [value, setValue] = useState(0);
     const [podeEditar, setPodeEditar] = useState(true);
@@ -212,7 +223,7 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
             </Box>
 
             <Box hidden={value !== 1} >
-                <EdicaoTask saindo={saindo} setSaindo={setSaindo} chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposVisiveis={camposVisiveis} chavesVisiveis={chavesVisiveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
+                <EdicaoTask saindo={saindo} setSaindo={setSaindo} chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposAlteraveis={camposAlteraveis} chavesAlteraveis={chavesAlteraveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
             </Box>
         </>
     )

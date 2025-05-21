@@ -41,6 +41,7 @@ export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout,
                 {tasks.map((task) => (
                     <Task
                     key={task._id}
+                    dataEntrega={task.dataEntrega}
                     setSaindo={setSaindo}
                     identificadorTask={task._id} 
                     nomeDaTarefa={task.nomeTask}

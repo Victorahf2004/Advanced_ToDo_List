@@ -11,6 +11,7 @@ Meteor.methods({
             descricao: descricao,
             situacao: "Cadastrada",
             tipo: tipo,
+            dataEntrega: "",
             userName: login,
             userId: this.userId,
             createdAt: new Date(),
