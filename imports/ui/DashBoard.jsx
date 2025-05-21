@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTracker } from "meteor/react-meteor-data";
+import { useTracker, useSubscribe } from 'meteor/react-meteor-data';
 import { Meteor } from "meteor/meteor";
 import Button from "@mui/material/Button";
 import { MenuDrawer } from "./MenuDrawer";
@@ -25,6 +25,9 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 
 export const DashBoard = ({openTasks}) => {
+    
+    const isLoading = useSubscribe("tasks");
+
     const tasksCadastradas = useTracker(() => {
         return TasksCollection.find({ situacao: "Cadastrada"}).count();
     })
@@ -36,6 +39,12 @@ export const DashBoard = ({openTasks}) => {
     const tasksConcluidas = useTracker(() => {
         return TasksCollection.find({ situacao: "Concluída"}).count();
     })
+    
+    if (isLoading()){
+        return <Typography variant="h4">
+            Loading...
+            </Typography>
+    }
 
     const nomes_numeros = {
         "Total de Tarefas Cadastradas": tasksCadastradas,
