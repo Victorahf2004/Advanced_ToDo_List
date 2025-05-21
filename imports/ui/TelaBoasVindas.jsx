@@ -20,6 +20,7 @@ import ButtonBase from "@mui/material/ButtonBase";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from "@mui/material/Tooltip";
+import Grid from "@mui/material/Grid";
 
 export const TelaBoasVindas = ({openTasks, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());

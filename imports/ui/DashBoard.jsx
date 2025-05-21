@@ -23,6 +23,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Card from "@mui/material/Card";
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import Grid from "@mui/material/Grid";
 
 export const DashBoard = ({openTasks}) => {
     
@@ -39,7 +40,7 @@ export const DashBoard = ({openTasks}) => {
     const tasksConcluidas = useTracker(() => {
         return TasksCollection.find({ situacao: "Concluída"}).count();
     })
-    
+
     if (isLoading()){
         return <Typography variant="h4">
             Loading...
@@ -55,25 +56,33 @@ export const DashBoard = ({openTasks}) => {
     const cores = ["red", "yellow", "green"];
     const cards = (
         <>
+        <Grid container spacing={2} columns={12}>
         {Object.entries(nomes_numeros).map(([nome, numero], i) => (
-            <React.Fragment key={nome}>
-                <Card variant="outlined">
-                    <CardContent>
-                        <Typography variant="h4" gutterBottom>
-                            {nome}
-                        </Typography>
-                        <Typography sx={{ color: cores[i]}} variant="h3">
-                            {numero}
-                        </Typography>
-                    </CardContent>
-                </Card>
-            </React.Fragment>
+            <Grid item key={nome} size={6}>
+                    <Card variant="outlined" sx={{height: "100%"}}>
+                        <CardContent>
+                            <Typography variant="h4" gutterBottom>
+                                {nome}
+                            </Typography>
+                            <Typography sx={{ color: cores[i]}} variant="h3">
+                                {numero}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+            </Grid>
         ))}
-        <Card variant="outlined">
-            <CardActions>
-                <Button size="small">Ver Lista de Tarefas</Button>
-            </CardActions>
-        </Card>
+            <Grid item size={6}>
+                <Card variant="outlined" sx={{height: "100%"}}>
+                    <CardActions>
+                        <Button onClick={openTasks}>
+                            <Typography variant="h6">
+                                Ver Lista de Tarefas
+                            </Typography>
+                        </Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+        </Grid>
         </>
     )
     
@@ -81,5 +90,13 @@ export const DashBoard = ({openTasks}) => {
         <>
         {cards}
         </>
+        // <>
+        // <Grid container spacing={2}>
+        //     <Grid item xs={12}><div style={{ background: "lightblue" }}>Item 1</div></Grid>
+        //     <Grid item xs={12}><div style={{ background: "lightgreen" }}>Item 2</div></Grid>
+        //     <Grid item xs={12}><div style={{ background: "lightcoral" }}>Item 3</div></Grid>
+        //     <Grid item xs={12}><div style={{ background: "lightyellow" }}>Item 4</div></Grid>
+        // </Grid>
+        // </>
     )
 }
