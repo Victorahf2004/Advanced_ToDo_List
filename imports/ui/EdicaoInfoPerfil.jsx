@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { useParams } from "react-router-dom";
 import { TasksCollection } from '/imports/api/TasksCollection';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 import { SelectSexo } from "./SelectSexo";
@@ -18,19 +18,11 @@ import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 
-export const EdicaoInfoPerfil = ({ alteracaoPerfil, setAlteracaoPerfil, chavesVisiveis, camposVisiveis }) => {
+export const EdicaoInfoPerfil = ({ saindo, setSaindo, alteracaoPerfil, setAlteracaoPerfil, chavesVisiveis, camposVisiveis }) => {
 
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
-    if (!user){
-        return (
-        <Typography variant="h4">
-            Loading...
-        </Typography>
-        )
-    }
 
-    const userId = user._id;
     const valoresIniciais = {
         nome: "",
         email: "",
@@ -58,6 +50,23 @@ export const EdicaoInfoPerfil = ({ alteracaoPerfil, setAlteracaoPerfil, chavesVi
         }
         setAlteracaoPerfil("");
     }
+
+    useEffect(() => {
+        if (saindo) {
+            reset("Completo", false);
+            setSaindo(false);
+        }
+    }, [saindo]);
+
+    if (!user){
+        return (
+        <Typography variant="h4">
+            Loading...
+        </Typography>
+        )
+    }
+
+    const userId = user._id;
 
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
@@ -98,6 +107,7 @@ export const EdicaoInfoPerfil = ({ alteracaoPerfil, setAlteracaoPerfil, chavesVi
             setAlteracaoSucesso("Erro em salvar alterações");
         }
     }
+
 
     const submit = async (e) => {
         e.preventDefault();

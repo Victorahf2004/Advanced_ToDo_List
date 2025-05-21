@@ -18,7 +18,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 export const VisualizacaoTask = ({taskId, camposVisiveis}) => {
-    
+
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
     const isLoading = useSubscribe("tasks");
@@ -32,10 +32,6 @@ export const VisualizacaoTask = ({taskId, camposVisiveis}) => {
             </Typography>
     }
 
-    const voltarParaListaTasks = () => {
-        navigate("/Logado/ListaTasks");
-    }
-
     return (
             <>
             <List>
@@ -43,13 +39,18 @@ export const VisualizacaoTask = ({taskId, camposVisiveis}) => {
                 <React.Fragment key={key}>
                 <ListItem>
                     <ListItemText primary={label} />
-                    <TextField variant="filled" multiline maxRows={6} value={task[key] instanceof Date ? task[key].toLocaleDateString() : String(task[key])} />
+                    <TextField variant="filled" multiline maxRows={6} value={task[key] instanceof Date ? task[key].toLocaleString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                    }) : String(task[key])} />
                 </ListItem>
                 <Divider />
                 </React.Fragment>
             ))}
             </List>
-            <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para a Lista de Tasks</Button>
             </>
         )
 }

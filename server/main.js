@@ -11,6 +11,7 @@ const insertTask = (taskName, user) =>
     descricao: "Descrição",
     situacao: "Cadastrada",
     tipo: "Pública",
+    dataEntrega: new Date("2025-05-21T14:30"),
     userName: user.username,
     userId: user._id,
     createdAt: new Date(), 

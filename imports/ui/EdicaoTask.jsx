@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { useParams } from "react-router-dom";
 import { TasksCollection } from '/imports/api/TasksCollection';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 import List from "@mui/material/List";
@@ -16,7 +16,7 @@ import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 
-export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposVisiveis, chavesVisiveis, alteracaoSucesso, setAlteracaoSucesso }) => {
+export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTipo, chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposAlteraveis, chavesAlteraveis, alteracaoSucesso, setAlteracaoSucesso }) => {
 
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
@@ -31,8 +31,7 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
         nomeTask: "",
         descricao: "",
         situacao: "",
-        createdAt: "",
-        userName: "",
+        dataEntrega: "",
     };
     const [inputs, setInputs] = useState(valoresIniciais);
     
@@ -45,8 +44,8 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
         }
         else {
             const valoresResetados = {};
-            for (let j = 0; j < chavesVisiveis.length; j++) {
-                chave = chavesVisiveis[j];
+            for (let j = 0; j < chavesAlteraveis.length; j++) {
+                chave = chavesAlteraveis[j];
                 valoresResetados[chave] = "";
             }
             setInputs(valoresResetados);
@@ -54,10 +53,13 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
         setAlteracaoSucesso("");
     }
 
-    const voltarParaListaTasks = () => {
-        reset("Completo", false);
-        navigate("/Logado/ListaTasks");
-    }
+    useEffect(() => {
+        if (saindo) {
+            reset("Completo", false)
+            setAlteracaoSucesso("");
+            setSaindo(false)
+        }
+    }, [saindo])
 
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
@@ -74,9 +76,8 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
         e.preventDefault();
         let novoValor = inputs[chave];
 
-        if (chave == "createdAt"){
-            const [ano, mes, dia] = novoValor.split("-");
-            const data = new Date(ano, mes-1, dia);
+        if (chave == "dataEntrega"){
+            const data = new Date(novoValor);
             novoValor = data;
         }
 
@@ -96,8 +97,8 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
         e.preventDefault();
         const atualizacoes = {};
         
-        for (let i = 0; i < chavesVisiveis.length; i++) {
-            const chave = chavesVisiveis[i];
+        for (let i = 0; i < chavesAlteraveis.length; i++) {
+            const chave = chavesAlteraveis[i];
             const elemento = task[chave];
             
             if (inputs[chave] == '') { 
@@ -105,9 +106,8 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
             }
             
             else {
-                if (chave == "createdAt"){
-                    const [ano, mes, dia] = (inputs[chave]).split("-");
-                    const data = new Date(ano, mes-1, dia);
+                if (chave == "dataEntrega"){
+                    const data = new Date(inputs[chave]);
                     atualizacoes[chave] = data;
                 }
                 else {
@@ -149,7 +149,7 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
         )}
         <form onSubmit={submit}>
         <List>
-        {Object.entries(camposVisiveis).map(([key, label]) => (
+        {Object.entries(camposAlteraveis).map(([key, label]) => (
             <React.Fragment key={key}>
             <ListItem>
                 <ListItemText primary={label} />
@@ -165,9 +165,9 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
                     <Chip label="Pessoal" variant={chipsVariantsTipoTask[1]} onClick={() => alterarTipo(taskCreatorId, userId, task.tipo, "Pessoal")} />
                     </>
                 )
-                : key == "createdAt"? (
+                : key == "dataEntrega"? (
                     <>
-                    <TextField variant="filled" type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
+                    <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
                     value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
                     <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
                     </> )
@@ -183,7 +183,6 @@ export const EdicaoTask = ({ chipsVariantsTipoTask, alterarTipo, chipsVariants, 
             </React.Fragment>
         ))}
         </List>
-        <Button variant="contained" onClick={voltarParaListaTasks}> Voltar para a Lista de Tasks</Button>
         <Button type="submit" variant="contained">Salvar Todas as Alterações</Button>
         </form>
         </>
