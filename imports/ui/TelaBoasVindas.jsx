@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
+import { DashBoard } from "./DashBoard";
 import Button from "@mui/material/Button";
 import { MenuDrawer } from "./MenuDrawer";
 import Alert from "@mui/material/Alert";
@@ -20,7 +21,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from "@mui/material/Tooltip";
 
-export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
+export const TelaBoasVindas = ({openTasks, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
 
     if (!user) {
@@ -30,51 +31,6 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
             </div>
         )
     }
-
-    const listaDrawer = (
-            <Box onClick={() => toggleDrawer(false)}>
-            <List>
-                <ListItem>
-                    <ListItemButton onClick={openPerfil}>
-                        <Avatar alt="Foto de perfil" src={user.profile["foto"]} />
-                    </ListItemButton>
-                </ListItem>
-                {atributosUsuario.map((atributo, i) => (
-                    <React.Fragment key={i}>
-                        {atributo? (
-                            <ListItem>
-                                <ListItemButton onClick={openPerfil}>
-                                    <ListItemText primary={atributo} />
-                                </ListItemButton>
-                            </ListItem>
-                        ): (
-                            <>
-                            </>
-                        )
-                        }
-                    </React.Fragment>
-                ))}
-                <Divider />
-                <ListItem>
-                    <ListItemButton onClick={openPerfil}>
-                        <ListItemText primary="Abrir Perfil" />
-                    </ListItemButton>
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemButton onClick={openTasks}>
-                        <ListItemText primary="Abrir Tasks" />
-                    </ListItemButton>
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemButton onClick={logout}>
-                        <ListItemText primary="Log Out" />
-                    </ListItemButton>
-                </ListItem>
-            </List>
-            </Box>
-        )
 
     const ajustarDisplay = (parametro) => {
         let tamanho = parametro.length;
@@ -91,14 +47,10 @@ export const TelaBoasVindas = ({erroLogout, setErroLogout}) => {
         {erroLogout && (
                     <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
-        <Tooltip title="Menu">
-            <IconButton onClick={() => toggleDrawer(true)}>
-                <MenuIcon />
-            </IconButton>
-        </Tooltip>
         <Typography variant="h3" gutterBottom>
             Seja Bem-Vindo, {ajustarDisplay(user.username)}!!!
         </Typography>
+        <DashBoard openTasks={openTasks} />
         </>
     )
 }
