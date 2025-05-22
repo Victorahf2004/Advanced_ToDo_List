@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { TasksCollection } from "./TasksCollection";
 
 Meteor.methods({
-    async "tasks.insert"({nomeTask, descricao, tipo}) {
+    async "tasks.insert"({nomeTask, descricao, tipo, dataEntrega}) {
         const usuario = await Meteor.users.findOneAsync(this.userId);
         const login = usuario?.username || "desconhecido";
         console.log(login)
@@ -11,7 +11,7 @@ Meteor.methods({
             descricao: descricao,
             situacao: "Cadastrada",
             tipo: tipo,
-            dataEntrega: "",
+            dataEntrega: dataEntrega,
             userName: login,
             userId: this.userId,
             createdAt: new Date(),

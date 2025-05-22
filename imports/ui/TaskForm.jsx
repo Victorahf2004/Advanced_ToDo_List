@@ -17,13 +17,16 @@ export const TaskForm = ({ saindo, setSaindo }) => {
             nomeTask: "nome",
             descricao: "Descrição",
             tipo: "Tipo",
+            dataEntrega: "Data de Entrega",
         };
     
     const valoresIniciais = {
         nomeTask: "",
         descricao: "",
         tipo: "Pública",
+        dataEntrega: "",        
     };
+
     let navigate = useNavigate();
     const arrayVariants = ["outlined", "outlined"];
 
@@ -79,6 +82,21 @@ export const TaskForm = ({ saindo, setSaindo }) => {
         return true;
     }
 
+    const transformandoInputDataEmDate = () => {
+        atualizacoes = {};
+        for (const chave of Object.keys(valoresIniciais)){
+            let elemento = inputs[chave];
+            if (chave == "dataEntrega") {
+                atualizacoes[chave] = new Date(elemento);
+            }
+            
+            else {
+                atualizacoes[chave] = elemento;
+            }
+        }
+        return atualizacoes;
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -87,7 +105,8 @@ export const TaskForm = ({ saindo, setSaindo }) => {
         }
 
         else {
-            await Meteor.callAsync("tasks.insert", inputs);
+            atualizacoes = transformandoInputDataEmDate();
+            await Meteor.callAsync("tasks.insert", atualizacoes);
             navigate("/Logado/ListaTasks");
             reset();
             setChipsVariants(arrayVariants);
@@ -111,7 +130,13 @@ export const TaskForm = ({ saindo, setSaindo }) => {
                                 <Chip label="Pública" variant={chipsVariants[0]} onClick={() => setandoTipoTask("Pública")} />
                                 <Chip label="Pessoal" variant={chipsVariants[1]} onClick={() => setandoTipoTask("Pessoal")} />
                             </>
-                        ) : (
+                        ) : key == "dataEntrega"? (
+                            <>
+                            <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
+                            value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                            </>
+                        )
+                        : (
                             <>
                                 <TextField variant="filled" multiline maxRows={6} type="text" placeholder={"Novo(a) " + label}
                                 value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
