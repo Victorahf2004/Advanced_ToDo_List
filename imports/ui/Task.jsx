@@ -59,16 +59,19 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
         }
 
         else {
+            if (dataString == ""){
+                return (nomeDaTarefa);
+            }
             return ((dataString) + " - " + horaString + " - " + nomeDaTarefa)
         }
     }
     return (
         <>
-        <ListItem>
+        <ListItem sx={{display: "flex"}}>
             <ListItemIcon>
                 <AssignmentIcon />
             </ListItemIcon>
-            <ListItemText primary={ajustarDisplay()}
+            <ListItemText sx={{width: "1%", overflow:"hidden", textOverflow:"ellipsis", whiteSpace: "nowrap"}} primary={ajustarDisplay()}
             secondary={nomeDoUsuario}/>
             <Tooltip title="Delete Task">
                 <ListItemButton onClick={() => onDelete(identificadorTask, taskCreatorId)}>

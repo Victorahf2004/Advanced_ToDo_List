@@ -37,7 +37,12 @@ export const TaskForm = ({ saindo, setSaindo }) => {
     const reset = () => {
         const valoresResetados = {};
         for (const chave of Object.keys(valoresIniciais)) {
-            valoresResetados[chave] = "";
+            if (chave == "tipo"){
+                valoresResetados[chave] = "Pública";
+            }
+            else {
+                valoresResetados[chave] = "";
+            }
         }
         setInputs(valoresResetados);
     }
@@ -87,7 +92,12 @@ export const TaskForm = ({ saindo, setSaindo }) => {
         for (const chave of Object.keys(valoresIniciais)){
             let elemento = inputs[chave];
             if (chave == "dataEntrega") {
-                atualizacoes[chave] = new Date(elemento);
+                if (elemento == ""){
+                    atualizacoes[chave] = elemento;
+                }
+                else {
+                    atualizacoes[chave] = new Date(elemento);
+                }
             }
             
             else {
