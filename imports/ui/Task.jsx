@@ -10,7 +10,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip"
+import Tooltip from "@mui/material/Tooltip";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario, onDelete, dataEntrega}) => {
     let navigate = useNavigate();
@@ -67,12 +69,14 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
     }
     return (
         <>
-        <ListItem sx={{display: "flex"}}>
+        <ListItem>
             <ListItemIcon>
                 <AssignmentIcon />
             </ListItemIcon>
-            <ListItemText sx={{width: "1%", overflow:"hidden", textOverflow:"ellipsis", whiteSpace: "nowrap"}} primary={ajustarDisplay()}
+            <ListItemText sx={{overflow:"hidden"}} primary={ajustarDisplay()}
             secondary={nomeDoUsuario}/>
+
+            <Box sx={{display: "flex", flexDirection: "row", gap: "1rem"}}>
             <Tooltip title="Delete Task">
                 <ListItemButton onClick={() => onDelete(identificadorTask, taskCreatorId)}>
                     <ListItemIcon>
@@ -80,13 +84,15 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
                     </ListItemIcon>
                 </ListItemButton>
             </Tooltip>
-            <Tooltip title="Editar Task">
-                <ListItemButton onClick={telaEditarTask}>
-                    <ListItemIcon>
-                        <EditIcon />
-                    </ListItemIcon>
-                </ListItemButton>
-            </Tooltip>
+
+        <Tooltip title="Editar Task">
+            <ListItemButton onClick={telaEditarTask}>
+                <ListItemIcon>
+                    <EditIcon />
+                </ListItemIcon>
+            </ListItemButton>
+        </Tooltip>
+        </Box>
         </ListItem>
         <Divider />
         </>
