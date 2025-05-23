@@ -33,23 +33,13 @@ export const TelaBoasVindas = ({openTasks, erroLogout, setErroLogout}) => {
         )
     }
 
-    const ajustarDisplay = (parametro) => {
-        let tamanho = parametro.length;
-        if (tamanho >= 14) {
-            return ((parametro.slice(0, 15)) + "... ");
-        }
-        else {
-            return parametro;
-        }
-    }
-
     return (
         <>
         {erroLogout && (
                     <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
-        <Typography variant="h3" gutterBottom>
-            Seja Bem-Vindo, {ajustarDisplay(user.username)}!!!
+        <Typography variant="h3" sx={{overflow: "hidden"}} gutterBottom>
+            Seja Bem-Vindo, {user.username}!!!
         </Typography>
         <DashBoard openTasks={openTasks} />
         </>
