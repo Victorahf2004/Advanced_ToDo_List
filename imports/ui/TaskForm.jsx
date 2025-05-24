@@ -11,6 +11,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Chip from "@mui/material/Chip";
 import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 export const TaskForm = ({ saindo, setSaindo }) => {
     const camposInserir = {
@@ -56,6 +59,11 @@ export const TaskForm = ({ saindo, setSaindo }) => {
         }
     }, [saindo])
     
+    const voltandoListaTasks = () => {
+        navigate("/Logado/ListaTasks");
+        setSaindo(true);
+    }
+
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
         setInputs((prev) => ({
@@ -129,36 +137,48 @@ export const TaskForm = ({ saindo, setSaindo }) => {
         {alerta == 1 && (
             <Alert severity="error" onClose={() => setAlerta(0)}>Para criar uma task, é obrigatório preencher, pelo menos, o nome dela</Alert>
         )}
-        <form onSubmit={handleSubmit}>
-            <List>
-                {Object.entries(camposInserir).map(([key, label]) => (
-                    <React.Fragment key={key}>
-                    <ListItem>
-                        <ListItemText primary={label} />
-                        {key == "tipo"? (
-                            <>
-                                <Chip label="Pública" variant={chipsVariants[0]} onClick={() => setandoTipoTask("Pública")} />
-                                <Chip label="Pessoal" variant={chipsVariants[1]} onClick={() => setandoTipoTask("Pessoal")} />
-                            </>
-                        ) : key == "dataEntrega"? (
-                            <>
-                            <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
-                            value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
-                            </>
-                        )
-                        : (
-                            <>
-                                <TextField variant="filled" multiline maxRows={6} type="text" placeholder={"Novo(a) " + label}
-                                value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
-                            </>
-                        )}
-                    </ListItem>
-                    <Divider />
-                    </React.Fragment>
-                ))}
-            </List>
-            <Button type="submit" variant="contained">Add Task</Button>
-        </form>
+        <Stack direction={"column"} justifyContent={"center"} alignItems={"center"} spacing={5}>
+            <Typography variant="h4">
+                Dados da Nova Task:
+            </Typography>
+            <form style={{width: "80%"}} onSubmit={handleSubmit}>
+                <Stack direction={"column"} spacing={8}>
+                    <List>
+                        {Object.entries(camposInserir).map(([key, label]) => (
+                            <React.Fragment key={key}>
+                            <ListItem>
+                                <ListItemText primary={label} />
+                                {key == "tipo"? (
+                                    <>
+                                        <Box sx={{gap: "10%", "&:hover": {backgroundColor: "inherit"}}}>
+                                            <Chip label="Pública" variant={chipsVariants[0]} onClick={() => setandoTipoTask("Pública")} />
+                                            <Chip label="Pessoal" variant={chipsVariants[1]} onClick={() => setandoTipoTask("Pessoal")} />
+                                        </Box>
+                                    </>
+                                ) : key == "dataEntrega"? (
+                                    <>
+                                    <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
+                                    value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                    </>
+                                )
+                                : (
+                                    <>
+                                        <TextField variant="filled" multiline maxRows={6} type="text" placeholder={"Novo(a) " + label}
+                                        value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                    </>
+                                )}
+                            </ListItem>
+                            <Divider />
+                            </React.Fragment>
+                        ))}
+                    </List>
+                    <Box sx={{display: "flex", flexDirection:"row", gap: "20%", "&:hover": {backgroundColor: "inherit"}}}>
+                        <Button variant="contained" onClick={voltandoListaTasks}>Cancelar</Button>
+                        <Button type="submit" variant="contained">Add Task</Button>
+                    </Box>
+                </Stack>
+            </form>
+        </Stack>
         </>
     );
 };

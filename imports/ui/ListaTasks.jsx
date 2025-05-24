@@ -10,8 +10,11 @@ import { Routes, Route, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
-import { CallToActionSharp } from "@mui/icons-material";
-
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import ListItem from "@mui/material/ListItem";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 
 export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
     
@@ -34,9 +37,11 @@ export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout,
             {erroLogout && (
                     <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
+            <Stack direction={"column"} spacing={8} justifyContent={"center"} alignItems={"center"}>
             <Typography variant="h4" gutterBottom>
                 Tarefas Cadastradas
             </Typography>
+            <Stack direction={"column"} spacing={4} width={"80%"}>
             <List>
                 {tasks.map((task) => (
                     <Task
@@ -50,7 +55,13 @@ export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout,
                     />
                 ))}
             </List>
-            <Button variant="contained" onClick={goToAddTask}>Adicionar Task</Button>
+            <Box display="flex" justifyContent="flex-end">
+                <Fab color="primary" size={"small"} onClick={goToAddTask}>
+                    <AddIcon />
+                </Fab>
+            </Box>
+            </Stack>
+            </Stack>
         </>
     )
 }

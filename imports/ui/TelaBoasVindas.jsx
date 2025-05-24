@@ -21,6 +21,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from "@mui/material/Tooltip";
 import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 
 export const TelaBoasVindas = ({openTasks, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
@@ -38,10 +39,12 @@ export const TelaBoasVindas = ({openTasks, erroLogout, setErroLogout}) => {
         {erroLogout && (
                     <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
-        <Typography variant="h3" sx={{overflow: "hidden"}} gutterBottom>
-            Seja Bem-Vindo, {user.username}!!!
-        </Typography>
-        <DashBoard openTasks={openTasks} />
+        <Stack direction={"column"} spacing={8} justifyContent={"center"} alignItems={"center"}>
+            <Typography variant="h3" sx={{display: "flex", justifyContent:"center", alignItems: "center", overflow: "hidden"}} gutterBottom>
+                Seja Bem-Vindo, {user.username}!!!
+            </Typography>
+            <DashBoard openTasks={openTasks} />
+        </Stack>
         </>
     )
 }
