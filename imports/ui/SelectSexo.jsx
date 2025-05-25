@@ -19,7 +19,7 @@ export const SelectSexo = ({ chave, inputs, handleChange }) => {
 
     console.log(inputs[chave]);
     return (
-        <Box sx={{width: "15%"}}>
+        <Box sx={{minWidth: "10vw"}}>
         <FormControl fullWidth>
             <InputLabel>Sexo</InputLabel>
             <Select value={inputs[chave]} label="Sexo" onChange={(e) => handleChange(e, chave)}>

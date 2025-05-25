@@ -59,9 +59,9 @@ export const DashBoard = ({openTasks}) => {
         <Grid container spacing={2} columns={12} sx={{maxWidth: "90vw"}}>
         {Object.entries(nomes_numeros).map(([nome, numero], i) => (
             <Grid item key={nome} size={6}>
-                <Card variant="outlined" sx={{ height: "100%" }}>
+                <Card variant="outlined" sx={{ backgroundColor: "#00f285", height: "100%" }}>
                     <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent:"center", alignItems:"center"}}>
-                        <Typography variant="h4" gutterBottom>
+                        <Typography variant="h4" sx={{color: "#6f6dfb"}} gutterBottom>
                             {nome}
                         </Typography>
                         <Typography sx={{ color: cores[i]}} variant="h3">
@@ -72,10 +72,10 @@ export const DashBoard = ({openTasks}) => {
             </Grid>
         ))}
             <Grid item size={6}>
-                <Card variant="outlined" sx={{height: "100%", display: "flex", justifyContent:"center"}}>
+                <Card variant="outlined" sx={{ backgroundColor: "#00f285", height: "100%", display: "flex", justifyContent:"center"}}>
                     <CardActions>
                         <Button onClick={openTasks}>
-                            <Typography variant="h6">
+                            <Typography variant="h6" sx={{color: "#6f6dfb"}}>
                                 Ver Lista de Tarefas
                             </Typography>
                         </Button>

@@ -15,6 +15,7 @@ import { Task } from "./Task";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 
 export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, setAlteracaoSucesso }) => {
     const camposVisiveis = {
@@ -208,23 +209,23 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
             {!podeEditar && (
                 <Alert severity="error" onClose={() => setPodeEditar(true)}>Você não pode editar essa task, por que não é o criador dela!</Alert>
             )}
-            <Box>
-                <Typography variant="h4">
-                    Informações tarefa: {task.nomeTask}
-                </Typography>
-            </Box>
-            <Tabs value={value} onChange={handleChange}>
-                <Tab icon={<VisibilityIcon />} label="Visualização" iconPosition="end" />
-                <Tab icon={<EditNoteIcon />} label="Edição" iconPosition="end" />
-            </Tabs> 
-            
-            <Box hidden={value !== 0} >
-                <VisualizacaoTask taskId={taskId} camposVisiveis={camposVisiveis} />
-            </Box>
-
-            <Box hidden={value !== 1} >
-                <EdicaoTask saindo={saindo} setSaindo={setSaindo} chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposAlteraveis={camposAlteraveis} chavesAlteraveis={chavesAlteraveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
-            </Box>
+            <Stack direction={"column"} justifyContent={"center"} alignItems={"center"}>
+                <Box>
+                    <Typography variant="h4">
+                        Informações tarefa: {task.nomeTask}
+                    </Typography>
+                </Box>
+                <Tabs value={value} onChange={handleChange}>
+                    <Tab icon={<VisibilityIcon />} label="Visualização" iconPosition="end" />
+                    <Tab icon={<EditNoteIcon />} label="Edição" iconPosition="end" />
+                </Tabs> 
+                
+                {value == 0? (
+                    <VisualizacaoTask taskId={taskId} camposVisiveis={camposVisiveis} />
+                ): (
+                    <EdicaoTask saindo={saindo} setSaindo={setSaindo} chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposAlteraveis={camposAlteraveis} chavesAlteraveis={chavesAlteraveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
+                )}
+            </Stack>
         </>
     )
 }

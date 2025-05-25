@@ -19,6 +19,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from '@mui/material/Avatar';
 import ButtonBase from '@mui/material/ButtonBase';
+import Stack from "@mui/material/Stack";
 
 export const VisualizacaoInfoPerfil = ({camposVisiveis}) => {
     
@@ -32,28 +33,30 @@ export const VisualizacaoInfoPerfil = ({camposVisiveis}) => {
 
     return (
             <>
-            <List>
-            {Object.entries(camposVisiveis).map(([key, label]) => (
-                <React.Fragment key={key}>
-                <ListItem>
-                    {key == "foto"? (
-                        <>
-                           <ListItemText primary={label} />
-                           <VisualizandoFotoPerfil caminhoFoto={user.profile[key]} />
-                        </>
-                    )
-                    :(
-                        <>
-                            <ListItemText primary={label} />
-                            <TextField variant="filled" multiline maxRows={6} value={user.profile[key] instanceof Date ? user.profile[key].toLocaleDateString() : String(user.profile[key])} placeholder={"Esse dado ainda não foi fornecido"} />
-                        </>
-                    )
-                }
-                </ListItem>
-                <Divider />
-                </React.Fragment>
-            ))}
-            </List>
+            <Stack direction={"column"} width={"80%"}>
+                <List>
+                {Object.entries(camposVisiveis).map(([key, label]) => (
+                    <React.Fragment key={key}>
+                    <ListItem>
+                        {key == "foto"? (
+                            <>
+                                <ListItemText primary={label} />
+                                <VisualizandoFotoPerfil caminhoFoto={user.profile[key]} />
+                            </>
+                        )
+                        :(
+                            <>
+                                <ListItemText primary={label} />
+                                <TextField variant="filled" multiline maxRows={6} value={user.profile[key] instanceof Date ? user.profile[key].toLocaleDateString() : String(user.profile[key])} placeholder={"Esse dado ainda não foi fornecido"} />
+                            </>
+                        )
+                    }
+                    </ListItem>
+                    <Divider />
+                    </React.Fragment>
+                ))}
+                </List>
+            </Stack>
             </>
         )
 }

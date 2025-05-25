@@ -35,12 +35,12 @@ export const UserCreationForm = ({username, setUsername, password, setPassword, 
         {estado == "erro" && (
             <Alert severity="error" onClose={() => {setEstado("normal");}} > Erro ao criar usuário!</Alert>
         )}
+        <Typography variant="h3" sx={{color: "white"}} gutterBottom>
+            Criando Novo Usuário
+        </Typography>
         <Card sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center"}}>
             <CardContent>
                 <form style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center", gap: "1rem"}} onSubmit={submit} className="login-form">
-                    <Typography variant="h3" gutterBottom>
-                        Criando Novo Usuário
-                    </Typography>
 
                     <TextField variant="filled" type="text" placeholder="Novo Username"
                     name="username" value={username} required onChange={(e) => setUsername(e.target.value)} />

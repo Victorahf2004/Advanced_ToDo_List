@@ -71,28 +71,28 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
         <>
         <ListItem>
             <ListItemIcon>
-                <AssignmentIcon />
+                <AssignmentIcon sx={{color: "#6f6dfb"}}/>
             </ListItemIcon>
-            <ListItemText sx={{overflow:"hidden"}} primary={ajustarDisplay()}
+            <ListItemText sx={{overflow:"hidden", color: "#6f6dfb"}} primary={ajustarDisplay()}
             secondary={nomeDoUsuario}/>
 
-            <Box sx={{display: "flex", flexDirection: "row", gap: "1rem"}}>
-            <Tooltip title="Delete Task">
-                <ListItemButton onClick={() => onDelete(identificadorTask, taskCreatorId)}>
-                    <ListItemIcon>
-                        <DeleteIcon />
-                    </ListItemIcon>
-                </ListItemButton>
-            </Tooltip>
+            <Box display="flex" flexDirection="row" gap="3vw" justifyContent={"flex-end"}>
+                <Tooltip title="Editar Task">
+                    <ListItemButton onClick={telaEditarTask}>
+                        <ListItemIcon>
+                            <EditIcon />
+                        </ListItemIcon>
+                    </ListItemButton>
+                </Tooltip>
 
-        <Tooltip title="Editar Task">
-            <ListItemButton onClick={telaEditarTask}>
-                <ListItemIcon>
-                    <EditIcon />
-                </ListItemIcon>
-            </ListItemButton>
-        </Tooltip>
-        </Box>
+                <Tooltip title="Delete Task">
+                    <ListItemButton onClick={() => onDelete(identificadorTask, taskCreatorId)}>
+                        <ListItemIcon>
+                            <DeleteIcon sx={{color: "red"}}/>
+                        </ListItemIcon>
+                    </ListItemButton>
+                </Tooltip>
+            </Box>
         </ListItem>
         <Divider />
         </>

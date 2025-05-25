@@ -40,7 +40,7 @@ export const TelaBoasVindas = ({openTasks, erroLogout, setErroLogout}) => {
                     <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
         <Stack direction={"column"} spacing={8} justifyContent={"center"} alignItems={"center"}>
-            <Typography variant="h3" sx={{display: "flex", justifyContent:"center", alignItems: "center", overflow: "hidden"}} gutterBottom>
+            <Typography variant="h3" sx={{color: "white", display: "flex", justifyContent:"center", alignItems: "center", overflow: "hidden"}} gutterBottom>
                 Seja Bem-Vindo, {user.username}!!!
             </Typography>
             <DashBoard openTasks={openTasks} />

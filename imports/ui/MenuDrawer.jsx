@@ -23,6 +23,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Fab from "@mui/material/Fab";
 
 export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, setSaindo, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
@@ -103,7 +104,7 @@ export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, set
                 <ListItem>
                     <ListItemButton onClick={logout}>
                         <ListItemIcon>
-                            <LogoutIcon />
+                            <LogoutIcon sx={{color: "red"}}/>
                         </ListItemIcon>
                         <ListItemText primary="Log Out" />
                     </ListItemButton>
@@ -114,14 +115,16 @@ export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, set
 
     return (
         <>
+        <Box justifyContent={"flex-start"}>
         <Tooltip title="Menu">
-            <IconButton onClick={() => toggleDrawer(true)}>
-                <MenuIcon />
-            </IconButton>
+            <Fab sx={{backgroundColor: '#00e4d0'}} onClick={() => toggleDrawer(true)}>
+                <MenuIcon fontSize="large" sx={{ color: " #6f6dfb" }}/>
+            </Fab>
         </Tooltip>
         <Drawer open={openDrawer} onClose={() => toggleDrawer(false)}>
             {listaDrawer}
         </Drawer>
+        </Box>
         </>
     )
 }

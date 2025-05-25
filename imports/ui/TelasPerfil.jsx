@@ -12,6 +12,7 @@ import { useNavigate} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 
 export const TelasPerfil = ({saindo, setSaindo}) => {
     const camposVisiveis = {
@@ -61,25 +62,23 @@ export const TelasPerfil = ({saindo, setSaindo}) => {
             {alteracaoPerfil == "sucessoEditandoPerfil" && (
                 <Alert severity="success" onClose={() => setAlteracaoPerfil("")} > As informações do seu perfil foram alteradas com sucesso!</Alert>
             )}
-            <Box>
-                <Typography variant="h4">
-                    Informações Usuário: {user.username}
-                </Typography>
-            </Box>
-            <Tabs value={value} onChange={handleChange}>
-                <Tab icon={<VisibilityIcon />} label="Visualização" iconPosition="end" />
-                <Tab icon={<EditNoteIcon />} label="Edição" iconPosition="end" />
-            </Tabs> 
-            
-            <Box hidden={value !== 0} >
-                <VisualizacaoInfoPerfil camposVisiveis={camposVisiveis} />
-            </Box>
-
-            <Box hidden={value !== 1} >
-                <>
-                <EdicaoInfoPerfil saindo={saindo} setSaindo={setSaindo} alteracaoPerfil={alteracaoPerfil} setAlteracaoPerfil={setAlteracaoPerfil} chavesVisiveis={chavesVisiveis} camposVisiveis={camposVisiveis} />
-                </>
-            </Box>
+            <Stack direction={"column"} justifyContent={"center"} alignItems={"center"}>
+                <Box>
+                    <Typography variant="h4">
+                        Informações Usuário: {user.username}
+                    </Typography>
+                </Box>
+                <Tabs value={value} onChange={handleChange}>
+                    <Tab icon={<VisibilityIcon />} label="Visualização" iconPosition="end" />
+                    <Tab icon={<EditNoteIcon />} label="Edição" iconPosition="end" />
+                </Tabs> 
+                
+                {value == 0? (
+                    <VisualizacaoInfoPerfil camposVisiveis={camposVisiveis} />
+                ): (
+                    <EdicaoInfoPerfil saindo={saindo} setSaindo={setSaindo} alteracaoPerfil={alteracaoPerfil} setAlteracaoPerfil={setAlteracaoPerfil} chavesVisiveis={chavesVisiveis} camposVisiveis={camposVisiveis} />
+                )}
+            </Stack>
         </>
     )
 }

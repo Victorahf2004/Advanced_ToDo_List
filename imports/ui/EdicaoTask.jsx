@@ -15,6 +15,10 @@ import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import SaveIcon from '@mui/icons-material/Save';
+import Fab from "@mui/material/Fab";
 
 export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTipo, chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposAlteraveis, chavesAlteraveis, alteracaoSucesso, setAlteracaoSucesso }) => {
 
@@ -147,43 +151,57 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
         {alteracaoSucesso == "sucessoEditandoTask" && (
             <Alert severity="success" onClose={() => setAlteracaoSucesso("")} > Os dados da Tarefa foram alterados com Sucesso!</Alert>
         )}
-        <form onSubmit={submit}>
-        <List>
-        {Object.entries(camposAlteraveis).map(([key, label]) => (
-            <React.Fragment key={key}>
-            <ListItem>
-                <ListItemText primary={label} />
-                {key == "situacao"? (
-                    <>
-                    <Chip label="Cadastrada" variant={chipsVariants[0]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Cadastrada", 0)} />
-                    <Chip label="Em Andamento" variant={chipsVariants[1]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Em Andamento", 1)} />
-                    <Chip label="Concluída" variant={chipsVariants[2]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Concluída", 2)} />
-                    </>
-                ) : key == "tipo"? (
-                    <>
-                    <Chip label="Pública" variant={chipsVariantsTipoTask[0]} onClick={() => alterarTipo(taskCreatorId, userId, task.tipo, "Pública")} />
-                    <Chip label="Pessoal" variant={chipsVariantsTipoTask[1]} onClick={() => alterarTipo(taskCreatorId, userId, task.tipo, "Pessoal")} />
-                    </>
-                )
-                : key == "dataEntrega"? (
-                    <>
-                    <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
-                    value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
-                    <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
-                    </> )
-                : (
-                <>
-                <TextField variant="filled" multiline maxRows={6} type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
-                 value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
-                <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
-                </>
-                )}
-            </ListItem>
-            <Divider />
-            </React.Fragment>
-        ))}
-        </List>
-        <Button type="submit" variant="contained">Salvar Todas as Alterações</Button>
+        <form onSubmit={submit} style={{width: "80%"}}>
+            <Stack direction={"column"} spacing={8}>
+                <List sx={{backgroundColor: "#00f285"}}>
+                    {Object.entries(camposAlteraveis).map(([key, label]) => (
+                        <React.Fragment key={key}>
+                            <ListItem sx={{display: "flex", flexDirection: "row", gap: "6vw"}}>
+                                <ListItemText primary={label} sx={{color: "#6f6dfb"}}/>
+                                {key == "situacao"? (
+                                    <>
+                                        <Box display={"flex"} justifyContent="flex-end" gap="1vw" sx={{"&:hover": {backgroundColor: "inherit"}}}>
+                                            <Chip label="Cadastrada" variant={chipsVariants[0]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Cadastrada", 0)} />
+                                            <Chip label="Em Andamento" variant={chipsVariants[1]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Em Andamento", 1)} />
+                                            <Chip label="Concluída" variant={chipsVariants[2]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Concluída", 2)} />
+                                        </Box>
+                                    </>
+                                ) : key == "tipo"? (
+                                    <>
+                                        <Box display={"flex"} justifyContent="flex-end" gap="1vw" sx={{"&:hover": {backgroundColor: "inherit"}}}>
+                                            <Chip label="Pública" variant={chipsVariantsTipoTask[0]} onClick={() => alterarTipo(taskCreatorId, userId, task.tipo, "Pública")} />
+                                            <Chip label="Pessoal" variant={chipsVariantsTipoTask[1]} onClick={() => alterarTipo(taskCreatorId, userId, task.tipo, "Pessoal")} />
+                                        </Box>
+                                    </>
+                                )
+                                : key == "dataEntrega"? (
+                                    <>
+                                        <Box display={"flex"} justifyContent={"flex-end"}>
+                                            <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
+                                            value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                            <Fab sx={{backgroundColor: "#6f6dfb"}}>
+                                                <SaveIcon sx={{color: '#00e4d0'}} variant="filled" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</SaveIcon>
+                                            </Fab>
+                                        </Box>
+                                    </> )
+                                : (
+                                <>
+                                    <Box display={"flex"} justifyContent={"flex-end"}>
+                                        <TextField variant="filled" multiline maxRows={6} type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
+                                        value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                        <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
+                                    </Box>
+                                </>
+                                )}
+                            </ListItem>
+                            <Divider />
+                        </React.Fragment>
+                    ))}
+                </List>
+                <Box display={"flex"} justifyContent={"center"}>
+                    <Button type="submit" variant="contained">Salvar Todas as Alterações</Button>
+                </Box>
+            </Stack>
         </form>
         </>
     )

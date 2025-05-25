@@ -8,6 +8,9 @@ import Button from "@mui/material/Button";
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
+
 
 export const VisualizandoFotoPerfil = ({ caminhoFoto }) => {
     const [open, setOpen] = useState(false);
@@ -20,26 +23,32 @@ export const VisualizandoFotoPerfil = ({ caminhoFoto }) => {
         setOpen(false);
     }
 
+    const DialogCustom = styled(Dialog) ({
+        '& .MuiDialog-paper': {
+            minHeight: '40vh',
+            minWidth: '60vw',
+        },
+    })
     return (
         <>
             <ButtonBase>
             <Avatar alt="Foto de Perfil" src={caminhoFoto} onClick={handleOpen}/> 
             </ButtonBase>
-
-            <Dialog open={open} onClose={handleClose} fullScreen>
-                <DialogTitle>Foto de Perfil ampliada</DialogTitle>
+            
+            <DialogCustom open={open} onClose={handleClose}>
+                <Box display={"flex"} justifyContent={"flex-end"}>
+                    <IconButton onClick={handleClose}>
+                        <CloseIcon fontSize="large"/>
+                    </IconButton>
+                </Box>
                 <DialogContent>
                     <img src={caminhoFoto} alt="Foto de Perfil Ampliada" style={{
                         width: '100%',
                         height: 'auto',
-                        maxHeight: '70vh', // Limita a altura para não exceder a tela
-                        objectFit: 'contain', // Mantém a proporção da imagem
+                        objectFit: 'contain',
                         }} />
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Fechar</Button>
-                </DialogActions>
-            </Dialog>
+            </DialogCustom>
         </>
     )
 }

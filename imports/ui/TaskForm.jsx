@@ -12,7 +12,7 @@ import Chip from "@mui/material/Chip";
 import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 export const TaskForm = ({ saindo, setSaindo }) => {
@@ -138,33 +138,37 @@ export const TaskForm = ({ saindo, setSaindo }) => {
             <Alert severity="error" onClose={() => setAlerta(0)}>Para criar uma task, é obrigatório preencher, pelo menos, o nome dela</Alert>
         )}
         <Stack direction={"column"} justifyContent={"center"} alignItems={"center"} spacing={5}>
-            <Typography variant="h4">
+            <Typography variant="h4" color="white">
                 Dados da Nova Task:
             </Typography>
             <form style={{width: "80%"}} onSubmit={handleSubmit}>
                 <Stack direction={"column"} spacing={8}>
-                    <List>
+                    <List sx={{backgroundColor: "#00f285"}}>
                         {Object.entries(camposInserir).map(([key, label]) => (
                             <React.Fragment key={key}>
                             <ListItem>
-                                <ListItemText primary={label} />
+                                <ListItemText primary={label} sx={{color:"#6f6dfb"}} />
                                 {key == "tipo"? (
                                     <>
-                                        <Box sx={{gap: "10%", "&:hover": {backgroundColor: "inherit"}}}>
+                                        <Box display="flex" justifyContent="flex-end" gap="1vw" sx={{"&:hover": {backgroundColor: "inherit"}, "&:active": { backgroundColor: "inherit" }, "&:focus": { backgroundColor: "inherit" }}}>
                                             <Chip label="Pública" variant={chipsVariants[0]} onClick={() => setandoTipoTask("Pública")} />
                                             <Chip label="Pessoal" variant={chipsVariants[1]} onClick={() => setandoTipoTask("Pessoal")} />
                                         </Box>
                                     </>
                                 ) : key == "dataEntrega"? (
                                     <>
-                                    <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
-                                    value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                        <Box display="flex" justifyContent={"flex-end"} sx={{gap: "1vw", "&:hover": {backgroundColor: "inherit"}, "&:active": { backgroundColor: "inherit" }, "&:focus": { backgroundColor: "inherit" }}}>
+                                            <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
+                                            value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                        </Box>
                                     </>
                                 )
                                 : (
                                     <>
-                                        <TextField variant="filled" multiline maxRows={6} type="text" placeholder={"Novo(a) " + label}
-                                        value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                        <Box display={"flex"} justifyContent={"flex-end"} sx={{gap: "1vw", "&:hover": {backgroundColor: "inherit"}, "&:active": { backgroundColor: "inherit" }, "&:focus": { backgroundColor: "inherit" }}}>
+                                            <TextField variant="filled" multiline maxRows={6} type="text" placeholder={"Novo(a) " + label}
+                                            value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                        </Box>
                                     </>
                                 )}
                             </ListItem>
@@ -172,9 +176,9 @@ export const TaskForm = ({ saindo, setSaindo }) => {
                             </React.Fragment>
                         ))}
                     </List>
-                    <Box sx={{display: "flex", flexDirection:"row", gap: "20%", "&:hover": {backgroundColor: "inherit"}}}>
-                        <Button variant="contained" onClick={voltandoListaTasks}>Cancelar</Button>
-                        <Button type="submit" variant="contained">Add Task</Button>
+                    <Box display="flex" flexDirection="row" gap="10vw" justifyContent="center" alignItems="center" sx={{"&:hover": {backgroundColor: "inherit"}, "&:active": { backgroundColor: "inherit" }, "&:focus": { backgroundColor: "inherit" }}}>
+                        <Button variant="contained" sx={{backgroundColor: "#00f285", color:"#6f6dfb"}} onClick={voltandoListaTasks}>Cancelar</Button>
+                        <Button type="submit" sx={{backgroundColor: "#00f285", color:"#6f6dfb"}} variant="contained">Add Task</Button>
                     </Box>
                 </Stack>
             </form>

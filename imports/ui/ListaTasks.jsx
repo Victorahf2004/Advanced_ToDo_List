@@ -15,6 +15,7 @@ import Stack from "@mui/material/Stack";
 import ListItem from "@mui/material/ListItem";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import Tooltip from "@mui/material/Tooltip";
 
 export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
     
@@ -38,29 +39,31 @@ export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout,
                     <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
             <Stack direction={"column"} spacing={8} justifyContent={"center"} alignItems={"center"}>
-            <Typography variant="h4" gutterBottom>
-                Tarefas Cadastradas
-            </Typography>
-            <Stack direction={"column"} spacing={4} width={"80%"}>
-            <List>
-                {tasks.map((task) => (
-                    <Task
-                    key={task._id}
-                    dataEntrega={task.dataEntrega}
-                    setSaindo={setSaindo}
-                    identificadorTask={task._id} 
-                    nomeDaTarefa={task.nomeTask}
-                    nomeDoUsuario={task.userName}
-                    onDelete={handleDelete}
-                    />
-                ))}
-            </List>
-            <Box display="flex" justifyContent="flex-end">
-                <Fab color="primary" size={"small"} onClick={goToAddTask}>
-                    <AddIcon />
-                </Fab>
-            </Box>
-            </Stack>
+                <Typography variant="h4" sx={{color: "white"}} gutterBottom>
+                    Tarefas Cadastradas
+                </Typography>
+                <Stack direction={"column"} spacing={4} width={"80%"}>
+                    <List sx={{backgroundColor: "#00f285"}}>
+                        {tasks.map((task) => (
+                            <Task
+                            key={task._id}
+                            dataEntrega={task.dataEntrega}
+                            setSaindo={setSaindo}
+                            identificadorTask={task._id} 
+                            nomeDaTarefa={task.nomeTask}
+                            nomeDoUsuario={task.userName}
+                            onDelete={handleDelete}
+                            />
+                        ))}
+                    </List>
+                    <Box display="flex" justifyContent="flex-end">
+                        <Tooltip title="Adicionar Task">
+                            <Fab color="primary" sx={{backgroundColor: "#00f285", color: "#6f6dfb"}} size={"small"} onClick={goToAddTask}>
+                                <AddIcon />
+                            </Fab>
+                        </Tooltip>
+                    </Box>
+                </Stack>
             </Stack>
         </>
     )

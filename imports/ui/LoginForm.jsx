@@ -44,11 +44,12 @@ export const LoginForm = ({username, setUsername, password, setPassword, estado,
         }
     };
     return (
+        <>
+        <Typography variant="h4" sx={{color: "white"}} gutterBottom>
+                    Por favor, faça seu login ou crie seu usuário
+        </Typography>
         <Card sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center"}}>
             <CardContent>
-                <Typography variant="h4" gutterBottom>
-                    Por favor, faça seu login ou crie seu usuário
-                </Typography>
                 {estado == "erro" && (
                     <Alert severity="error" onClose={() => {setEstado("normal");}}>Erro no Login!</Alert>
                 )}
@@ -68,7 +69,7 @@ export const LoginForm = ({username, setUsername, password, setPassword, estado,
                 <Button variant="contained" onClick={irParaCriarUsuario}>Criar Usuário</Button>
             </CardActions>
         </Card>
-        
+    </>
     );
 };
 
