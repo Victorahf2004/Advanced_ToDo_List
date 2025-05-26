@@ -13,6 +13,8 @@ import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const TelasPerfil = ({saindo, setSaindo}) => {
     const camposVisiveis = {
@@ -27,6 +29,7 @@ export const TelasPerfil = ({saindo, setSaindo}) => {
     const chavesVisiveis = Object.keys(camposVisiveis);
     const [alteracaoPerfil, setAlteracaoPerfil] = useState("");
     const [value, setValue] = useState(0);
+    const [openLoading, setOpenLoading] = useState(false);
 
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
@@ -35,15 +38,16 @@ export const TelasPerfil = ({saindo, setSaindo}) => {
         if (saindo){
             setValue(0);
             setAlteracaoPerfil("");
+            setOpenLoading(false);
             setSaindo(false);
         }
     }, [saindo])
 
     if (!user) {
         return (
-        <Typography variant="h4">
-            Loading...
-        </Typography>
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         )
     }
 
@@ -91,7 +95,7 @@ export const TelasPerfil = ({saindo, setSaindo}) => {
                 </Tabs> 
                 
                 {value == 0? (
-                    <VisualizacaoInfoPerfil camposVisiveis={camposVisiveis} />
+                    <VisualizacaoInfoPerfil saindo={saindo} setSaindo={setSaindo} camposVisiveis={camposVisiveis} />
                 ): (
                     <EdicaoInfoPerfil saindo={saindo} setSaindo={setSaindo} alteracaoPerfil={alteracaoPerfil} setAlteracaoPerfil={setAlteracaoPerfil} chavesVisiveis={chavesVisiveis} camposVisiveis={camposVisiveis} />
                 )}

@@ -12,23 +12,34 @@ import { Routes, Route, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const TelaTasks = ({saindo, setSaindo, erroLogout, setErroLogout, logout}) => {
     const user = useTracker(() => Meteor.user());
+    
     const [alteracaoSucesso, setAlteracaoSucesso] = useState("");
+    const [openLoading, setOpenLoading] = useState(false);
+    
     const isLoading = useSubscribe("tasks");
     let navigate = useNavigate();
+    
     useEffect(() => {
         if (saindo) {
             setErroLogout(false);
             setAlteracaoSucesso("");
+            setOpenLoading(false);
             setSaindo(false);
         }
     }, [saindo])
 
     const tasks = useTracker(() => {
         if (!user) {
-            return [];
+            return (
+                <Backdrop open={openLoading}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+            );
         }
         else {
             return TasksCollection.find({}, { sort: {createdAt: -1} }).fetch();
@@ -36,9 +47,11 @@ export const TelaTasks = ({saindo, setSaindo, erroLogout, setErroLogout, logout}
       });
     
     if (isLoading()){
-        return <Typography variant="h4">
-            Loading...
-            </Typography>
+        return (
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        );
     }
 
     const goToAddTask = () => {

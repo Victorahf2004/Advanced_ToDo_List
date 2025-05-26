@@ -1,8 +1,14 @@
-body {
-  /* padding: 10px; */
-  height: "100%";
-  width: "100%";
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+
+html {
+  background: linear-gradient(135deg, #6f6dfb, #00e4d0);
+}
+
+body {
+  background: transparent;
 }

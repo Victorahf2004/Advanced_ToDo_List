@@ -24,11 +24,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Fab from "@mui/material/Fab";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, setSaindo, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
     let navigate = useNavigate();
     const [openDrawer, setOpenDrawer] = useState(false);
+    const [openLoading, setOpenLoading] = useState(false);
 
     useEffect(() => {
         if(saindo) {
@@ -40,8 +43,9 @@ export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, set
 
     if (!user) {
         return (
-            <div>
-            </div>
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         )
     }
 

@@ -22,6 +22,8 @@ import Stack from "@mui/material/Stack";
 import DoneIcon from '@mui/icons-material/Done';
 import Fab from "@mui/material/Fab";
 import Tooltip from "@mui/material/Tooltip";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const EdicaoInfoPerfil = ({ saindo, setSaindo, alteracaoPerfil, setAlteracaoPerfil, chavesVisiveis, camposVisiveis }) => {
 
@@ -36,8 +38,10 @@ export const EdicaoInfoPerfil = ({ saindo, setSaindo, alteracaoPerfil, setAltera
         empresa_trab: "",
         foto: "",
     };
-    const [inputs, setInputs] = useState(valoresIniciais);
     
+    const [inputs, setInputs] = useState(valoresIniciais);
+    const [openLoading, setOpenLoading] = useState(false);
+
     const reset = (tipo, chave) => {
         if (tipo == "Parcial") {
             setInputs((prev) => ({
@@ -59,15 +63,16 @@ export const EdicaoInfoPerfil = ({ saindo, setSaindo, alteracaoPerfil, setAltera
     useEffect(() => {
         if (saindo) {
             reset("Completo", false);
+            setOpenLoading(false);
             setSaindo(false);
         }
     }, [saindo]);
 
     if (!user){
         return (
-        <Typography variant="h4">
-            Loading...
-        </Typography>
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         )
     }
 

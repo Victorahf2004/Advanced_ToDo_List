@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTracker, useSubscribe } from 'meteor/react-meteor-data';
 import { Meteor } from "meteor/meteor";
@@ -24,10 +24,13 @@ import Card from "@mui/material/Card";
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Grid from "@mui/material/Grid";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
-export const DashBoard = ({openTasks}) => {
+export const DashBoard = ({saindo, setSaindo, openTasks}) => {
     
     const isLoading = useSubscribe("tasks");
+    const [openLoading, setOpenLoading] = useState(false);
 
     const tasksCadastradas = useTracker(() => {
         return TasksCollection.find({ situacao: "Cadastrada"}).count();
@@ -41,10 +44,19 @@ export const DashBoard = ({openTasks}) => {
         return TasksCollection.find({ situacao: "Concluída"}).count();
     })
 
+    useEffect(() => {
+        if (saindo) {
+            setOpenLoading(false);
+            setSaindo(false);
+        }
+    }, [saindo])
+
     if (isLoading()){
-        return <Typography variant="h4">
-            Loading...
-            </Typography>
+        return (
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        )
     }
 
     const nomes_numeros = {

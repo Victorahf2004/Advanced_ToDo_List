@@ -6,6 +6,7 @@ import { TelasLogin } from "./TelasLogin";
 import { useTracker } from "meteor/react-meteor-data";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 export const App = () => {
   const user = useTracker(() => Meteor.user());
@@ -30,10 +31,12 @@ export const App = () => {
     <>
     {alertOpen && (
       <>
-      <Alert severity="error" onClose={voltarPraTelaDeLogin} >
-        Faça Login para poder acessar o app!
-      </Alert>
-      <Button variant="contained" onClick={voltarPraTelaDeLogin}>Fazer Login</Button>
+        <Alert severity="error" onClose={voltarPraTelaDeLogin} >
+            Faça Login para poder acessar o app!
+          </Alert>
+        <Box sx={{background: "linear-gradient(135deg, #6f6dfb, #00e4d0)", height: "100vh", width: "100vw"}} display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} gap={"8vh"}>
+          <Button variant="contained" onClick={voltarPraTelaDeLogin}>Fazer Login</Button>
+        </Box>
       </>
     )}
     {!alertOpen && (

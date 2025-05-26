@@ -20,6 +20,8 @@ import Stack from "@mui/material/Stack";
 import DoneIcon from '@mui/icons-material/Done';
 import Fab from "@mui/material/Fab";
 import Tooltip from "@mui/material/Tooltip";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTipo, chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposAlteraveis, chavesAlteraveis, alteracaoSucesso, setAlteracaoSucesso }) => {
 
@@ -39,10 +41,12 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
         tipo: "",
         dataEntrega: "",
     };
+    
     const [inputs, setInputs] = useState(valoresIniciais);
     const [chipsVariantsSemSalvar, setChipsVariantsSemSalvar] = useState(chipsVariants);
     const [chipsVariantsTipoTaskSemSalvar, setChipsVariantsTipoTaskSemSalvar] = useState(chipsVariantsTipoTask)
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [openLoading, setOpenLoading] = useState(false);
 
     useEffect(() => {
         setChipsVariantsSemSalvar(chipsVariants);
@@ -75,20 +79,16 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
             reset("Completo", false)
             setAlteracaoSucesso("");
             setIsSubmitting(false);
+            setOpenLoading(false);
             setSaindo(false);
         }
     }, [saindo])
 
-    if ((!task) || (isLoading())){
-        return <Typography variant="h4">
-            Loading...
-            </Typography>
-    }
-
-    if (isSubmitting) {
-        return <Typography variant="h4">
-            Loading...
-        </Typography>
+    if ((!task) || (isLoading()) || (isSubmitting)){
+        return ( 
+        <Backdrop open={openLoading}>
+            <CircularProgress color="inherit" />
+        </Backdrop>);
     }
 
     const handleChange = (e, chave) => {

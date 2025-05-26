@@ -51,7 +51,7 @@ export const TelasLogado = () => {
         <Routes>
             <Route element={<TelasLogadoLayout openPerfil={openPerfil} openTasks={openTasks} openHome={openHome} logout={logout} saindo={saindo} setSaindo={setSaindo} erroLogout={erroLogout} setErroLogout={setErroLogout} />}>
                 <Route path="/" element={<Navigate to="Start" />} />
-                <Route path="Start" element={<TelaBoasVindas openTasks={openTasks} erroLogout={erroLogout} setErroLogout={setErroLogout} />} />
+                <Route path="Start" element={<TelaBoasVindas saindo={saindo} setSaindo={setSaindo} openTasks={openTasks} erroLogout={erroLogout} setErroLogout={setErroLogout} />} />
                 <Route path="ListaTasks/*" element={<TelaTasks saindo={saindo} setSaindo={setSaindo} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} />} />
                 <Route path="Perfil" element={<TelasPerfil saindo={saindo} setSaindo={setSaindo}/>} />
             </Route>

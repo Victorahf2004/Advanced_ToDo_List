@@ -50,15 +50,12 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
             return TasksCollection.findOne(taskId)
     });
 
-    const taskUserId = task.userId;
-    const userIdAtual = user._id;
-
     const voltarParaListaTasks = () => {
         navigate("/Logado/ListaTasks");
         setValue(0);
         setPodeEditar(true);
     }
-    
+
     useEffect(() => {
         if(saindo) {
             setValue(0);
@@ -70,11 +67,16 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
     if (!task) {
         return (
             <>
-                <Alert severity="error" onClose={voltarParaListaTasks}>Task não encontrada!</Alert>
-                <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para a Lista de Tasks</Button>
+                <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} gap={"8vh"}>
+                    <Alert severity="error" onClose={voltarParaListaTasks}>Task não encontrada!</Alert>
+                    <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para a Lista de Tasks</Button>
+                </Box>
             </>
             )
         }
+    
+    const taskUserId = task.userId;
+    const userIdAtual = user._id;
 
     const handleChange = (e, newValue) => {
         if (taskUserId !== userIdAtual){
@@ -239,7 +241,7 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
                 </Tabs> 
                 
                 {value == 0? (
-                    <VisualizacaoTask taskId={taskId} camposVisiveis={camposVisiveis} />
+                    <VisualizacaoTask saindo={saindo} setSaindo={setSaindo} taskId={taskId} camposVisiveis={camposVisiveis} />
                 ): (
                     <EdicaoTask saindo={saindo} setSaindo={setSaindo} chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposAlteraveis={camposAlteraveis} chavesAlteraveis={chavesAlteraveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
                 )}

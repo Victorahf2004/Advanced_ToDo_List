@@ -30,19 +30,19 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
     }
 
     const vendoSeDataEhHoje = (data) => {
-      const hoje = new Date();
-      const dataHoje = hoje.toLocaleDateString();
-      const [anoHoje, mesHoje, diaHoje] = dataHoje.split("-");
-      let [anoData, mesData, diaData] = data.split("-");
-      
-      condicao = (anoData == anoHoje && mesData == mesHoje && diaData == diaHoje);
-      if (condicao) {
-        return true;
-      }
+        const hoje = new Date();
+        const dataHoje = hoje.toLocaleDateString();
+        const [anoHoje, mesHoje, diaHoje] = dataHoje.split("-");
+        let [anoData, mesData, diaData] = data.split("-");
+        
+        condicao = (anoData == anoHoje && mesData == mesHoje && diaData == diaHoje);
+        if (condicao) {
+            return true;
+        }
 
-      else {
-        return false;
-      }
+        else {
+            return false;
+        }
     }
 
     const ajustarDisplay = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
@@ -22,15 +22,25 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from "@mui/material/Tooltip";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
-export const TelaBoasVindas = ({openTasks, erroLogout, setErroLogout}) => {
+export const TelaBoasVindas = ({saindo, setSaindo, openTasks, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
+    const [openLoading, setOpenLoading] = useState(false);
+
+    useEffect(() => {
+        if (saindo) {
+            setOpenLoading(false);
+            setSaindo(false);
+        }
+    }, [saindo])
 
     if (!user) {
         return (
-            <div>
-                Loading...
-            </div>
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         )
     }
 
@@ -43,7 +53,7 @@ export const TelaBoasVindas = ({openTasks, erroLogout, setErroLogout}) => {
             <Typography variant="h3" sx={{color: "white", display: "flex", justifyContent:"center", alignItems: "center", overflow: "hidden"}} gutterBottom>
                 Seja Bem-Vindo, {user.username}!!!
             </Typography>
-            <DashBoard openTasks={openTasks} />
+            <DashBoard saindo={saindo} setSaindo={setSaindo} openTasks={openTasks} />
         </Stack>
         </>
     )

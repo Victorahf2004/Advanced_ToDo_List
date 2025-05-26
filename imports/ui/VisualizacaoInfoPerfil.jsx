@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { useParams } from "react-router-dom";
 import { TasksCollection } from '/imports/api/TasksCollection';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 import { VisualizandoFotoPerfil } from "./VisualizandoFotoPerfil";
@@ -20,15 +20,27 @@ import Typography from "@mui/material/Typography";
 import Avatar from '@mui/material/Avatar';
 import ButtonBase from '@mui/material/ButtonBase';
 import Stack from "@mui/material/Stack";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
-export const VisualizacaoInfoPerfil = ({camposVisiveis}) => {
+export const VisualizacaoInfoPerfil = ({saindo, setSaindo, camposVisiveis}) => {
     
     const user = useTracker(() => Meteor.user());
+    const [openLoading, setOpenLoading] = useState(false);
+
+    useEffect(() => {
+        if (saindo) {
+            setOpenLoading(false);
+            setSaindo(false);
+        }
+    }, [saindo])
 
     if (!user){
-        return <Typography variant="h3">
-            Loading...
-            </Typography>
+        return (
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        )
     }
 
     return (
