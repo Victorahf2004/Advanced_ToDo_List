@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
@@ -21,26 +21,27 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from "@mui/material/Tooltip";
 import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
-export const TelaBoasVindas = ({openTasks, erroLogout, setErroLogout}) => {
+export const TelaBoasVindas = ({saindo, setSaindo, openTasks, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
+    const [openLoading, setOpenLoading] = useState(false);
+
+    useEffect(() => {
+        if (saindo) {
+            setOpenLoading(false);
+            setSaindo(false);
+        }
+    }, [saindo])
 
     if (!user) {
         return (
-            <div>
-                Loading...
-            </div>
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         )
-    }
-
-    const ajustarDisplay = (parametro) => {
-        let tamanho = parametro.length;
-        if (tamanho >= 14) {
-            return ((parametro.slice(0, 15)) + "... ");
-        }
-        else {
-            return parametro;
-        }
     }
 
     return (
@@ -48,10 +49,12 @@ export const TelaBoasVindas = ({openTasks, erroLogout, setErroLogout}) => {
         {erroLogout && (
                     <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
-        <Typography variant="h3" gutterBottom>
-            Seja Bem-Vindo, {ajustarDisplay(user.username)}!!!
-        </Typography>
-        <DashBoard openTasks={openTasks} />
+        <Stack direction={"column"} spacing={8} justifyContent={"center"} alignItems={"center"}>
+            <Typography variant="h3" sx={{color: "white", display: "flex", justifyContent:"center", alignItems: "center", overflow: "hidden"}} gutterBottom>
+                Seja Bem-Vindo, {user.username}!!!
+            </Typography>
+            <DashBoard saindo={saindo} setSaindo={setSaindo} openTasks={openTasks} />
+        </Stack>
         </>
     )
 }

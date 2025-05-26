@@ -6,6 +6,9 @@ import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
 export const UserCreationForm = ({username, setUsername, password, setPassword, estado, setEstado, reset}) => {
     let navigate = useNavigate();
@@ -32,29 +35,26 @@ export const UserCreationForm = ({username, setUsername, password, setPassword, 
         {estado == "erro" && (
             <Alert severity="error" onClose={() => {setEstado("normal");}} > Erro ao criar usuário!</Alert>
         )}
-        <form onSubmit={submit} className="login-form">
-            <Typography variant="h3" gutterBottom>
-                Criando Novo Usuário
-            </Typography>
-            <Box>
-            Digite o username que deseja: <br></br>
+        <Typography variant="h3" sx={{color: "white"}} gutterBottom>
+            Criando Novo Usuário
+        </Typography>
+        <Card sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center"}}>
+            <CardContent>
+                <form style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center", gap: "1rem"}} onSubmit={submit} className="login-form">
 
-            <TextField variant="filled" type="text" placeholder="Username"
-            name="username" value={username} required onChange={(e) => setUsername(e.target.value)} />
+                    <TextField variant="filled" type="text" placeholder="Novo Username"
+                    name="username" value={username} required onChange={(e) => setUsername(e.target.value)} />
+                
+                    <TextField variant="filled" type="password" placeholder="Nova Password" value={password} required
+                    onChange={(e) => setPassword(e.target.value)} />
 
-            </Box>
-
-            <Box>
-            Digite a senha que deseja: <br></br>
-        
-            <TextField variant="filled" type="password" placeholder="Password" value={password} required
-            onChange={(e) => setPassword(e.target.value)} />
-            </Box>
-
-            <Button variant="contained" type="submit">Create User</Button>
-            <br></br>
-            <Button variant="contained" onClick={voltarPraTelaInicial}>Voltar à Tela de Login</Button>
-        </form>
+                    <Button variant="contained" type="submit">Create User</Button>
+                </form>
+            </CardContent>
+            <CardActions>
+                <Button variant="contained" onClick={voltarPraTelaInicial}>Voltar à Tela de Login</Button>
+            </CardActions>
+        </Card>
         </>
     );
 }

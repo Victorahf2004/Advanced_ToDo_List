@@ -12,6 +12,9 @@ import { useNavigate} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const TelasPerfil = ({saindo, setSaindo}) => {
     const camposVisiveis = {
@@ -26,6 +29,7 @@ export const TelasPerfil = ({saindo, setSaindo}) => {
     const chavesVisiveis = Object.keys(camposVisiveis);
     const [alteracaoPerfil, setAlteracaoPerfil] = useState("");
     const [value, setValue] = useState(0);
+    const [openLoading, setOpenLoading] = useState(false);
 
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
@@ -34,15 +38,16 @@ export const TelasPerfil = ({saindo, setSaindo}) => {
         if (saindo){
             setValue(0);
             setAlteracaoPerfil("");
+            setOpenLoading(false);
             setSaindo(false);
         }
     }, [saindo])
 
     if (!user) {
         return (
-        <Typography variant="h4">
-            Loading...
-        </Typography>
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         )
     }
 
@@ -53,6 +58,9 @@ export const TelasPerfil = ({saindo, setSaindo}) => {
         setAlteracaoPerfil("");
     }
 
+    const customTextColor = '#4A148C'; 
+    const customIndicatorColor = "#00f285";
+
     return (
         <>
             {alteracaoPerfil == "Erro em salvar alterações" && (
@@ -61,25 +69,37 @@ export const TelasPerfil = ({saindo, setSaindo}) => {
             {alteracaoPerfil == "sucessoEditandoPerfil" && (
                 <Alert severity="success" onClose={() => setAlteracaoPerfil("")} > As informações do seu perfil foram alteradas com sucesso!</Alert>
             )}
-            <Box>
-                <Typography variant="h4">
-                    Informações Usuário: {user.username}
-                </Typography>
-            </Box>
-            <Tabs value={value} onChange={handleChange}>
-                <Tab icon={<VisibilityIcon />} label="Visualização" iconPosition="end" />
-                <Tab icon={<EditNoteIcon />} label="Edição" iconPosition="end" />
-            </Tabs> 
-            
-            <Box hidden={value !== 0} >
-                <VisualizacaoInfoPerfil camposVisiveis={camposVisiveis} />
-            </Box>
-
-            <Box hidden={value !== 1} >
-                <>
-                <EdicaoInfoPerfil saindo={saindo} setSaindo={setSaindo} alteracaoPerfil={alteracaoPerfil} setAlteracaoPerfil={setAlteracaoPerfil} chavesVisiveis={chavesVisiveis} camposVisiveis={camposVisiveis} />
-                </>
-            </Box>
+            <Stack direction={"column"} justifyContent={"center"} alignItems={"center"}>
+                <Box>
+                    <Typography variant="h4" color="white">
+                        Informações Usuário: {user.username}
+                    </Typography>
+                </Box>
+                <Tabs value={value} onChange={handleChange} sx={{
+          '& .MuiTabs-indicator': {
+            backgroundColor: customIndicatorColor,
+          },
+          '& .MuiTab-root': {
+            color: customTextColor,
+            '&.Mui-selected': {
+              color: customIndicatorColor,
+            },
+            '&:hover': {
+              color: customIndicatorColor,
+              opacity: 0.8,
+            },
+          },
+        }}>
+                    <Tab icon={<VisibilityIcon />} label="Visualização" iconPosition="end" />
+                    <Tab icon={<EditNoteIcon />} label="Edição" iconPosition="end" />
+                </Tabs> 
+                
+                {value == 0? (
+                    <VisualizacaoInfoPerfil saindo={saindo} setSaindo={setSaindo} camposVisiveis={camposVisiveis} />
+                ): (
+                    <EdicaoInfoPerfil saindo={saindo} setSaindo={setSaindo} alteracaoPerfil={alteracaoPerfil} setAlteracaoPerfil={setAlteracaoPerfil} chavesVisiveis={chavesVisiveis} camposVisiveis={camposVisiveis} />
+                )}
+            </Stack>
         </>
     )
 }

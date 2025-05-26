@@ -23,11 +23,15 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Fab from "@mui/material/Fab";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, setSaindo, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
     let navigate = useNavigate();
     const [openDrawer, setOpenDrawer] = useState(false);
+    const [openLoading, setOpenLoading] = useState(false);
 
     useEffect(() => {
         if(saindo) {
@@ -39,8 +43,9 @@ export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, set
 
     if (!user) {
         return (
-            <div>
-            </div>
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         )
     }
 
@@ -53,7 +58,7 @@ export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, set
 
     const listaDrawer = (
             <Box onClick={() => toggleDrawer(false)}>
-            <List>
+            <List sx={{backgroundColor: "white"}}>
                 <Stack direction="column" spacing={1}>
                     <ListItem>
                             <Avatar alt="Foto de perfil" src={user.profile["foto"]} />
@@ -62,7 +67,7 @@ export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, set
                         <React.Fragment key={i}>
                             {atributo? (
                                 <ListItem>
-                                        <ListItemText primary={atributo} />
+                                        <ListItemText primary={atributo} sx={{color: "#0078D7"}} />
                                 </ListItem>
                             ): (
                                 <>
@@ -76,36 +81,36 @@ export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, set
                 <ListItem>
                     <ListItemButton onClick={openHome}>
                         <ListItemIcon>
-                            <HomeIcon />
+                            <HomeIcon sx={{color: "#00e4d0"}}/>
                         </ListItemIcon>
-                        <ListItemText primary="Home" />
+                        <ListItemText primary="Home" sx={{color: "#0078D7"}} />
                     </ListItemButton>
                 </ListItem>
                 <Divider />
                 <ListItem>
                     <ListItemButton onClick={openPerfil}>
                         <ListItemIcon>
-                            <PersonIcon />
+                            <PersonIcon sx={{color: "#00e4d0"}}/>
                         </ListItemIcon>
-                        <ListItemText primary="Perfil" />
+                        <ListItemText primary="Perfil" sx={{color: "#0078D7"}} />
                     </ListItemButton>
                 </ListItem>
                 <Divider />
                 <ListItem>
                     <ListItemButton onClick={openTasks}>
                         <ListItemIcon>
-                            <AssignmentIcon />
+                            <AssignmentIcon sx={{color: "#00e4d0"}}/>
                         </ListItemIcon>
-                        <ListItemText primary="Tasks" />
+                        <ListItemText primary="Tasks" sx={{color: "#0078D7"}} />
                     </ListItemButton>
                 </ListItem>
                 <Divider />
                 <ListItem>
                     <ListItemButton onClick={logout}>
                         <ListItemIcon>
-                            <LogoutIcon />
+                            <LogoutIcon sx={{color: "red"}}/>
                         </ListItemIcon>
-                        <ListItemText primary="Log Out" />
+                        <ListItemText primary="Log Out" sx={{color: "#0078D7"}} />
                     </ListItemButton>
                 </ListItem>
             </List>
@@ -114,14 +119,19 @@ export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, set
 
     return (
         <>
+        <Box justifyContent={"flex-start"}>
         <Tooltip title="Menu">
-            <IconButton onClick={() => toggleDrawer(true)}>
-                <MenuIcon />
-            </IconButton>
+            <Fab sx={{backgroundColor: '#00e4d0'}} onClick={() => toggleDrawer(true)}>
+                <MenuIcon fontSize="large" sx={{ color: " #6f6dfb" }}/>
+            </Fab>
         </Tooltip>
-        <Drawer open={openDrawer} onClose={() => toggleDrawer(false)}>
+        <Drawer sx={{'& .MuiDrawer-paper': {
+                            background: "linear-gradient(135deg, #6f6dfb, #00e4d0)",
+                        },
+            }} open={openDrawer} onClose={() => toggleDrawer(false)}>
             {listaDrawer}
         </Drawer>
+        </Box>
         </>
     )
 }

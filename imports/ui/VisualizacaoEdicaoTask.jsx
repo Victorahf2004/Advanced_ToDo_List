@@ -15,6 +15,7 @@ import { Task } from "./Task";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 
 export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, setAlteracaoSucesso }) => {
     const camposVisiveis = {
@@ -49,15 +50,12 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
             return TasksCollection.findOne(taskId)
     });
 
-    const taskUserId = task.userId;
-    const userIdAtual = user._id;
-
     const voltarParaListaTasks = () => {
         navigate("/Logado/ListaTasks");
         setValue(0);
         setPodeEditar(true);
     }
-    
+
     useEffect(() => {
         if(saindo) {
             setValue(0);
@@ -69,11 +67,16 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
     if (!task) {
         return (
             <>
-                <Alert severity="error" onClose={voltarParaListaTasks}>Task não encontrada!</Alert>
-                <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para a Lista de Tasks</Button>
+                <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} gap={"8vh"}>
+                    <Alert severity="error" onClose={voltarParaListaTasks}>Task não encontrada!</Alert>
+                    <Button variant="contained" onClick={voltarParaListaTasks}>Voltar para a Lista de Tasks</Button>
+                </Box>
             </>
             )
         }
+    
+    const taskUserId = task.userId;
+    const userIdAtual = user._id;
 
     const handleChange = (e, newValue) => {
         if (taskUserId !== userIdAtual){
@@ -203,28 +206,46 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
             }
         }
     }
+
+    const customTextColor = '#4A148C'; 
+    const customIndicatorColor = "#00f285";
+
     return (
         <>
             {!podeEditar && (
                 <Alert severity="error" onClose={() => setPodeEditar(true)}>Você não pode editar essa task, por que não é o criador dela!</Alert>
             )}
-            <Box>
-                <Typography variant="h4">
-                    Informações tarefa: {task.nomeTask}
-                </Typography>
-            </Box>
-            <Tabs value={value} onChange={handleChange}>
-                <Tab icon={<VisibilityIcon />} label="Visualização" iconPosition="end" />
-                <Tab icon={<EditNoteIcon />} label="Edição" iconPosition="end" />
-            </Tabs> 
-            
-            <Box hidden={value !== 0} >
-                <VisualizacaoTask taskId={taskId} camposVisiveis={camposVisiveis} />
-            </Box>
-
-            <Box hidden={value !== 1} >
-                <EdicaoTask saindo={saindo} setSaindo={setSaindo} chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposAlteraveis={camposAlteraveis} chavesAlteraveis={chavesAlteraveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
-            </Box>
+            <Stack direction={"column"} justifyContent={"center"} alignItems={"center"}>
+                <Box>
+                    <Typography variant="h4" color="white">
+                        Informações tarefa: {task.nomeTask}
+                    </Typography>
+                </Box>
+                <Tabs value={value} onChange={handleChange} sx={{
+          '& .MuiTabs-indicator': {
+            backgroundColor: customIndicatorColor,
+          },
+          '& .MuiTab-root': {
+            color: customTextColor, 
+            '&.Mui-selected': {
+              color: customIndicatorColor, 
+            },
+            '&:hover': {
+              color: customIndicatorColor,
+              opacity: 0.8,
+            },
+          },
+        }}>
+                    <Tab icon={<VisibilityIcon />} label="Visualização" iconPosition="end" />
+                    <Tab icon={<EditNoteIcon />} label="Edição" iconPosition="end" />
+                </Tabs> 
+                
+                {value == 0? (
+                    <VisualizacaoTask saindo={saindo} setSaindo={setSaindo} taskId={taskId} camposVisiveis={camposVisiveis} />
+                ): (
+                    <EdicaoTask saindo={saindo} setSaindo={setSaindo} chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposAlteraveis={camposAlteraveis} chavesAlteraveis={chavesAlteraveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
+                )}
+            </Stack>
         </>
     )
 }

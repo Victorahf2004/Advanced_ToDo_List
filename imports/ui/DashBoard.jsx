@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTracker, useSubscribe } from 'meteor/react-meteor-data';
 import { Meteor } from "meteor/meteor";
@@ -24,10 +24,13 @@ import Card from "@mui/material/Card";
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Grid from "@mui/material/Grid";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
-export const DashBoard = ({openTasks}) => {
+export const DashBoard = ({saindo, setSaindo, openTasks}) => {
     
     const isLoading = useSubscribe("tasks");
+    const [openLoading, setOpenLoading] = useState(false);
 
     const tasksCadastradas = useTracker(() => {
         return TasksCollection.find({ situacao: "Cadastrada"}).count();
@@ -41,10 +44,19 @@ export const DashBoard = ({openTasks}) => {
         return TasksCollection.find({ situacao: "Concluída"}).count();
     })
 
+    useEffect(() => {
+        if (saindo) {
+            setOpenLoading(false);
+            setSaindo(false);
+        }
+    }, [saindo])
+
     if (isLoading()){
-        return <Typography variant="h4">
-            Loading...
-            </Typography>
+        return (
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        )
     }
 
     const nomes_numeros = {
@@ -53,29 +65,29 @@ export const DashBoard = ({openTasks}) => {
         "Total de Tarefas Concluídas": tasksConcluidas,
     };
 
-    const cores = ["red", "yellow", "green"];
+    const cores = ["red", "yellow", "#00f285"];
     const cards = (
         <>
-        <Grid container spacing={2} columns={12}>
+        <Grid container spacing={2} columns={12} sx={{maxWidth: "90vw"}}>
         {Object.entries(nomes_numeros).map(([nome, numero], i) => (
             <Grid item key={nome} size={6}>
-                    <Card variant="outlined" sx={{height: "100%"}}>
-                        <CardContent>
-                            <Typography variant="h4" gutterBottom>
-                                {nome}
-                            </Typography>
-                            <Typography sx={{ color: cores[i]}} variant="h3">
-                                {numero}
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                <Card variant="outlined" sx={{ backgroundColor: "white", height: "100%" }}>
+                    <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent:"center", alignItems:"center"}}>
+                        <Typography variant="h4" sx={{color: "#0078D7"}} gutterBottom>
+                            {nome}
+                        </Typography>
+                        <Typography sx={{ color: cores[i]}} variant="h3">
+                            {numero}
+                        </Typography>
+                    </CardContent>
+                </Card>
             </Grid>
         ))}
             <Grid item size={6}>
-                <Card variant="outlined" sx={{height: "100%"}}>
+                <Card variant="outlined" sx={{ backgroundColor: "white", height: "100%", display: "flex", justifyContent:"center"}}>
                     <CardActions>
                         <Button onClick={openTasks}>
-                            <Typography variant="h6">
+                            <Typography variant="h6" sx={{color: "#0078D7"}}>
                                 Ver Lista de Tarefas
                             </Typography>
                         </Button>
@@ -90,13 +102,5 @@ export const DashBoard = ({openTasks}) => {
         <>
         {cards}
         </>
-        // <>
-        // <Grid container spacing={2}>
-        //     <Grid item xs={12}><div style={{ background: "lightblue" }}>Item 1</div></Grid>
-        //     <Grid item xs={12}><div style={{ background: "lightgreen" }}>Item 2</div></Grid>
-        //     <Grid item xs={12}><div style={{ background: "lightcoral" }}>Item 3</div></Grid>
-        //     <Grid item xs={12}><div style={{ background: "lightyellow" }}>Item 4</div></Grid>
-        // </Grid>
-        // </>
     )
 }

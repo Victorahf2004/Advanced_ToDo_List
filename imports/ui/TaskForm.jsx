@@ -11,19 +11,25 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Chip from "@mui/material/Chip";
 import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 export const TaskForm = ({ saindo, setSaindo }) => {
     const camposInserir = {
             nomeTask: "nome",
             descricao: "Descrição",
             tipo: "Tipo",
+            dataEntrega: "Data de Entrega",
         };
     
     const valoresIniciais = {
         nomeTask: "",
         descricao: "",
         tipo: "Pública",
+        dataEntrega: "",        
     };
+
     let navigate = useNavigate();
     const arrayVariants = ["outlined", "outlined"];
 
@@ -34,7 +40,12 @@ export const TaskForm = ({ saindo, setSaindo }) => {
     const reset = () => {
         const valoresResetados = {};
         for (const chave of Object.keys(valoresIniciais)) {
-            valoresResetados[chave] = "";
+            if (chave == "tipo"){
+                valoresResetados[chave] = "Pública";
+            }
+            else {
+                valoresResetados[chave] = "";
+            }
         }
         setInputs(valoresResetados);
     }
@@ -48,6 +59,11 @@ export const TaskForm = ({ saindo, setSaindo }) => {
         }
     }, [saindo])
     
+    const voltandoListaTasks = () => {
+        navigate("/Logado/ListaTasks");
+        setSaindo(true);
+    }
+
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
         setInputs((prev) => ({
@@ -79,6 +95,26 @@ export const TaskForm = ({ saindo, setSaindo }) => {
         return true;
     }
 
+    const transformandoInputDataEmDate = () => {
+        atualizacoes = {};
+        for (const chave of Object.keys(valoresIniciais)){
+            let elemento = inputs[chave];
+            if (chave == "dataEntrega") {
+                if (elemento == ""){
+                    atualizacoes[chave] = elemento;
+                }
+                else {
+                    atualizacoes[chave] = new Date(elemento);
+                }
+            }
+            
+            else {
+                atualizacoes[chave] = elemento;
+            }
+        }
+        return atualizacoes;
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -87,7 +123,8 @@ export const TaskForm = ({ saindo, setSaindo }) => {
         }
 
         else {
-            await Meteor.callAsync("tasks.insert", inputs);
+            atualizacoes = transformandoInputDataEmDate();
+            await Meteor.callAsync("tasks.insert", atualizacoes);
             navigate("/Logado/ListaTasks");
             reset();
             setChipsVariants(arrayVariants);
@@ -100,30 +137,52 @@ export const TaskForm = ({ saindo, setSaindo }) => {
         {alerta == 1 && (
             <Alert severity="error" onClose={() => setAlerta(0)}>Para criar uma task, é obrigatório preencher, pelo menos, o nome dela</Alert>
         )}
-        <form onSubmit={handleSubmit}>
-            <List>
-                {Object.entries(camposInserir).map(([key, label]) => (
-                    <React.Fragment key={key}>
-                    <ListItem>
-                        <ListItemText primary={label} />
-                        {key == "tipo"? (
-                            <>
-                                <Chip label="Pública" variant={chipsVariants[0]} onClick={() => setandoTipoTask("Pública")} />
-                                <Chip label="Pessoal" variant={chipsVariants[1]} onClick={() => setandoTipoTask("Pessoal")} />
-                            </>
-                        ) : (
-                            <>
-                                <TextField variant="filled" multiline maxRows={6} type="text" placeholder={"Novo(a) " + label}
-                                value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
-                            </>
-                        )}
-                    </ListItem>
-                    <Divider />
-                    </React.Fragment>
-                ))}
-            </List>
-            <Button type="submit" variant="contained">Add Task</Button>
-        </form>
+        <Stack direction={"column"} justifyContent={"center"} alignItems={"center"} spacing={5}>
+            <Typography variant="h4" color="white">
+                Dados da Nova Task:
+            </Typography>
+            <form style={{width: "80%"}} onSubmit={handleSubmit}>
+                <Stack direction={"column"} spacing={8}>
+                    <List sx={{backgroundColor: "white"}}>
+                        {Object.entries(camposInserir).map(([key, label]) => (
+                            <React.Fragment key={key}>
+                            <ListItem>
+                                <ListItemText primary={label} sx={{color:"#0078D7"}} />
+                                {key == "tipo"? (
+                                    <>
+                                        <Box display="flex" justifyContent="flex-end" gap="1vw" sx={{"&:hover": {backgroundColor: "inherit"}, "&:active": { backgroundColor: "inherit" }, "&:focus": { backgroundColor: "inherit" }}}>
+                                            <Chip label="Pública" variant={chipsVariants[0]} onClick={() => setandoTipoTask("Pública")} />
+                                            <Chip label="Pessoal" variant={chipsVariants[1]} onClick={() => setandoTipoTask("Pessoal")} />
+                                        </Box>
+                                    </>
+                                ) : key == "dataEntrega"? (
+                                    <>
+                                        <Box display="flex" justifyContent={"flex-end"} sx={{gap: "1vw", "&:hover": {backgroundColor: "inherit"}, "&:active": { backgroundColor: "inherit" }, "&:focus": { backgroundColor: "inherit" }}}>
+                                            <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
+                                            value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                        </Box>
+                                    </>
+                                )
+                                : (
+                                    <>
+                                        <Box display={"flex"} justifyContent={"flex-end"} sx={{gap: "1vw", "&:hover": {backgroundColor: "inherit"}, "&:active": { backgroundColor: "inherit" }, "&:focus": { backgroundColor: "inherit" }}}>
+                                            <TextField variant="filled" multiline maxRows={6} type="text" placeholder={"Novo(a) " + label}
+                                            value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                        </Box>
+                                    </>
+                                )}
+                            </ListItem>
+                            <Divider />
+                            </React.Fragment>
+                        ))}
+                    </List>
+                    <Box display="flex" flexDirection="row" gap="10vw" justifyContent="center" alignItems="center" sx={{"&:hover": {backgroundColor: "inherit"}, "&:active": { backgroundColor: "inherit" }, "&:focus": { backgroundColor: "inherit" }}}>
+                        <Button variant="contained" sx={{backgroundColor: "#0078D7", color:"white"}} onClick={voltandoListaTasks}>Cancelar</Button>
+                        <Button type="submit" sx={{backgroundColor: "#0078D7", color:"white"}} variant="contained">Add Task</Button>
+                    </Box>
+                </Stack>
+            </form>
+        </Stack>
         </>
     );
 };

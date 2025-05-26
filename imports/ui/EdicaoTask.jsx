@@ -15,6 +15,13 @@ import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip"
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import DoneIcon from '@mui/icons-material/Done';
+import Fab from "@mui/material/Fab";
+import Tooltip from "@mui/material/Tooltip";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTipo, chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposAlteraveis, chavesAlteraveis, alteracaoSucesso, setAlteracaoSucesso }) => {
 
@@ -31,10 +38,24 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
         nomeTask: "",
         descricao: "",
         situacao: "",
+        tipo: "",
         dataEntrega: "",
     };
-    const [inputs, setInputs] = useState(valoresIniciais);
     
+    const [inputs, setInputs] = useState(valoresIniciais);
+    const [chipsVariantsSemSalvar, setChipsVariantsSemSalvar] = useState(chipsVariants);
+    const [chipsVariantsTipoTaskSemSalvar, setChipsVariantsTipoTaskSemSalvar] = useState(chipsVariantsTipoTask)
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [openLoading, setOpenLoading] = useState(false);
+
+    useEffect(() => {
+        setChipsVariantsSemSalvar(chipsVariants);
+    }, [chipsVariants]);
+
+    useEffect(() => {
+        setChipsVariantsTipoTaskSemSalvar(chipsVariantsTipoTask);
+    }, [chipsVariantsTipoTask]);
+
     const reset = (tipo, chave) => {
         if (tipo == "Parcial") {
             setInputs((prev) => ({
@@ -57,9 +78,18 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
         if (saindo) {
             reset("Completo", false)
             setAlteracaoSucesso("");
-            setSaindo(false)
+            setIsSubmitting(false);
+            setOpenLoading(false);
+            setSaindo(false);
         }
     }, [saindo])
+
+    if ((!task) || (isLoading()) || (isSubmitting)){
+        return ( 
+        <Backdrop open={openLoading}>
+            <CircularProgress color="inherit" />
+        </Backdrop>);
+    }
 
     const handleChange = (e, chave) => {
         const novoValor = e.target.value;
@@ -72,9 +102,63 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
         });
     };
     
-    const submitParcial = async (e, chave) => {
+    const setandoSituacaoTask = (situacaoTask) => {
+        let arrayChips = ["outlined", "outlined", "outlined"]; // array padrão de chips
+        if (situacaoTask == "Cadastrada") {
+            arrayChips[0] = "filled";
+        }
+        else if (situacaoTask == "Em Andamento") {
+            arrayChips[1] = "filled";
+        }
+        else {
+            arrayChips[2] = "filled";
+        }
+        setInputs((prev) => {
+            const atualizado = {
+                ...prev,
+                ["situacao"]: situacaoTask,
+            };
+            return atualizado;
+        });
+        setChipsVariantsSemSalvar(arrayChips);
+    }
+
+    const setandoTipoTask = (tipoTask) => {
+        let arrayChips = ["outlined", "outlined"];
+
+        if (tipoTask == "Pública") {
+            arrayChips[0] = "filled";
+        }
+        else if (tipoTask == "Pessoal") {
+            arrayChips[1] = "filled";
+        }
+        setInputs((prev) => {
+            const atualizado = {
+                ...prev,
+                ["tipo"]: tipoTask,
+            };
+            return atualizado;
+        });
+        setChipsVariantsTipoTaskSemSalvar(arrayChips);
+    }
+
+    const submitParcial = async (e, chave, situacaoOuTipo) => {
         e.preventDefault();
         let novoValor = inputs[chave];
+
+        if (chave == "situacao") {
+            setIsSubmitting(true);
+            await alterarSituacao(taskCreatorId, userId, task.situacao, situacaoOuTipo, 0);
+            setIsSubmitting(false);
+            return;
+        }
+
+        if (chave == "tipo") {
+            setIsSubmitting(true);
+            await alterarTipo(taskCreatorId, userId, task.tipo, situacaoOuTipo);
+            setIsSubmitting(false);
+            return;
+        }
 
         if (chave == "dataEntrega"){
             const data = new Date(novoValor);
@@ -85,11 +169,14 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
         reset("Parcial", chave);
 
         try {
+            setIsSubmitting(true);
             await Meteor.callAsync("tasks.update", taskCreatorId, taskId, atualizacaoParcial);
             setAlteracaoSucesso("sucessoEditandoTask");
+            setIsSubmitting(false);
         }
         catch(error) {
             setAlteracaoSucesso("Erro de permissão edit");
+            setIsSubmitting(false);
         }
     }
 
@@ -128,12 +215,6 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
         }
     }
 
-    if (isLoading()){
-        return <Typography variant="h4">
-            Loading...
-            </Typography>
-    }
-
 
     return (
         <>
@@ -147,43 +228,73 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
         {alteracaoSucesso == "sucessoEditandoTask" && (
             <Alert severity="success" onClose={() => setAlteracaoSucesso("")} > Os dados da Tarefa foram alterados com Sucesso!</Alert>
         )}
-        <form onSubmit={submit}>
-        <List>
-        {Object.entries(camposAlteraveis).map(([key, label]) => (
-            <React.Fragment key={key}>
-            <ListItem>
-                <ListItemText primary={label} />
-                {key == "situacao"? (
-                    <>
-                    <Chip label="Cadastrada" variant={chipsVariants[0]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Cadastrada", 0)} />
-                    <Chip label="Em Andamento" variant={chipsVariants[1]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Em Andamento", 1)} />
-                    <Chip label="Concluída" variant={chipsVariants[2]} onClick={() => alterarSituacao(taskCreatorId, userId, task.situacao, "Concluída", 2)} />
-                    </>
-                ) : key == "tipo"? (
-                    <>
-                    <Chip label="Pública" variant={chipsVariantsTipoTask[0]} onClick={() => alterarTipo(taskCreatorId, userId, task.tipo, "Pública")} />
-                    <Chip label="Pessoal" variant={chipsVariantsTipoTask[1]} onClick={() => alterarTipo(taskCreatorId, userId, task.tipo, "Pessoal")} />
-                    </>
-                )
-                : key == "dataEntrega"? (
-                    <>
-                    <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
-                    value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
-                    <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
-                    </> )
-                : (
-                <>
-                <TextField variant="filled" multiline maxRows={6} type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
-                 value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
-                <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
-                </>
-                )}
-            </ListItem>
-            <Divider />
-            </React.Fragment>
-        ))}
-        </List>
-        <Button type="submit" variant="contained">Salvar Todas as Alterações</Button>
+        <form onSubmit={submit} style={{width: "80%"}}>
+            <Stack direction={"column"} spacing={8}>
+                <List sx={{backgroundColor: "white"}}>
+                    {Object.entries(camposAlteraveis).map(([key, label]) => (
+                        <React.Fragment key={key}>
+                            <ListItem sx={{display: "flex", flexDirection: "row", gap: "6vw"}}>
+                                <ListItemText primary={label} sx={{color: "#0078D7"}}/>
+                                {key == "situacao"? (
+                                    <>
+                                        <Box display={"flex"} justifyContent="flex-end" gap="1vw" sx={{"&:hover": {backgroundColor: "inherit"}}}>
+                                            <Chip label="Cadastrada" variant={chipsVariantsSemSalvar[0]} onClick={() => setandoSituacaoTask("Cadastrada")} />
+                                            <Chip label="Em Andamento" variant={chipsVariantsSemSalvar[1]} onClick={() => setandoSituacaoTask("Em Andamento")} />
+                                            <Chip label="Concluída" variant={chipsVariantsSemSalvar[2]} onClick={() => setandoSituacaoTask("Concluída")} />
+                                            <Tooltip title="Salvar alteração da linha">
+                                                <Fab size="small" onClick={(e) => submitParcial(e, key, inputs[key])} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
+                                                    <DoneIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</DoneIcon>
+                                                </Fab>
+                                            </Tooltip>
+                                        </Box>
+                                    </>
+                                ) : key == "tipo"? (
+                                    <>
+                                        <Box display={"flex"} justifyContent="flex-end" gap="1vw" sx={{"&:hover": {backgroundColor: "inherit"}}}>
+                                            <Chip label="Pública" variant={chipsVariantsTipoTaskSemSalvar[0]} onClick={() => setandoTipoTask("Pública")} />
+                                            <Chip label="Pessoal" variant={chipsVariantsTipoTaskSemSalvar[1]} onClick={() => setandoTipoTask("Pessoal")} />
+                                            <Tooltip title="Salvar alteração da linha">
+                                                <Fab size="small" onClick={(e) => submitParcial(e, key, inputs[key])} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
+                                                    <DoneIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</DoneIcon>
+                                                </Fab>
+                                            </Tooltip>
+                                        </Box>
+                                    </>
+                                )
+                                : key == "dataEntrega"? (
+                                    <>
+                                        <Box display={"flex"} justifyContent={"flex-end"} gap={"3vw"}>
+                                            <TextField variant="filled" type={"datetime-local"} placeholder={"dd/mm/aaaa"}
+                                            value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                            <Tooltip title="Salvar alteração da linha">
+                                                <Fab size="small" onClick={(e) => submitParcial(e, key, false)} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
+                                                    <DoneIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</DoneIcon>
+                                                </Fab>
+                                            </Tooltip>
+                                        </Box>
+                                    </> )
+                                : (
+                                <>
+                                    <Box display={"flex"} justifyContent={"flex-end"} gap={"3vw"}>
+                                        <TextField variant="filled" multiline maxRows={6} type={task[key] instanceof Date ? "date" : "text"} placeholder={task[key] instanceof Date ? "dd/mm/aaaa" : ("Novo(a) " + label)}
+                                        value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
+                                        <Tooltip title="Salvar alteração da linha">
+                                            <Fab size="small" onClick={(e) => submitParcial(e, key, false)} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
+                                                <DoneIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</DoneIcon>
+                                            </Fab>
+                                        </Tooltip>
+                                    </Box>
+                                </>
+                                )}
+                            </ListItem>
+                            <Divider />
+                        </React.Fragment>
+                    ))}
+                </List>
+                <Box display={"flex"} justifyContent={"center"}>
+                    <Button type="submit" sx={{backgroundColor: "#0078D7", color:"white"}} variant="contained">Salvar Todas as Alterações</Button>
+                </Box>
+            </Stack>
         </form>
         </>
     )

@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { useParams } from "react-router-dom";
 import { TasksCollection } from '/imports/api/TasksCollection';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 import { VisualizandoFotoPerfil } from "./VisualizandoFotoPerfil";
@@ -19,41 +19,55 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from '@mui/material/Avatar';
 import ButtonBase from '@mui/material/ButtonBase';
+import Stack from "@mui/material/Stack";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
-export const VisualizacaoInfoPerfil = ({camposVisiveis}) => {
+export const VisualizacaoInfoPerfil = ({saindo, setSaindo, camposVisiveis}) => {
     
     const user = useTracker(() => Meteor.user());
+    const [openLoading, setOpenLoading] = useState(false);
+
+    useEffect(() => {
+        if (saindo) {
+            setOpenLoading(false);
+            setSaindo(false);
+        }
+    }, [saindo])
 
     if (!user){
-        return <Typography variant="h3">
-            Loading...
-            </Typography>
+        return (
+            <Backdrop open={openLoading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        )
     }
 
     return (
             <>
-            <List>
-            {Object.entries(camposVisiveis).map(([key, label]) => (
-                <React.Fragment key={key}>
-                <ListItem>
-                    {key == "foto"? (
-                        <>
-                           <ListItemText primary={label} />
-                           <VisualizandoFotoPerfil caminhoFoto={user.profile[key]} />
-                        </>
-                    )
-                    :(
-                        <>
-                            <ListItemText primary={label} />
-                            <TextField variant="filled" multiline maxRows={6} value={user.profile[key] instanceof Date ? user.profile[key].toLocaleDateString() : String(user.profile[key])} placeholder={"Esse dado ainda não foi fornecido"} />
-                        </>
-                    )
-                }
-                </ListItem>
-                <Divider />
-                </React.Fragment>
-            ))}
-            </List>
+            <Stack direction={"column"} width={"80%"}>
+                <List sx={{backgroundColor: "white"}}>
+                {Object.entries(camposVisiveis).map(([key, label]) => (
+                    <React.Fragment key={key}>
+                    <ListItem>
+                        <ListItemText primary={label} sx={{color: "#0078D7"}}/>
+                        {key == "foto"? (
+                            <>
+                                <VisualizandoFotoPerfil caminhoFoto={user.profile[key]} />
+                            </>
+                        )
+                        :(
+                            <>
+                                <TextField variant="filled" multiline maxRows={6} value={user.profile[key] instanceof Date ? user.profile[key].toLocaleDateString() : String(user.profile[key])} placeholder={"Esse dado ainda não foi fornecido"} />
+                            </>
+                        )
+                    }
+                    </ListItem>
+                    <Divider />
+                    </React.Fragment>
+                ))}
+                </List>
+            </Stack>
             </>
         )
 }

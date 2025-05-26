@@ -10,7 +10,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip"
+import Tooltip from "@mui/material/Tooltip";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario, onDelete, dataEntrega}) => {
     let navigate = useNavigate();
@@ -28,19 +30,19 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
     }
 
     const vendoSeDataEhHoje = (data) => {
-      const hoje = new Date();
-      const dataHoje = hoje.toLocaleDateString();
-      const [anoHoje, mesHoje, diaHoje] = dataHoje.split("-");
-      let [anoData, mesData, diaData] = data.split("-");
-      
-      condicao = (anoData == anoHoje && mesData == mesHoje && diaData == diaHoje);
-      if (condicao) {
-        return true;
-      }
+        const hoje = new Date();
+        const dataHoje = hoje.toLocaleDateString();
+        const [anoHoje, mesHoje, diaHoje] = dataHoje.split("-");
+        let [anoData, mesData, diaData] = data.split("-");
+        
+        condicao = (anoData == anoHoje && mesData == mesHoje && diaData == diaHoje);
+        if (condicao) {
+            return true;
+        }
 
-      else {
-        return false;
-      }
+        else {
+            return false;
+        }
     }
 
     const ajustarDisplay = () => {
@@ -59,6 +61,9 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
         }
 
         else {
+            if (dataString == ""){
+                return (nomeDaTarefa);
+            }
             return ((dataString) + " - " + horaString + " - " + nomeDaTarefa)
         }
     }
@@ -66,24 +71,28 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
         <>
         <ListItem>
             <ListItemIcon>
-                <AssignmentIcon />
+                <AssignmentIcon sx={{color: "#0078D7"}}/>
             </ListItemIcon>
-            <ListItemText primary={ajustarDisplay()}
+            <ListItemText sx={{overflow:"hidden", color: "#0078D7"}} primary={ajustarDisplay()}
             secondary={nomeDoUsuario}/>
-            <Tooltip title="Delete Task">
-                <ListItemButton onClick={() => onDelete(identificadorTask, taskCreatorId)}>
-                    <ListItemIcon>
-                        <DeleteIcon />
-                    </ListItemIcon>
-                </ListItemButton>
-            </Tooltip>
-            <Tooltip title="Editar Task">
-                <ListItemButton onClick={telaEditarTask}>
-                    <ListItemIcon>
-                        <EditIcon />
-                    </ListItemIcon>
-                </ListItemButton>
-            </Tooltip>
+
+            <Box display="flex" flexDirection="row" gap="3vw" justifyContent={"flex-end"}>
+                <Tooltip title="Editar Task">
+                    <ListItemButton onClick={telaEditarTask}>
+                        <ListItemIcon>
+                            <EditIcon />
+                        </ListItemIcon>
+                    </ListItemButton>
+                </Tooltip>
+
+                <Tooltip title="Delete Task">
+                    <ListItemButton onClick={() => onDelete(identificadorTask, taskCreatorId)}>
+                        <ListItemIcon>
+                            <DeleteIcon sx={{color: "red"}}/>
+                        </ListItemIcon>
+                    </ListItemButton>
+                </Tooltip>
+            </Box>
         </ListItem>
         <Divider />
         </>

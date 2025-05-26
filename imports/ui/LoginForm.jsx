@@ -5,6 +5,9 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
 export const LoginForm = ({username, setUsername, password, setPassword, estado, setEstado, reset}) => {
 
@@ -42,29 +45,31 @@ export const LoginForm = ({username, setUsername, password, setPassword, estado,
     };
     return (
         <>
-        <Typography variant="h4" gutterBottom>
-            Por favor, faça seu login ou crie seu usuário
+        <Typography variant="h4" sx={{color: "white"}} gutterBottom>
+                    Por favor, faça seu login ou crie seu usuário
         </Typography>
-        {estado == "erro" && (
-            <Alert severity="error" onClose={() => {setEstado("normal");}}>Erro no Login!</Alert>
-        )}
-        <form onSubmit={submit}>
-            <>
-                <TextField variant="filled" type="text" id="username" placeholder="Username" required
-                 value={username} onChange={(e) => handleChange(e, "username")} />
-            </>
-            <>
-                <br></br>
-                <TextField variant="filled" type="password" id="password" placeholder="Password" required
-                value={password} onChange={(e) => handleChange(e, "password")} />
-            </>
-            <br></br>
-            <Button variant="contained" type="submit">Log in</Button>
-        </form>
-        <br></br>
-        <Button variant="contained" onClick={irParaCriarUsuario}>Criar Usuário</Button>
-        </>
-        
+        <Card sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center"}}>
+            <CardContent>
+                {estado == "erro" && (
+                    <Alert severity="error" onClose={() => {setEstado("normal");}}>Erro no Login!</Alert>
+                )}
+                <form style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center", gap: "1rem"}} onSubmit={submit}>
+                    <>
+                        <TextField variant="filled" type="text" id="username" placeholder="Username" required
+                        value={username} onChange={(e) => handleChange(e, "username")} />
+                    </>
+                    <>
+                        <TextField variant="filled" type="password" id="password" placeholder="Password" required
+                        value={password} onChange={(e) => handleChange(e, "password")} />
+                    </>
+                    <Button variant="contained" type="submit">Log in</Button>
+                </form>
+            </CardContent>
+            <CardActions>
+                <Button variant="contained" onClick={irParaCriarUsuario}>Criar Usuário</Button>
+            </CardActions>
+        </Card>
+    </>
     );
 };
 

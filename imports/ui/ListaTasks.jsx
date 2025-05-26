@@ -10,8 +10,12 @@ import { Routes, Route, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
-import { CallToActionSharp } from "@mui/icons-material";
-
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import ListItem from "@mui/material/ListItem";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import Tooltip from "@mui/material/Tooltip";
 
 export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
     
@@ -34,23 +38,33 @@ export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout,
             {erroLogout && (
                     <Alert severity="error" onClose={() => {setErroLogout(false);}} > Erro no Logout</Alert>
                 )}
-            <Typography variant="h4" gutterBottom>
-                Tarefas Cadastradas
-            </Typography>
-            <List>
-                {tasks.map((task) => (
-                    <Task
-                    key={task._id}
-                    dataEntrega={task.dataEntrega}
-                    setSaindo={setSaindo}
-                    identificadorTask={task._id} 
-                    nomeDaTarefa={task.nomeTask}
-                    nomeDoUsuario={task.userName}
-                    onDelete={handleDelete}
-                    />
-                ))}
-            </List>
-            <Button variant="contained" onClick={goToAddTask}>Adicionar Task</Button>
+            <Stack direction={"column"} spacing={8} justifyContent={"center"} alignItems={"center"}>
+                <Typography variant="h4" sx={{color: "white"}} gutterBottom>
+                    Tarefas Cadastradas
+                </Typography>
+                <Stack direction={"column"} spacing={4} width={"80%"}>
+                    <List sx={{backgroundColor: "white"}}>
+                        {tasks.map((task) => (
+                            <Task
+                            key={task._id}
+                            dataEntrega={task.dataEntrega}
+                            setSaindo={setSaindo}
+                            identificadorTask={task._id} 
+                            nomeDaTarefa={task.nomeTask}
+                            nomeDoUsuario={task.userName}
+                            onDelete={handleDelete}
+                            />
+                        ))}
+                    </List>
+                    <Box display="flex" justifyContent="flex-end">
+                        <Tooltip title="Adicionar Task">
+                            <Fab color="primary" sx={{backgroundColor: "white", color:"#0078D7"}} size={"small"} onClick={goToAddTask}>
+                                <AddIcon />
+                            </Fab>
+                        </Tooltip>
+                    </Box>
+                </Stack>
+            </Stack>
         </>
     )
 }
