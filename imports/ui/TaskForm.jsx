@@ -143,11 +143,11 @@ export const TaskForm = ({ saindo, setSaindo }) => {
             </Typography>
             <form style={{width: "80%"}} onSubmit={handleSubmit}>
                 <Stack direction={"column"} spacing={8}>
-                    <List sx={{backgroundColor: "#00f285"}}>
+                    <List sx={{backgroundColor: "white"}}>
                         {Object.entries(camposInserir).map(([key, label]) => (
                             <React.Fragment key={key}>
                             <ListItem>
-                                <ListItemText primary={label} sx={{color:"#6f6dfb"}} />
+                                <ListItemText primary={label} sx={{color:"#0078D7"}} />
                                 {key == "tipo"? (
                                     <>
                                         <Box display="flex" justifyContent="flex-end" gap="1vw" sx={{"&:hover": {backgroundColor: "inherit"}, "&:active": { backgroundColor: "inherit" }, "&:focus": { backgroundColor: "inherit" }}}>
@@ -177,8 +177,8 @@ export const TaskForm = ({ saindo, setSaindo }) => {
                         ))}
                     </List>
                     <Box display="flex" flexDirection="row" gap="10vw" justifyContent="center" alignItems="center" sx={{"&:hover": {backgroundColor: "inherit"}, "&:active": { backgroundColor: "inherit" }, "&:focus": { backgroundColor: "inherit" }}}>
-                        <Button variant="contained" sx={{backgroundColor: "#00f285", color:"#6f6dfb"}} onClick={voltandoListaTasks}>Cancelar</Button>
-                        <Button type="submit" sx={{backgroundColor: "#00f285", color:"#6f6dfb"}} variant="contained">Add Task</Button>
+                        <Button variant="contained" sx={{backgroundColor: "#0078D7", color:"white"}} onClick={voltandoListaTasks}>Cancelar</Button>
+                        <Button type="submit" sx={{backgroundColor: "#0078D7", color:"white"}} variant="contained">Add Task</Button>
                     </Box>
                 </Stack>
             </form>

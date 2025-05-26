@@ -35,11 +35,11 @@ export const VisualizacaoTask = ({taskId, camposVisiveis}) => {
 
     return (
             <Stack flexDirection={"column"} width={"80%"}>
-                <List>
+                <List sx={{backgroundColor: "white"}}>
                 {Object.entries(camposVisiveis).map(([key, label]) => (
                     <React.Fragment key={key}>
                     <ListItem>
-                        <ListItemText primary={label} />
+                        <ListItemText primary={label} sx={{color: "#0078D7"}}/>
                         <Box display={"flex"} flexDirection={"row"} justifyContent={"flex-end"}>
                             <TextField variant="filled" multiline maxRows={6} value={task[key] instanceof Date ? task[key].toLocaleString('pt-BR', {
                                 day: '2-digit',

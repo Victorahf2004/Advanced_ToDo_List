@@ -19,6 +19,9 @@ import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import DoneIcon from '@mui/icons-material/Done';
+import Fab from "@mui/material/Fab";
+import Tooltip from "@mui/material/Tooltip";
 
 export const EdicaoInfoPerfil = ({ saindo, setSaindo, alteracaoPerfil, setAlteracaoPerfil, chavesVisiveis, camposVisiveis }) => {
 
@@ -152,50 +155,70 @@ export const EdicaoInfoPerfil = ({ saindo, setSaindo, alteracaoPerfil, setAltera
         <Stack flexDirection={"column"} width={"80%"}>
         <form onSubmit={submit}>
             <Stack spacing={8}>
-                <List>
+                <List sx={{backgroundColor: "white"}}>
                 {Object.entries(camposVisiveis).map(([key, label]) => (
                     <React.Fragment key={key}>
-                    <ListItem>
-                        <ListItemText primary={label} />
+                    <ListItem sx={{display: "flex", flexDirection: "row", gap: "6vw"}}>
+                        <ListItemText primary={label} sx={{color: "#0078D7"}}/>
                         {key == "data_nasc"? (
                             <>
-                            <Box display={"flex"} justifyContent={"flex-end"}>
+                            <Box display={"flex"} justifyContent={"flex-end"} gap={"1vw"}>
                                 <TextField variant="filled" type={"date"} placeholder={"dd/mm/aaaa"}
                                 value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
-                                <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
+                                <Tooltip title="Salvar alteração da linha">
+                                    <Fab size="small" onClick={(e) => submitParcial(e, key, inputs[key])} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
+                                        <DoneIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</DoneIcon>
+                                    </Fab>
+                                </Tooltip>
                             </Box>
                             </> )
                         : key == "email"? (
                             <>
-                            <Box display={"flex"} justifyContent={"flex-end"}>
+                            <Box display={"flex"} justifyContent={"flex-end"} gap={"1vw"}>
                                 <TextField variant="filled" multiline maxRows={6} type={"email"} placeholder={"Novo(a) " + label}
                                 value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
-                                <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
+                                <Tooltip title="Salvar alteração da linha">
+                                    <Fab size="small" onClick={(e) => submitParcial(e, key, inputs[key])} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
+                                        <DoneIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</DoneIcon>
+                                    </Fab>
+                                </Tooltip>
                             </Box>
                             </>
                         )
                         : key == "sexo"? (
                             <>
-                            <Box display={"flex"} justifyContent={"flex-end"}>
+                            <Box display={"flex"} justifyContent={"flex-end"} gap={"1vw"}>
                                 <SelectSexo chave={key} inputs={inputs} handleChange={handleChange} submitParcial={submitParcial} />
-                                <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
+                                <Tooltip title="Salvar alteração da linha">
+                                    <Fab size="small" onClick={(e) => submitParcial(e, key, inputs[key])} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
+                                        <DoneIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</DoneIcon>
+                                    </Fab>
+                                </Tooltip>
                             </Box>
                             </>
                         )
                         : key == "foto"? (
                             <>
-                            <Box display={"flex"} justifyContent={"flex-end"}>
+                            <Box display={"flex"} justifyContent={"flex-end"} gap={"1vw"}>
                                 <InputFotoPerfil chave={key} inputs={inputs} handleChange={handleChangeFoto} submitParcial={submitParcial} />
-                                <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
+                                <Tooltip title="Salvar alteração da linha">
+                                    <Fab size="small" onClick={(e) => submitParcial(e, key, inputs[key])} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
+                                        <DoneIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</DoneIcon>
+                                    </Fab>
+                                </Tooltip>
                             </Box>
                             </>
                         )
                         : (
                         <>
-                        <Box display={"flex"} justifyContent={"flex-end"}>
+                        <Box display={"flex"} justifyContent={"flex-end"} gap={"1vw"}>
                             <TextField variant="filled" multiline maxRows={6} type={"text"} placeholder={"Novo(a) " + label}
                             value={inputs[key]} onChange={(e) => handleChange(e, key)}/>
-                            <ListItemButton variant="contained" onClick={(e) => submitParcial(e, key)}>Salvar essa alteração</ListItemButton>
+                            <Tooltip title="Salvar alteração da linha">
+                                <Fab size="small" onClick={(e) => submitParcial(e, key, inputs[key])} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
+                                    <DoneIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</DoneIcon>
+                                </Fab>
+                            </Tooltip>
                         </Box>
                         </>
                         )}

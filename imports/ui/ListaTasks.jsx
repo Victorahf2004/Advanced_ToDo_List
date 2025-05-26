@@ -43,7 +43,7 @@ export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout,
                     Tarefas Cadastradas
                 </Typography>
                 <Stack direction={"column"} spacing={4} width={"80%"}>
-                    <List sx={{backgroundColor: "#00f285"}}>
+                    <List sx={{backgroundColor: "white"}}>
                         {tasks.map((task) => (
                             <Task
                             key={task._id}
@@ -58,7 +58,7 @@ export const ListaTasks = ({saindo, setSaindo, tasks, erroLogout, setErroLogout,
                     </List>
                     <Box display="flex" justifyContent="flex-end">
                         <Tooltip title="Adicionar Task">
-                            <Fab color="primary" sx={{backgroundColor: "#00f285", color: "#6f6dfb"}} size={"small"} onClick={goToAddTask}>
+                            <Fab color="primary" sx={{backgroundColor: "white", color:"#0078D7"}} size={"small"} onClick={goToAddTask}>
                                 <AddIcon />
                             </Fab>
                         </Tooltip>

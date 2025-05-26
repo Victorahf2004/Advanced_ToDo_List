@@ -71,9 +71,9 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
         <>
         <ListItem>
             <ListItemIcon>
-                <AssignmentIcon sx={{color: "#6f6dfb"}}/>
+                <AssignmentIcon sx={{color: "#0078D7"}}/>
             </ListItemIcon>
-            <ListItemText sx={{overflow:"hidden", color: "#6f6dfb"}} primary={ajustarDisplay()}
+            <ListItemText sx={{overflow:"hidden", color: "#0078D7"}} primary={ajustarDisplay()}
             secondary={nomeDoUsuario}/>
 
             <Box display="flex" flexDirection="row" gap="3vw" justifyContent={"flex-end"}>

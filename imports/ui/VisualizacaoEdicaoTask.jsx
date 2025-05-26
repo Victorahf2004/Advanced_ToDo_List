@@ -204,6 +204,10 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
             }
         }
     }
+
+    const customTextColor = '#4A148C'; 
+    const customIndicatorColor = "#00f285";
+
     return (
         <>
             {!podeEditar && (
@@ -211,11 +215,25 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
             )}
             <Stack direction={"column"} justifyContent={"center"} alignItems={"center"}>
                 <Box>
-                    <Typography variant="h4">
+                    <Typography variant="h4" color="white">
                         Informações tarefa: {task.nomeTask}
                     </Typography>
                 </Box>
-                <Tabs value={value} onChange={handleChange}>
+                <Tabs value={value} onChange={handleChange} sx={{
+          '& .MuiTabs-indicator': {
+            backgroundColor: customIndicatorColor,
+          },
+          '& .MuiTab-root': {
+            color: customTextColor, 
+            '&.Mui-selected': {
+              color: customIndicatorColor, 
+            },
+            '&:hover': {
+              color: customIndicatorColor,
+              opacity: 0.8,
+            },
+          },
+        }}>
                     <Tab icon={<VisibilityIcon />} label="Visualização" iconPosition="end" />
                     <Tab icon={<EditNoteIcon />} label="Edição" iconPosition="end" />
                 </Tabs> 

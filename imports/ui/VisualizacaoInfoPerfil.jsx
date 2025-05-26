@@ -34,19 +34,18 @@ export const VisualizacaoInfoPerfil = ({camposVisiveis}) => {
     return (
             <>
             <Stack direction={"column"} width={"80%"}>
-                <List>
+                <List sx={{backgroundColor: "white"}}>
                 {Object.entries(camposVisiveis).map(([key, label]) => (
                     <React.Fragment key={key}>
                     <ListItem>
+                        <ListItemText primary={label} sx={{color: "#0078D7"}}/>
                         {key == "foto"? (
                             <>
-                                <ListItemText primary={label} />
                                 <VisualizandoFotoPerfil caminhoFoto={user.profile[key]} />
                             </>
                         )
                         :(
                             <>
-                                <ListItemText primary={label} />
                                 <TextField variant="filled" multiline maxRows={6} value={user.profile[key] instanceof Date ? user.profile[key].toLocaleDateString() : String(user.profile[key])} placeholder={"Esse dado ainda não foi fornecido"} />
                             </>
                         )
