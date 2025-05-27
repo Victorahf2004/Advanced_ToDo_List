@@ -27,7 +27,7 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
 
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
-    const isLoading = useSubscribe("tasks");
+    const isLoading = useSubscribe("tasksSemRestricao");
 
     const task = useTracker(() => {
         return TasksCollection.findOne(taskId)
@@ -47,14 +47,6 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
     const [chipsVariantsTipoTaskSemSalvar, setChipsVariantsTipoTaskSemSalvar] = useState(chipsVariantsTipoTask)
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [openLoading, setOpenLoading] = useState(false);
-
-    useEffect(() => {
-        setChipsVariantsSemSalvar(chipsVariants);
-    }, [chipsVariants]);
-
-    useEffect(() => {
-        setChipsVariantsTipoTaskSemSalvar(chipsVariantsTipoTask);
-    }, [chipsVariantsTipoTask]);
 
     const reset = (tipo, chave) => {
         if (tipo == "Parcial") {

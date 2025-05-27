@@ -27,7 +27,7 @@ export const VisualizacaoTask = ({saindo, setSaindo, taskId, camposVisiveis}) =>
     const user = useTracker(() => Meteor.user());
     const [openLoading, setOpenLoading] = useState(false);
     
-    const isLoading = useSubscribe("tasks");
+    const isLoading = useSubscribe("tasksSemRestricao");
     const task = useTracker(() => {
         return TasksCollection.findOne(taskId)
     });

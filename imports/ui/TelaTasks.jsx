@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { useTracker, useSubscribe } from 'meteor/react-meteor-data'; 
+import { ReactiveVar } from "meteor/reactive-var";
 import { Task } from "./Task";
 import { EdicaoTask } from "./EdicaoTask";
 import { VisualizacaoEdicaoTask } from "./VisualizacaoEdicaoTask";
@@ -15,44 +16,36 @@ import Typography from "@mui/material/Typography";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
+export const filtroConcluidas = new ReactiveVar(false);
+
 export const TelaTasks = ({saindo, setSaindo, erroLogout, setErroLogout, logout}) => {
     const user = useTracker(() => Meteor.user());
     
-    const [alteracaoSucesso, setAlteracaoSucesso] = useState("");
-    const [openLoading, setOpenLoading] = useState(false);
-    
-    const isLoading = useSubscribe("tasks");
-    let navigate = useNavigate();
-    
-    useEffect(() => {
-        if (saindo) {
-            setErroLogout(false);
-            setAlteracaoSucesso("");
-            setOpenLoading(false);
-            setSaindo(false);
-        }
-    }, [saindo])
-
-    const tasks = useTracker(() => {
-        if (!user) {
-            return (
-                <Backdrop open={openLoading}>
-                    <CircularProgress color="inherit" />
-                </Backdrop>
-            );
+    const isLoading = useSubscribe("tasksLista", filtroConcluidas.get());
+    const handleFiltroChange = (saindoDaTela) => {
+        if (saindoDaTela == false){
+            const situacao = filtroConcluidas.get();
+            filtroConcluidas.set(!situacao);
         }
         else {
-            return TasksCollection.find({}, { sort: {createdAt: -1} }).fetch();
+            filtroConcluidas.set(false);
         }
-      });
-    
-    if (isLoading()){
-        return (
-            <Backdrop open={openLoading}>
-                <CircularProgress color="inherit" />
-            </Backdrop>
-        );
     }
+
+    const [alteracaoSucesso, setAlteracaoSucesso] = useState("");
+    
+    let navigate = useNavigate();
+
+    const tasks = useTracker(() => {
+        if (!user || isLoading()) {
+            return [];
+        }
+        const mostrarConcluidas = filtroConcluidas.get();
+
+        return TasksCollection.find({}, { sort: {createdAt: -1} }).fetch();
+
+      }, [user]);
+    
 
     const goToAddTask = () => {
         navigate("/Logado/ListaTasks/AddTask");
@@ -62,7 +55,7 @@ export const TelaTasks = ({saindo, setSaindo, erroLogout, setErroLogout, logout}
     return (
         <>
         <Routes>
-            <Route path="/" element={<ListaTasks saindo={saindo} setSaindo={setSaindo} tasks={tasks} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} goToAddTask={goToAddTask} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
+            <Route path="/" element={<ListaTasks handleFiltroChange={handleFiltroChange} saindo={saindo} setSaindo={setSaindo} tasks={tasks} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} goToAddTask={goToAddTask} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
             <Route path="/AddTask" element={<TaskForm saindo={saindo} setSaindo={setSaindo} />} />
             <Route path=":taskId" element={<VisualizacaoEdicaoTask saindo={saindo} setSaindo={setSaindo} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
         </Routes>

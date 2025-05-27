@@ -29,7 +29,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 export const DashBoard = ({saindo, setSaindo, openTasks}) => {
     
-    const isLoading = useSubscribe("tasks");
+    const isLoading = useSubscribe("tasksSemRestricao");
     const [openLoading, setOpenLoading] = useState(false);
 
     const tasksCadastradas = useTracker(() => {
