@@ -25,14 +25,14 @@ import Stack from "@mui/material/Stack";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const TelaBoasVindas = ({saindo, setSaindo, openTasks, erroLogout, setErroLogout}) => {
+export const TelaBoasVindas = ({setandoSairFalseCallback, saindo, setSaindo, openTasks, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
     const [openLoading, setOpenLoading] = useState(false);
 
     useEffect(() => {
         if (saindo) {
             setOpenLoading(false);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo])
 
@@ -53,7 +53,7 @@ export const TelaBoasVindas = ({saindo, setSaindo, openTasks, erroLogout, setErr
             <Typography variant="h3" sx={{color: "white", display: "flex", justifyContent:"center", alignItems: "center", overflow: "hidden"}} gutterBottom>
                 Seja Bem-Vindo, {user.username}!!!
             </Typography>
-            <DashBoard saindo={saindo} setSaindo={setSaindo} openTasks={openTasks} />
+            <DashBoard setandoSairFalseCallback={setandoSairFalseCallback} saindo={saindo} setSaindo={setSaindo} openTasks={openTasks} />
         </Stack>
         </>
     )

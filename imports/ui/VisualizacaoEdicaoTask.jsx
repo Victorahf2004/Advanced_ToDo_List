@@ -17,7 +17,7 @@ import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
-export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, setAlteracaoSucesso }) => {
+export const VisualizacaoEdicaoTask = ( { setandoSairFalseCallback, saindo, setSaindo, alteracaoSucesso, setAlteracaoSucesso }) => {
     const camposVisiveis = {
             nomeTask: "nome",
             descricao: "Descrição",
@@ -60,7 +60,7 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
         if(saindo) {
             setValue(0);
             setPodeEditar(true);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo])
     
@@ -241,9 +241,9 @@ export const VisualizacaoEdicaoTask = ( { saindo, setSaindo, alteracaoSucesso, s
                 </Tabs> 
                 
                 {value == 0? (
-                    <VisualizacaoTask saindo={saindo} setSaindo={setSaindo} taskId={taskId} camposVisiveis={camposVisiveis} />
+                    <VisualizacaoTask setandoSairFalseCallback={setandoSairFalseCallback} saindo={saindo} setSaindo={setSaindo} taskId={taskId} camposVisiveis={camposVisiveis} />
                 ): (
-                    <EdicaoTask saindo={saindo} setSaindo={setSaindo} chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposAlteraveis={camposAlteraveis} chavesAlteraveis={chavesAlteraveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
+                    <EdicaoTask setandoSairFalseCallback={setandoSairFalseCallback} saindo={saindo} setSaindo={setSaindo} chipsVariantsTipoTask={chipsVariantsTipoTask} alterarTipo={alterarTipo} chipsVariants={chipsVariants} checagemTrasicao={checagemTransicao} novoArrayVariants={novoArrayVariants} alterarSituacao={alterarSituacao} taskId={taskId} camposAlteraveis={camposAlteraveis} chavesAlteraveis={chavesAlteraveis} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>
                 )}
             </Stack>
         </>

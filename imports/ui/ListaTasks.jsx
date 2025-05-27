@@ -23,7 +23,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { filtroConcluidas } from "./TelaTasks";
 
 
-export const ListaTasks = ({handleFiltroChange, saindo, setSaindo, tasks, erroLogout, setErroLogout, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
+export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo, setSaindo, tasks, erroLogout, setErroLogout, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
     
     const [openLoading, setOpenLoading] = useState(false);
     
@@ -33,7 +33,7 @@ export const ListaTasks = ({handleFiltroChange, saindo, setSaindo, tasks, erroLo
             setAlteracaoSucesso("");
             handleFiltroChange(true);
             setOpenLoading(false);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo]);
 

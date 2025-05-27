@@ -27,7 +27,7 @@ import Grid from "@mui/material/Grid";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const DashBoard = ({saindo, setSaindo, openTasks}) => {
+export const DashBoard = ({setandoSairFalseCallback, saindo, setSaindo, openTasks}) => {
     
     const isLoading = useSubscribe("tasksSemRestricao");
     const [openLoading, setOpenLoading] = useState(false);
@@ -47,7 +47,7 @@ export const DashBoard = ({saindo, setSaindo, openTasks}) => {
     useEffect(() => {
         if (saindo) {
             setOpenLoading(false);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo])
 

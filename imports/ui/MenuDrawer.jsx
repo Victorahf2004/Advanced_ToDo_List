@@ -27,7 +27,7 @@ import Fab from "@mui/material/Fab";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, setSaindo, erroLogout, setErroLogout}) => {
+export const MenuDrawer = ({setandoSairFalseCallback, openPerfil, openTasks, openHome, logout, saindo, setSaindo, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
     let navigate = useNavigate();
     const [openDrawer, setOpenDrawer] = useState(false);
@@ -37,7 +37,7 @@ export const MenuDrawer = ({openPerfil, openTasks, openHome, logout, saindo, set
         if(saindo) {
             setErroLogout(false);
             setOpenDrawer(false);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo]);
 

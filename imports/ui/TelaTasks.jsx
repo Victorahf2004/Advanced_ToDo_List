@@ -18,7 +18,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 export const filtroConcluidas = new ReactiveVar(false);
 
-export const TelaTasks = ({saindo, setSaindo, erroLogout, setErroLogout, logout}) => {
+export const TelaTasks = ({setandoSairFalseCallback, saindo, setSaindo, erroLogout, setErroLogout, logout}) => {
     const user = useTracker(() => Meteor.user());
     
     const isLoading = useSubscribe("tasksLista", filtroConcluidas.get());
@@ -55,9 +55,9 @@ export const TelaTasks = ({saindo, setSaindo, erroLogout, setErroLogout, logout}
     return (
         <>
         <Routes>
-            <Route path="/" element={<ListaTasks handleFiltroChange={handleFiltroChange} saindo={saindo} setSaindo={setSaindo} tasks={tasks} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} goToAddTask={goToAddTask} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
-            <Route path="/AddTask" element={<TaskForm saindo={saindo} setSaindo={setSaindo} />} />
-            <Route path=":taskId" element={<VisualizacaoEdicaoTask saindo={saindo} setSaindo={setSaindo} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
+            <Route path="/" element={<ListaTasks setandoSairFalseCallback={setandoSairFalseCallback} handleFiltroChange={handleFiltroChange} saindo={saindo} setSaindo={setSaindo} tasks={tasks} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} goToAddTask={goToAddTask} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
+            <Route path="/AddTask" element={<TaskForm setandoSairFalseCallback={setandoSairFalseCallback} saindo={saindo} setSaindo={setSaindo} />} />
+            <Route path=":taskId" element={<VisualizacaoEdicaoTask setandoSairFalseCallback={setandoSairFalseCallback} saindo={saindo} setSaindo={setSaindo} alteracaoSucesso={alteracaoSucesso} setAlteracaoSucesso={setAlteracaoSucesso}/>} />
         </Routes>
         </>
     )

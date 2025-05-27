@@ -16,7 +16,7 @@ import Stack from "@mui/material/Stack";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const TelasPerfil = ({saindo, setSaindo}) => {
+export const TelasPerfil = ({setandoSairFalseCallback, saindo, setSaindo}) => {
     const camposVisiveis = {
             nome: "Nome",
             email: "E-mail",
@@ -39,7 +39,7 @@ export const TelasPerfil = ({saindo, setSaindo}) => {
             setValue(0);
             setAlteracaoPerfil("");
             setOpenLoading(false);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo])
 
@@ -95,9 +95,9 @@ export const TelasPerfil = ({saindo, setSaindo}) => {
                 </Tabs> 
                 
                 {value == 0? (
-                    <VisualizacaoInfoPerfil saindo={saindo} setSaindo={setSaindo} camposVisiveis={camposVisiveis} />
+                    <VisualizacaoInfoPerfil setandoSairFalseCallback={setandoSairFalseCallback} saindo={saindo} setSaindo={setSaindo} camposVisiveis={camposVisiveis} />
                 ): (
-                    <EdicaoInfoPerfil saindo={saindo} setSaindo={setSaindo} alteracaoPerfil={alteracaoPerfil} setAlteracaoPerfil={setAlteracaoPerfil} chavesVisiveis={chavesVisiveis} camposVisiveis={camposVisiveis} />
+                    <EdicaoInfoPerfil setandoSairFalseCallback={setandoSairFalseCallback} saindo={saindo} setSaindo={setSaindo} alteracaoPerfil={alteracaoPerfil} setAlteracaoPerfil={setAlteracaoPerfil} chavesVisiveis={chavesVisiveis} camposVisiveis={camposVisiveis} />
                 )}
             </Stack>
         </>

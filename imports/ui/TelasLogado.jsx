@@ -11,6 +11,10 @@ export const TelasLogado = () => {
     const [saindo, setSaindo] = useState(false);
     let navigate = useNavigate();
 
+    const setandoSairFalseCallback = () => {
+        setSaindo(false);
+    }
+
     const openPerfil = () => {
         navigate("/Logado/Perfil");
         setSaindo(true);
@@ -49,11 +53,11 @@ export const TelasLogado = () => {
     return (
         <>
         <Routes>
-            <Route element={<TelasLogadoLayout openPerfil={openPerfil} openTasks={openTasks} openHome={openHome} logout={logout} saindo={saindo} setSaindo={setSaindo} erroLogout={erroLogout} setErroLogout={setErroLogout} />}>
+            <Route element={<TelasLogadoLayout setandoSairFalseCallback={setandoSairFalseCallback} openPerfil={openPerfil} openTasks={openTasks} openHome={openHome} logout={logout} saindo={saindo} setSaindo={setSaindo} erroLogout={erroLogout} setErroLogout={setErroLogout} />}>
                 <Route path="/" element={<Navigate to="Start" />} />
-                <Route path="Start" element={<TelaBoasVindas saindo={saindo} setSaindo={setSaindo} openTasks={openTasks} erroLogout={erroLogout} setErroLogout={setErroLogout} />} />
-                <Route path="ListaTasks/*" element={<TelaTasks saindo={saindo} setSaindo={setSaindo} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} />} />
-                <Route path="Perfil" element={<TelasPerfil saindo={saindo} setSaindo={setSaindo}/>} />
+                <Route path="Start" element={<TelaBoasVindas setandoSairFalseCallback={setandoSairFalseCallback} saindo={saindo} setSaindo={setSaindo} openTasks={openTasks} erroLogout={erroLogout} setErroLogout={setErroLogout} />} />
+                <Route path="ListaTasks/*" element={<TelaTasks setandoSairFalseCallback={setandoSairFalseCallback} saindo={saindo} setSaindo={setSaindo} erroLogout={erroLogout} setErroLogout={setErroLogout} logout={logout} />} />
+                <Route path="Perfil" element={<TelasPerfil setandoSairFalseCallback={setandoSairFalseCallback} saindo={saindo} setSaindo={setSaindo}/>} />
             </Route>
         </Routes>
         </>
