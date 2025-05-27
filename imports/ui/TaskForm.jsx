@@ -15,7 +15,7 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-export const TaskForm = ({ saindo, setSaindo }) => {
+export const TaskForm = ({ setandoSairFalseCallback, saindo, setSaindo }) => {
     const camposInserir = {
             nomeTask: "nome",
             descricao: "Descrição",
@@ -55,7 +55,7 @@ export const TaskForm = ({ saindo, setSaindo }) => {
             reset();
             setChipsVariants(arrayVariants);
             setAlerta(0);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo])
     

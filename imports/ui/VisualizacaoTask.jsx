@@ -20,14 +20,14 @@ import Stack from "@mui/material/Stack";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const VisualizacaoTask = ({saindo, setSaindo, taskId, camposVisiveis}) => {
+export const VisualizacaoTask = ({setandoSairFalseCallback, saindo, setSaindo, taskId, camposVisiveis}) => {
 
     let navigate = useNavigate();
     
     const user = useTracker(() => Meteor.user());
     const [openLoading, setOpenLoading] = useState(false);
     
-    const isLoading = useSubscribe("tasks");
+    const isLoading = useSubscribe("tasksSemRestricao");
     const task = useTracker(() => {
         return TasksCollection.findOne(taskId)
     });
@@ -35,7 +35,7 @@ export const VisualizacaoTask = ({saindo, setSaindo, taskId, camposVisiveis}) =>
     useEffect(() => {
         if (saindo) {
             setOpenLoading(false);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo]);
 

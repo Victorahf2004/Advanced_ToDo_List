@@ -25,7 +25,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const EdicaoInfoPerfil = ({ saindo, setSaindo, alteracaoPerfil, setAlteracaoPerfil, chavesVisiveis, camposVisiveis }) => {
+export const EdicaoInfoPerfil = ({ setandoSairFalseCallback, saindo, setSaindo, alteracaoPerfil, setAlteracaoPerfil, chavesVisiveis, camposVisiveis }) => {
 
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
@@ -64,7 +64,7 @@ export const EdicaoInfoPerfil = ({ saindo, setSaindo, alteracaoPerfil, setAltera
         if (saindo) {
             reset("Completo", false);
             setOpenLoading(false);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo]);
 

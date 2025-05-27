@@ -23,11 +23,11 @@ import Tooltip from "@mui/material/Tooltip";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTipo, chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposAlteraveis, chavesAlteraveis, alteracaoSucesso, setAlteracaoSucesso }) => {
+export const EdicaoTask = ({ setandoSairFalseCallback, saindo, setSaindo, chipsVariantsTipoTask, alterarTipo, chipsVariants, checagemTransicao, novoArrayVariants, alterarSituacao, taskId, camposAlteraveis, chavesAlteraveis, alteracaoSucesso, setAlteracaoSucesso }) => {
 
     let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
-    const isLoading = useSubscribe("tasks");
+    const isLoading = useSubscribe("tasksSemRestricao");
 
     const task = useTracker(() => {
         return TasksCollection.findOne(taskId)
@@ -47,14 +47,6 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
     const [chipsVariantsTipoTaskSemSalvar, setChipsVariantsTipoTaskSemSalvar] = useState(chipsVariantsTipoTask)
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [openLoading, setOpenLoading] = useState(false);
-
-    useEffect(() => {
-        setChipsVariantsSemSalvar(chipsVariants);
-    }, [chipsVariants]);
-
-    useEffect(() => {
-        setChipsVariantsTipoTaskSemSalvar(chipsVariantsTipoTask);
-    }, [chipsVariantsTipoTask]);
 
     const reset = (tipo, chave) => {
         if (tipo == "Parcial") {
@@ -80,7 +72,7 @@ export const EdicaoTask = ({ saindo, setSaindo, chipsVariantsTipoTask, alterarTi
             setAlteracaoSucesso("");
             setIsSubmitting(false);
             setOpenLoading(false);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo])
 

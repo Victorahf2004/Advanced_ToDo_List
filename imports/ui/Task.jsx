@@ -13,6 +13,7 @@ import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import Chip from "@mui/material/Chip";
 
 export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario, onDelete, dataEntrega}) => {
     let navigate = useNavigate();
@@ -23,6 +24,21 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
 
     const taskCreatorId = task.userId;
 
+    const situacao = task.situacao
+
+    const funcCor = () => {
+        if (situacao == "Cadastrada") {
+            return "red";
+        }
+        else if (situacao == "Em Andamento") {
+            return "yellow";
+        }
+        else if (situacao == "Concluída") {
+            return "#00f285";
+        }
+    }
+
+    const cor = funcCor();
     const telaEditarTask = () => {
         let link = "/Logado/ListaTasks/" + identificadorTask;
         navigate(`${link}`);
@@ -77,6 +93,7 @@ export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario
             secondary={nomeDoUsuario}/>
 
             <Box display="flex" flexDirection="row" gap="3vw" justifyContent={"flex-end"}>
+                <Chip label={situacao} variant="filled" sx={{backgroundColor: cor, color: "white"}} />
                 <Tooltip title="Editar Task">
                     <ListItemButton onClick={telaEditarTask}>
                         <ListItemIcon>

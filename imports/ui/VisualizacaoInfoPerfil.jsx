@@ -23,7 +23,7 @@ import Stack from "@mui/material/Stack";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const VisualizacaoInfoPerfil = ({saindo, setSaindo, camposVisiveis}) => {
+export const VisualizacaoInfoPerfil = ({setandoSairFalseCallback, saindo, setSaindo, camposVisiveis}) => {
     
     const user = useTracker(() => Meteor.user());
     const [openLoading, setOpenLoading] = useState(false);
@@ -31,7 +31,7 @@ export const VisualizacaoInfoPerfil = ({saindo, setSaindo, camposVisiveis}) => {
     useEffect(() => {
         if (saindo) {
             setOpenLoading(false);
-            setSaindo(false);
+            setandoSairFalseCallback();
         }
     }, [saindo])
 
