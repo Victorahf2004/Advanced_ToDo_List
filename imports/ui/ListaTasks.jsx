@@ -41,14 +41,6 @@ export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo
         }
     }, [saindo]);
 
-    if (tasks.length == 0){
-        return (
-            <Backdrop open={openLoading}>
-                <CircularProgress color="inherit" />
-            </Backdrop>
-        );
-    }
-
     const handleDelete = async ( taskId, taskCreatorId ) => {
         try{
             await Meteor.callAsync("tasks.delete", taskId, taskCreatorId);
@@ -73,27 +65,35 @@ export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo
                 <Typography variant="h4" sx={{color: "white"}} gutterBottom>
                     Tarefas Cadastradas
                 </Typography>
-                <Box display={"flex"} flexDirection={"row"} gap={"2vw"}>
-                    <TextField variant="filled" type="text" value={inputPesquisa} onChange={(e) => setInputPesquisa(e.target.value)} />
+                <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} gap={"2vw"}>
+                    <TextField sx={{backgroundColor: "white"}} placeholder="Digite um nome de tarefa" variant="filled" type="text" value={inputPesquisa} onChange={(e) => setInputPesquisa(e.target.value)} />
                     <Fab size="small" onClick={() => filtroSearch.set(inputPesquisa)} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
                         <SearchIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</SearchIcon>
                     </Fab>
                 </Box>
                 <FormControlLabel label="Ver tarefas Concluídas" control={<Checkbox checked={filtroConcluidas.get()} onChange={() => handleFiltroChange(false)} />} sx={{backgroundColor: "#00f285", color: "white"}} />
                 <Stack direction={"column"} spacing={4} width={"80%"}>
-                    <List sx={{backgroundColor: "white"}}>
-                        {tasks.map((task) => (
-                            <Task
-                            key={task._id}
-                            dataEntrega={task.dataEntrega}
-                            setSaindo={setSaindo}
-                            identificadorTask={task._id} 
-                            nomeDaTarefa={task.nomeTask}
-                            nomeDoUsuario={task.userName}
-                            onDelete={handleDelete}
-                            />
-                        ))}
-                    </List>
+                    {tasks.length > 0 ? (
+                        <List sx={{backgroundColor: "white"}}>
+                            {tasks.map((task) => (
+                                <Task
+                                key={task._id}
+                                dataEntrega={task.dataEntrega}
+                                setSaindo={setSaindo}
+                                identificadorTask={task._id} 
+                                nomeDaTarefa={task.nomeTask}
+                                nomeDoUsuario={task.userName}
+                                onDelete={handleDelete}
+                                />
+                            ))}
+                        </List>
+                    ): (
+                        <Box display={"flex"} justifyContent={"center"} alignItems={"center"} sx={{backgroundColor: "white", height: "20vh"}}>
+                            <Typography variant="h5" sx={{ color: "#0078D7"}}>
+                                Nenhuma tarefa Encontrada!
+                            </Typography>
+                        </Box>
+                    )}
                     <Box display="flex" justifyContent="flex-end">
                         <Tooltip title="Adicionar Task">
                             <Fab color="primary" sx={{backgroundColor: "white", color:"#0078D7"}} size={"small"} onClick={goToAddTask}>
