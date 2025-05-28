@@ -41,6 +41,7 @@ export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo
             } 
             catch (error) {
                 console.error("Erro ao calcular número de páginas:", error);
+                setAlteracaoSucesso("Erro de permissão delete");
                 numeroPaginasVar.set(1);
             }
         };
@@ -74,7 +75,7 @@ export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo
     return (
         <>
             {alteracaoSucesso == "Erro de permissão delete" && (
-                    <Alert severity="error" onClose={() => {setAlteracaoSucesso("");}} > Só o criador da tarefa pode deletá-la </Alert>
+                    <Alert severity="error" onClose={() => {setAlteracaoSucesso("");}} > Usuário sem permissão </Alert>
                 )}
             {alteracaoSucesso == "sucessoListaTasks" && (
                     <Alert severity="success" onClose={() => {setAlteracaoSucesso("");}} > Os dados da Tarefa foram alterados com Sucesso!</Alert>

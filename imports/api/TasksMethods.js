@@ -10,7 +10,7 @@ Meteor.methods({
         const usuarioAtual = this.userId;
         if (!usuarioAtual) {
             console.log("Sem usuário");
-            // return this.ready();
+            throw new Meteor.Error("not-authorized", "Usuário não autenticado");
         }
         else {
             console.log("Com usuário");
