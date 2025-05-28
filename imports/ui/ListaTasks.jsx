@@ -123,7 +123,9 @@ export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo
                             </Fab>
                         </Tooltip>
                     </Box>
-                    <Pagination count={numeroPaginas} page={filtroPaginaAtual.get()} onChange={(event, value) => filtroPaginaAtual.set(value)} />
+                    <Box display={"flex"} justifyContent={"center"}>
+                        <Pagination count={numeroPaginas} sx={{backgroundColor: "white"}} color={"primary"} page={filtroPaginaAtual.get()} onChange={(event, value) => filtroPaginaAtual.set(value)} size="large"/>
+                    </Box>
                 </Stack>
             </Stack>
         </>
