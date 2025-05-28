@@ -23,17 +23,20 @@ import Checkbox from '@mui/material/Checkbox';
 import { filtroConcluidas } from "./TelaTasks";
 import { filtroSearch } from "./TelaTasks";
 import TextField from "@mui/material/TextField";
+import SearchIcon from '@mui/icons-material/Search';
 
 export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo, setSaindo, tasks, erroLogout, setErroLogout, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
     
     const [openLoading, setOpenLoading] = useState(false);
-    
+    const [inputPesquisa, setInputPesquisa] = useState("");
+
     useEffect(() => {
         if(saindo) {
             setErroLogout(false);
             setAlteracaoSucesso("");
             handleFiltroChange(true);
             setOpenLoading(false);
+            setInputPesquisa("");
             setandoSairFalseCallback();
         }
     }, [saindo]);
@@ -70,8 +73,13 @@ export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo
                 <Typography variant="h4" sx={{color: "white"}} gutterBottom>
                     Tarefas Cadastradas
                 </Typography>
-                <TextField variant="filled" type="text" value={filtroSearch.get()} onChange={(e) => filtroSearch.set(e.target.value)} />
-                <FormControlLabel label="Ver/Não ver Concluídas" control={<Checkbox checked={filtroConcluidas.get()} onChange={() => handleFiltroChange(false)} />} sx={{backgroundColor: "#00f285", color: "white"}} />
+                <Box display={"flex"} flexDirection={"row"} gap={"2vw"}>
+                    <TextField variant="filled" type="text" value={inputPesquisa} onChange={(e) => setInputPesquisa(e.target.value)} />
+                    <Fab size="small" onClick={() => filtroSearch.set(inputPesquisa)} sx={{backgroundColor: '#4A148C', alignSelf:"center"}}>
+                        <SearchIcon fontSize="small" sx={{color: '#00e4d0'}} variant="filled">Salvar essa alteração</SearchIcon>
+                    </Fab>
+                </Box>
+                <FormControlLabel label="Ver tarefas Concluídas" control={<Checkbox checked={filtroConcluidas.get()} onChange={() => handleFiltroChange(false)} />} sx={{backgroundColor: "#00f285", color: "white"}} />
                 <Stack direction={"column"} spacing={4} width={"80%"}>
                     <List sx={{backgroundColor: "white"}}>
                         {tasks.map((task) => (
