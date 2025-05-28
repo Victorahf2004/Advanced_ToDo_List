@@ -1,7 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { TasksCollection } from "./TasksCollection"
 
-Meteor.publish("tasksLista", function (situacao, search) {
+Meteor.publish("tasksLista", function (situacao, search, paginaAtual) {
+    const itensPorPagina = 4;
     const tarefasPublicas = {tipo: "Pública"};
     
     const usuarioAtual = this.userId;
@@ -27,7 +28,7 @@ Meteor.publish("tasksLista", function (situacao, search) {
         query = { $and: [query, resultadosPesquisa]};
     }
 
-    return TasksCollection.find(query);
+    return TasksCollection.find(query, { skip: (paginaAtual - 1) * itensPorPagina, limit: itensPorPagina});
 });
 
 Meteor.publish("tasksSemRestricao", function () {

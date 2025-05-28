@@ -22,8 +22,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { filtroConcluidas } from "./TelaTasks";
 import { filtroSearch } from "./TelaTasks";
+import { filtroPaginaAtual } from "./TelaTasks";
 import TextField from "@mui/material/TextField";
 import SearchIcon from '@mui/icons-material/Search';
+import Pagination from "@mui/material/Pagination";
 
 export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo, setSaindo, tasks, erroLogout, setErroLogout, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
     
@@ -101,6 +103,7 @@ export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo
                             </Fab>
                         </Tooltip>
                     </Box>
+                    <Pagination count={10} page={filtroPaginaAtual.get()} onChange={(event, value) => filtroPaginaAtual.set(value)} />
                 </Stack>
             </Stack>
         </>
