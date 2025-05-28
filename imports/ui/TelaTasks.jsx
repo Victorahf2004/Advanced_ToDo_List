@@ -17,11 +17,12 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
 export const filtroConcluidas = new ReactiveVar(false);
+export const filtroSearch = new ReactiveVar("");
 
 export const TelaTasks = ({setandoSairFalseCallback, saindo, setSaindo, erroLogout, setErroLogout, logout}) => {
     const user = useTracker(() => Meteor.user());
     
-    const isLoading = useSubscribe("tasksLista", filtroConcluidas.get());
+    const isLoading = useSubscribe("tasksLista", filtroConcluidas.get(), filtroSearch.get());
     const handleFiltroChange = (saindoDaTela) => {
         if (saindoDaTela == false){
             const situacao = filtroConcluidas.get();
@@ -29,6 +30,7 @@ export const TelaTasks = ({setandoSairFalseCallback, saindo, setSaindo, erroLogo
         }
         else {
             filtroConcluidas.set(false);
+            filtroSearch.set("");
         }
     }
 
@@ -40,7 +42,9 @@ export const TelaTasks = ({setandoSairFalseCallback, saindo, setSaindo, erroLogo
         if (!user || isLoading()) {
             return [];
         }
+        
         const mostrarConcluidas = filtroConcluidas.get();
+        const mostrarTasksFiltradas = filtroSearch.get();
 
         return TasksCollection.find({}, { sort: {createdAt: -1} }).fetch();
 

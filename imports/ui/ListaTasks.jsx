@@ -21,7 +21,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { filtroConcluidas } from "./TelaTasks";
-
+import { filtroSearch } from "./TelaTasks";
+import TextField from "@mui/material/TextField";
 
 export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo, setSaindo, tasks, erroLogout, setErroLogout, goToAddTask, alteracaoSucesso, setAlteracaoSucesso}) => {
     
@@ -69,6 +70,7 @@ export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo
                 <Typography variant="h4" sx={{color: "white"}} gutterBottom>
                     Tarefas Cadastradas
                 </Typography>
+                <TextField variant="filled" type="text" value={filtroSearch.get()} onChange={(e) => filtroSearch.set(e.target.value)} />
                 <FormControlLabel label="Ver/Não ver Concluídas" control={<Checkbox checked={filtroConcluidas.get()} onChange={() => handleFiltroChange(false)} />} sx={{backgroundColor: "#00f285", color: "white"}} />
                 <Stack direction={"column"} spacing={4} width={"80%"}>
                     <List sx={{backgroundColor: "white"}}>

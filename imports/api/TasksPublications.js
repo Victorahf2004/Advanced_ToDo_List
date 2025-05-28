@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { TasksCollection } from "./TasksCollection"
 
-Meteor.publish("tasksLista", function (situacao) {
+Meteor.publish("tasksLista", function (situacao, search) {
     const tarefasPublicas = {tipo: "Pública"};
     
     const usuarioAtual = this.userId;
@@ -16,9 +16,15 @@ Meteor.publish("tasksLista", function (situacao) {
     
     const querySemOlharSituacao = { $or: [tarefasPublicas, tarefasPrivadasDoUsuarioLogado]}
     let query = querySemOlharSituacao;
+    
     if (situacao == false){
         let semConcluidas = {situacao: { $ne: "Concluída"}};
         query = { $and: [querySemOlharSituacao, semConcluidas]};
+    }
+
+    if (search != ""){
+        let resultadosPesquisa = {nomeTask: { $regex: search, $options: "i"}};
+        query = { $and: [query, resultadosPesquisa]};
     }
 
     return TasksCollection.find(query);
