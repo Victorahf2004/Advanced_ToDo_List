@@ -6,7 +6,7 @@ import { TasksCollection } from '/imports/api/TasksCollection';
 import { TaskForm } from "./TaskForm";
 import List from "@mui/material/List";
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useNavigate} from "react-router-dom";
+import { Routes, Route, useNavigate, resolvePath} from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -23,6 +23,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { filtroConcluidas } from "./TelaTasks";
 import { filtroSearch } from "./TelaTasks";
 import { filtroPaginaAtual } from "./TelaTasks";
+import { numeroPaginasVar } from "./TelaTasks";
 import TextField from "@mui/material/TextField";
 import SearchIcon from '@mui/icons-material/Search';
 import Pagination from "@mui/material/Pagination";
@@ -31,6 +32,24 @@ export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo
     
     const [openLoading, setOpenLoading] = useState(false);
     const [inputPesquisa, setInputPesquisa] = useState("");
+
+    useEffect(() => {
+        const atualizarNumeroPaginas = async () => {
+            try {
+                const novoNumeroPaginas = await Meteor.callAsync("tasks.count", filtroConcluidas.get(), filtroSearch.get());
+                numeroPaginasVar.set(novoNumeroPaginas);
+            } 
+            catch (error) {
+                console.error("Erro ao calcular número de páginas:", error);
+                numeroPaginasVar.set(1);
+            }
+        };
+        atualizarNumeroPaginas();
+    }, [filtroConcluidas.get(), filtroSearch.get()]);
+
+    const numeroPaginas = useTracker(() => {
+        return numeroPaginasVar.get();
+    });
 
     useEffect(() => {
         if(saindo) {
@@ -103,7 +122,7 @@ export const ListaTasks = ({setandoSairFalseCallback, handleFiltroChange, saindo
                             </Fab>
                         </Tooltip>
                     </Box>
-                    <Pagination count={10} page={filtroPaginaAtual.get()} onChange={(event, value) => filtroPaginaAtual.set(value)} />
+                    <Pagination count={numeroPaginas} page={filtroPaginaAtual.get()} onChange={(event, value) => filtroPaginaAtual.set(value)} />
                 </Stack>
             </Stack>
         </>

@@ -20,6 +20,7 @@ import Pagination from '@mui/material/Pagination';
 export const filtroConcluidas = new ReactiveVar(false);
 export const filtroSearch = new ReactiveVar("");
 export const filtroPaginaAtual = new ReactiveVar(1);
+export const numeroPaginasVar = new ReactiveVar(1);
 
 export const TelaTasks = ({setandoSairFalseCallback, saindo, setSaindo, erroLogout, setErroLogout, logout}) => {
     const user = useTracker(() => Meteor.user());
@@ -53,7 +54,6 @@ export const TelaTasks = ({setandoSairFalseCallback, saindo, setSaindo, erroLogo
         return TasksCollection.find({}, { sort: {createdAt: -1} }).fetch();
 
       }, [user]);
-    
 
     const goToAddTask = () => {
         navigate("/Logado/ListaTasks/AddTask");
