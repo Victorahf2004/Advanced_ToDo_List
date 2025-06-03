@@ -3,18 +3,13 @@ import { TasksCollection } from "./TasksCollection";
 
 Meteor.methods({
     async "tasks.count"(situacao, search){
-        console.log("O filtroConcluídas é: " + situacao);
-        console.log("O filtroSearch é: " + search);
         const tarefasPublicas = {tipo: "Pública"};
         
         const usuarioAtual = this.userId;
         if (!usuarioAtual) {
-            console.log("Sem usuário");
             throw new Meteor.Error("not-authorized", "Usuário não autenticado");
         }
-        else {
-            console.log("Com usuário");
-        }
+
         const pertencerAoUsuarioAtual = {userId: usuarioAtual};
 
         const serPrivada = {tipo: "Pessoal"};
@@ -39,7 +34,7 @@ Meteor.methods({
     async "tasks.insert"({nomeTask, descricao, tipo, dataEntrega}) {
         const usuario = await Meteor.users.findOneAsync(this.userId);
         const login = usuario?.username || "desconhecido";
-        console.log(login)
+        
         return TasksCollection.insertAsync({
             nomeTask: nomeTask,
             descricao: descricao,

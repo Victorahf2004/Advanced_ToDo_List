@@ -7,7 +7,6 @@ Meteor.publish("tasksLista", function (situacao, search, paginaAtual) {
     
     const usuarioAtual = this.userId;
     if (!usuarioAtual) {
-        console.log("Sem usuário");
         return this.ready();
     }
     const pertencerAoUsuarioAtual = {userId: usuarioAtual};
@@ -36,7 +35,7 @@ Meteor.publish("tasksSemRestricao", function () {
     
     const usuarioAtual = this.userId;
     if (!usuarioAtual) {
-        console.log("Sem usuário");
+
         return this.ready();
     }
     const pertencerAoUsuarioAtual = {userId: usuarioAtual};

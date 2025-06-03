@@ -7,7 +7,6 @@ import Select from '@mui/material/Select';
 
 export const SelectSexo = ({ chave, inputs, handleChange }) => {
 
-    console.log(inputs[chave]);
     return (
         <Box sx={{minWidth: "10vw"}}>
         <FormControl fullWidth>

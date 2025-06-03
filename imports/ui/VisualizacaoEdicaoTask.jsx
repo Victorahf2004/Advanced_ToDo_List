@@ -149,24 +149,17 @@ export const VisualizacaoEdicaoTask = ( { setandoSairFalseCallback, saindo, setS
     const alterarSituacao = async (taskCreatorId, userId, velhaSituacao, novaSituacao, indiceVariant) => {
         const novoObjetoSituacao = {situacao: novaSituacao};
         const novoArray = novoArrayVariants(chipsVariants, indiceVariant);
-        console.log(velhaSituacao, novaSituacao);
         try {
             checagemTransicao(taskCreatorId, userId, velhaSituacao, novaSituacao);
             await Meteor.callAsync("tasks.update", taskCreatorId, taskId, novoObjetoSituacao);
             setAlteracaoSucesso("sucessoEditandoTask");
         }
         catch(error) {
-            console.log("Erro capturado:", error);
             if (error.message == "not-authorized") {
-                console.log("Erro de permissão");
                 setAlteracaoSucesso("Erro de permissão edit");
             }
             else if ((error.message == "Transição Inválida!") || (error.message == "Situação igual à de antes!")){
-                console.log("Erro próprio da função");
                 setAlteracaoSucesso("Erro em alterar Situação");
-            }
-            else {
-                console.log("Erro");
             }
         }
     }
@@ -191,17 +184,11 @@ export const VisualizacaoEdicaoTask = ( { setandoSairFalseCallback, saindo, setS
             setAlteracaoSucesso("sucessoEditandoTask");
         }
         catch(error) {
-            console.log("Erro capturado:", error);
             if (error.message == "not-authorized") {
-                console.log("Erro de permissão");
                 setAlteracaoSucesso("Erro de permissão edit");
             }
             else if ((error.message == "Transição Inválida!") || (error.message == "Situação igual à de antes!")){
-                console.log("Erro próprio da função");
                 setAlteracaoSucesso("Erro em alterar Situação");
-            }
-            else {
-                console.log("Erro");
             }
         }
     }

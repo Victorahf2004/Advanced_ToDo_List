@@ -50,8 +50,6 @@ export const TelasPerfil = ({setandoSairFalseCallback, saindo, setSaindo}) => {
         )
     }
 
-    console.log(user.username);
-
     const handleChange = (e, newValue) => {
         setValue(newValue);
         setAlteracaoPerfil("");
