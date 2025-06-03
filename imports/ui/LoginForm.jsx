@@ -46,7 +46,7 @@ export const LoginForm = ({username, setUsername, password, setPassword, estado,
     return (
         <>
         <Typography variant="h4" sx={{color: "white"}} gutterBottom>
-                    Por favor, faça seu login ou crie seu usuário
+                    Bem vindo ao todo list
         </Typography>
         <Card sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center"}}>
             <CardContent>
