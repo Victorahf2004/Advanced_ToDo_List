@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { TasksCollection } from "/imports/api/TasksCollection";
 import ListItem from "@mui/material/ListItem";
@@ -12,7 +12,6 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 
 export const Task = ({ identificadorTask, setSaindo, nomeDaTarefa, nomeDoUsuario, onDelete, dataEntrega}) => {

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { TelaBoasVindas } from "./TelaBoasVindas";
 import { TelaTasks } from "./TelaTasks";
 import { TelasPerfil } from "./TelasPerfil";
-import { MenuDrawer } from "./MenuDrawer";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { TelasLogadoLayout } from "./TelasLogadoLayout";
 

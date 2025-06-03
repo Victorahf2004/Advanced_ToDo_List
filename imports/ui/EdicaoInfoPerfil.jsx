@@ -1,22 +1,14 @@
 import { Meteor } from "meteor/meteor";
-import { useParams } from "react-router-dom";
-import { TasksCollection } from '/imports/api/TasksCollection';
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useNavigate} from "react-router-dom";
-import { useTracker, useSubscribe } from "meteor/react-meteor-data";
+import { useTracker } from "meteor/react-meteor-data";
 import { SelectSexo } from "./SelectSexo";
 import { InputFotoPerfil } from "./InputFotoPerfil";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemButton from "@mui/material/ListItemButton";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import Chip from "@mui/material/Chip"
-import Alert from "@mui/material/Alert";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import DoneIcon from '@mui/icons-material/Done';
@@ -27,7 +19,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 export const EdicaoInfoPerfil = ({ setandoSairFalseCallback, saindo, setSaindo, alteracaoPerfil, setAlteracaoPerfil, chavesVisiveis, camposVisiveis }) => {
 
-    let navigate = useNavigate();
     const user = useTracker(() => Meteor.user());
 
     const valoresIniciais = {

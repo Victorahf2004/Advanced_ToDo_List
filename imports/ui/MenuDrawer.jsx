@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
-import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from '@mui/material/List';
@@ -14,9 +10,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from "@mui/material/Avatar";
-import ButtonBase from "@mui/material/ButtonBase";
 import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
 import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from "@mui/material/Tooltip";
 import HomeIcon from '@mui/icons-material/Home';
@@ -29,7 +23,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 export const MenuDrawer = ({setandoSairFalseCallback, openPerfil, openTasks, openHome, logout, saindo, setSaindo, erroLogout, setErroLogout}) => {
     const user = useTracker(() => Meteor.user());
-    let navigate = useNavigate();
     const [openDrawer, setOpenDrawer] = useState(false);
     const [openLoading, setOpenLoading] = useState(false);
 

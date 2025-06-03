@@ -1,23 +1,15 @@
 import { Meteor } from "meteor/meteor";
-import { useTracker, useSubscribe } from 'meteor/react-meteor-data'; 
+import { useTracker } from 'meteor/react-meteor-data'; 
 import { Task } from "./Task"
-import { EdicaoTask } from "./EdicaoTask";
-import { TasksCollection } from '/imports/api/TasksCollection';
-import { TaskForm } from "./TaskForm";
 import List from "@mui/material/List";
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useNavigate, resolvePath} from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import ListItem from "@mui/material/ListItem";
-import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Tooltip from "@mui/material/Tooltip";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { filtroConcluidas } from "./TelaTasks";

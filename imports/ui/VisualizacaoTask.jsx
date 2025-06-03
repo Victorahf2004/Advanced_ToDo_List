@@ -1,29 +1,19 @@
 import { Meteor } from "meteor/meteor";
-import { useParams } from "react-router-dom";
 import { TasksCollection } from '/imports/api/TasksCollection';
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useNavigate} from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemButton from "@mui/material/ListItemButton";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import Chip from "@mui/material/Chip"
-import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
 export const VisualizacaoTask = ({setandoSairFalseCallback, saindo, setSaindo, taskId, camposVisiveis}) => {
 
-    let navigate = useNavigate();
-    
     const user = useTracker(() => Meteor.user());
     const [openLoading, setOpenLoading] = useState(false);
     

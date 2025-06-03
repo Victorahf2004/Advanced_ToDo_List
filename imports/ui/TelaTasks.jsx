@@ -1,21 +1,12 @@
 import { Meteor } from "meteor/meteor";
 import { useTracker, useSubscribe } from 'meteor/react-meteor-data'; 
 import { ReactiveVar } from "meteor/reactive-var";
-import { Task } from "./Task";
-import { EdicaoTask } from "./EdicaoTask";
 import { VisualizacaoEdicaoTask } from "./VisualizacaoEdicaoTask";
 import { ListaTasks } from "./ListaTasks";
 import { TasksCollection } from '/imports/api/TasksCollection';
 import { TaskForm } from "./TaskForm";
-import List from "@mui/material/List";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Routes, Route, useNavigate} from "react-router-dom";
-import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
-import Typography from "@mui/material/Typography";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import Pagination from '@mui/material/Pagination';
 
 export const filtroConcluidas = new ReactiveVar(false);
 export const filtroSearch = new ReactiveVar("");
